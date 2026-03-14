@@ -3,6 +3,9 @@
 export function HomeAbout() {
   return (
     <section id="about">
+      <div className="about-bg-logo" aria-hidden>
+        <img src="/logo.png" alt="" />
+      </div>
       <div className="container">
         <div className="ag">
           <div className="ag-left">
