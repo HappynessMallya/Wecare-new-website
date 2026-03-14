@@ -1,6 +1,6 @@
 'use client';
 
-import { Mail, MapPin, Phone, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { Mail, MapPin, Phone, Facebook, Linkedin, Instagram } from 'lucide-react';
 import { ContactForm } from '@/components/ContactForm';
 import { NewsletterSection } from '@/components/NewsletterSection';
 
@@ -57,28 +57,28 @@ export function ContactPageContent() {
             </dl>
             <div className="mt-8 flex gap-4" aria-label="Social media">
               <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:text-cta transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:text-cta"
+                className="text-primary hover:text-cta transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </a>
               <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-cta"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:text-cta"
+                className="text-primary hover:text-cta transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />

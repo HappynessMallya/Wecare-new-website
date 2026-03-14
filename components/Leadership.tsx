@@ -1,5 +1,7 @@
 'use client';
 
+import { Mail } from 'lucide-react';
+
 export function Leadership() {
   return (
     <section id="leadership">
@@ -51,7 +53,8 @@ export function Leadership() {
               over 5,000 parents and 800+ children across Tanzania.
             </p>
             <a href="mailto:Wecarefoundation025@gmail.com" className="ldr-email">
-              ✉ Wecarefoundation025@gmail.com
+              <Mail className="ldr-email-ico" size={16} aria-hidden />
+              Wecarefoundation025@gmail.com
             </a>
           </div>
         </div>

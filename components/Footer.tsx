@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { Instagram, Facebook, Linkedin } from 'lucide-react';
 import { Logo } from '@/components/Logo';
-import { WHATSAPP_URL } from '@/lib/constants';
+import { WHATSAPP_URL, CONTACT_PHONE } from '@/lib/constants';
 
 const orgLinks = [
   { label: 'About WeCare', href: '#about' },
@@ -40,11 +41,16 @@ export function Footer() {
             <p>
               A community-led NGO committed to quality early childhood development, learning, and health for underserved families in Tanzania. Enriching Children&apos;s Lives — one community at a time.
             </p>
+            <p className="fphone">
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="fphone-link">
+                {CONTACT_PHONE}
+              </a>
+              <span className="fphone-label"> — Call or WhatsApp</span>
+            </p>
             <div className="fsoc">
-              <a className="fsc" href="#" aria-label="Instagram">📸</a>
-              <a className="fsc" href="#" aria-label="Facebook">📘</a>
-              <a className="fsc" href="#" aria-label="Twitter">🐦</a>
-              <a className="fsc" href="#" aria-label="LinkedIn">💼</a>
+              <a className="fsc" href="#" aria-label="Instagram"><Instagram className="fsc-ico" size={18} aria-hidden /></a>
+              <a className="fsc" href="#" aria-label="Facebook"><Facebook className="fsc-ico" size={18} aria-hidden /></a>
+              <a className="fsc" href="#" aria-label="LinkedIn"><Linkedin className="fsc-ico" size={18} aria-hidden /></a>
             </div>
           </div>
           <div className="fcol">

@@ -1,5 +1,8 @@
 'use client';
 
+import { MapPin, Mail, Globe, Phone, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { WHATSAPP_URL, CONTACT_PHONE } from '@/lib/constants';
+
 export function HomeContact() {
   return (
     <section id="contact">
@@ -16,49 +19,43 @@ export function HomeContact() {
             </p>
             <div className="cdet">
               <div className="crow">
-                <div className="cico ci-r">📍</div>
+                <div className="cico ci-r"><MapPin className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
                   <strong>Office Location</strong>
                   <span>Mbeya, Tanzania</span>
                 </div>
               </div>
               <div className="crow">
-                <div className="cico ci-b">📧</div>
+                <div className="cico ci-b"><Mail className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
                   <strong>Email — CEO Elizabeth Maginga</strong>
                   <a href="mailto:Wecarefoundation025@gmail.com">Wecarefoundation025@gmail.com</a>
                 </div>
               </div>
               <div className="crow">
-                <div className="cico ci-a">🌍</div>
+                <div className="cico ci-a"><Globe className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
                   <strong>Regions Active</strong>
                   <span>Mbeya Region &amp; Mara Region, Tanzania</span>
                 </div>
               </div>
               <div className="crow">
-                <div className="cico ci-o">📸</div>
+                <div className="cico ci-o"><Phone className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
-                  <strong>Instagram</strong>
-                  <span>@wecare foundation</span>
+                  <strong>Phone — Call or WhatsApp</strong>
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">{CONTACT_PHONE}</a>
                 </div>
               </div>
             </div>
             <div className="socs">
-              <a className="socb" href="#" title="Instagram">
-                📸
+              <a className="socb" href="#" title="Instagram" aria-label="Instagram">
+                <Instagram className="socb-ico" size={20} />
               </a>
-              <a className="socb" href="#" title="Facebook">
-                📘
+              <a className="socb" href="#" title="Facebook" aria-label="Facebook">
+                <Facebook className="socb-ico" size={20} />
               </a>
-              <a className="socb" href="#" title="Twitter/X">
-                🐦
-              </a>
-              <a className="socb" href="#" title="LinkedIn">
-                💼
-              </a>
-              <a className="socb" href="#" title="YouTube">
-                ▶️
+              <a className="socb" href="#" title="LinkedIn" aria-label="LinkedIn">
+                <Linkedin className="socb-ico" size={20} />
               </a>
             </div>
           </div>
