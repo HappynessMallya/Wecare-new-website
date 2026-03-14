@@ -69,61 +69,47 @@ export function CookieBanner() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: 'tween', duration: 0.3 }}
-          className="fixed bottom-0 left-0 right-0 z-[100] border-t border-neutral-200 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
+          className="fixed z-[100] border border-neutral-200 bg-white shadow-lg rounded-lg
+            bottom-2 left-2 right-2 max-h-[60vh] overflow-y-auto
+            md:bottom-4 md:left-4 md:right-auto md:max-w-sm md:max-h-none"
           role="dialog"
           aria-labelledby="cookie-banner-heading"
           aria-describedby="cookie-banner-desc"
         >
-          <div className="mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-5 lg:px-8">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
-              <div className="flex-1">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-button bg-primary/10 text-primary">
-                    <Cookie className="h-5 w-5" aria-hidden />
-                  </div>
-                  <div>
-                    <h2 id="cookie-banner-heading" className="font-display text-lg font-semibold text-primary">
-                      About cookies on WeCARE Foundation
-                    </h2>
-                    <p id="cookie-banner-desc" className="mt-1 text-sm text-neutral-700">
-                      We use cookies to enhance your experience, analyze site
-                      performance, and deliver personalized content and ads. You
-                      can accept all cookies, reject non-essential cookies, or
-                      customize your preferences. For more information, see our{' '}
-                      <Link
-                        href="#cookies"
-                        className="font-medium text-primary underline hover:text-cta"
-                      >
-                        Cookie Policy
-                      </Link>{' '}
-                      &{' '}
-                      <Link
-                        href="#privacy"
-                        className="font-medium text-primary underline hover:text-cta"
-                      >
-                        Privacy Policy
-                      </Link>
-                      .
-                    </p>
-                  </div>
+          <div className="p-2.5 md:p-3">
+            <div className="flex flex-col gap-2 md:gap-2.5">
+              <div className="flex items-start gap-2">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Cookie className="h-3.5 w-3.5 md:h-4 md:w-4" aria-hidden />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 id="cookie-banner-heading" className="font-display text-sm md:text-base font-semibold text-primary leading-tight">
+                    Cookies on WeCARE Foundation
+                  </h2>
+                  <p id="cookie-banner-desc" className="mt-0.5 text-[11px] md:text-xs text-neutral-700 leading-snug">
+                    We use cookies. Accept all, reject non-essential, or{' '}
+                    <button
+                      type="button"
+                      onClick={() => setShowCustomize(true)}
+                      className="font-medium text-primary underline hover:text-cta"
+                    >
+                      customize
+                    </button>
+                    .{' '}
+                    <Link href="#cookies" className="font-medium text-primary underline hover:text-cta">Cookie</Link>
+                    {' & '}
+                    <Link href="#privacy" className="font-medium text-primary underline hover:text-cta">Privacy</Link>.
+                  </p>
                 </div>
               </div>
-              <div className="flex shrink-0 flex-wrap items-center gap-3">
-                <Button size="default" onClick={acceptAll}>
+              <div className="flex flex-wrap items-center gap-1.5 md:gap-2">
+                <Button size="default" className="!h-8 !px-3 !text-xs" onClick={acceptAll}>
                   Accept all
                 </Button>
-                <Button
-                  variant="outline"
-                  size="default"
-                  onClick={rejectNonEssential}
-                >
-                  Reject all
+                <Button variant="outline" size="default" className="!h-8 !px-3 !text-xs" onClick={rejectNonEssential}>
+                  Reject
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="default"
-                  onClick={() => setShowCustomize(true)}
-                >
+                <Button variant="ghost" size="default" className="!h-8 !px-2 !text-xs" onClick={() => setShowCustomize(true)}>
                   Customize
                 </Button>
               </div>
