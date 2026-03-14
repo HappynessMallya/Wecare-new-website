@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 // CMS-friendly: map your feedback/stories from the CMS into this shape
 const testimonials = [
   {
@@ -47,7 +49,13 @@ function TestimonialCard({
   return (
     <div className="scard">
       <div className="scp">
-        <img src={image} alt={imageAlt} loading="lazy" />
+        <Image
+          src={image}
+          alt={imageAlt}
+          width={96}
+          height={96}
+          className="object-cover w-full h-full"
+        />
       </div>
       <div className="sct">
         <span className="sqm">&quot;</span>

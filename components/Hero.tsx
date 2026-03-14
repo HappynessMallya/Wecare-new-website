@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import { WHATSAPP_URL } from '@/lib/constants';
 
 const HERO_SLIDES = [
@@ -90,7 +91,14 @@ export function Hero() {
             className={`hero-bg-slide ${i === index ? 'active' : ''}`}
             aria-hidden={i !== index}
           >
-            <img src={slide.src} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              sizes="100vw"
+              priority={i === 0}
+              className="object-cover object-[center_40%] brightness-[0.85]"
+            />
           </div>
         ))}
       </div>

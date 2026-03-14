@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 const PARTNERS = [
   { src: '/GOVERNMENT.svg', alt: 'Government of Tanzania', name: 'Government of Tanzania' },
   { src: '/TECDEN.png', alt: 'TECDEN', name: 'TECDEN' },
@@ -23,9 +25,16 @@ function PartnerItem({
       </div>
     );
   }
+  const { src, alt } = partner as { name: string; src: string; alt: string };
   return (
     <div key={`${partner.name}-${keySuffix}`} className="pl pl-logo">
-      <img src={partner.src} alt={partner.alt} className="pl-img" />
+      <Image
+        src={src}
+        alt={alt}
+        width={120}
+        height={48}
+        className="pl-img object-contain"
+      />
       <span className="pl-name">{partner.name}</span>
     </div>
   );
