@@ -8,7 +8,6 @@ const orgLinks = [
   { label: 'About WeCare', href: '#about' },
   { label: 'Our Mission & Vision', href: '#about' },
   { label: 'Our Approach', href: '#about' },
-  { label: 'CEO — Elizabeth Maginga', href: '#leadership' },
   { label: 'Where We Work', href: '#contact' },
 ];
 
@@ -88,8 +87,8 @@ export function Footer() {
           <span className="ftag">&quot;Enriching Children&apos;s Lives&quot;</span>
           <div className="fbotl">
             <Link href="#">Privacy Policy</Link>
-            <Link href="#">Annual Report</Link>
-            <Link href="#">Safeguarding</Link>
+            <Link href="#">Terms of Service</Link>
+            <Link href="#">Cookie Policy</Link>
           </div>
         </div>
       </div>

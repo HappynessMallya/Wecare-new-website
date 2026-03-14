@@ -51,10 +51,11 @@ export function Navbar() {
     <nav
       id="nav"
       className={scrolled ? 'sc' : ''}
+      data-menu-open={mobileOpen ? 'true' : undefined}
       role="banner"
     >
       <div className="nw">
-        <Logo showText showTagline={false} className="flex-shrink-0" />
+        <Logo showText showTagline={false} className="flex-shrink-0" size="nav" />
 
         <ul className="nl">
           {navItems.map((item) => {

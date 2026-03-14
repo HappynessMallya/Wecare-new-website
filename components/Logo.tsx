@@ -2,18 +2,20 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
-const logoImage = (
-  <Image
-    src="/logo.png"
-    alt="WeCare Foundation"
-    width={52}
-    height={52}
-    className="flex-shrink-0"
-    priority
-  />
-);
+const LOGO_SIZE = { default: 52, nav: 62 } as const;
 
-export function Logo({ className, showText = true, showTagline = false, dark = false }: { className?: string; showText?: boolean; showTagline?: boolean; dark?: boolean }) {
+export function Logo({ className, showText = true, showTagline = false, dark = false, size = 'default' }: { className?: string; showText?: boolean; showTagline?: boolean; dark?: boolean; size?: 'default' | 'nav' }) {
+  const wh = LOGO_SIZE[size];
+  const logoImage = (
+    <Image
+      src="/logo.png"
+      alt="WeCare Foundation"
+      width={wh}
+      height={wh}
+      className="flex-shrink-0"
+      priority
+    />
+  );
   const baseClass = cn('flex items-center gap-3 no-underline', className);
   const textBlock = showText ? (
     <div className={dark ? '' : 'nltxt'}>

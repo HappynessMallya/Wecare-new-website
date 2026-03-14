@@ -30,7 +30,6 @@ export function Leadership() {
             <h2>
               Elizabeth <span>Maginga Thobias</span>
             </h2>
-            <span className="ldr-name">Elizabeth Maginga Thobias</span>
             <span className="ldr-title">
               Chief Executive Officer (CEO) — WeCare Foundation
             </span>
