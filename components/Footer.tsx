@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Instagram, Facebook, Linkedin } from 'lucide-react';
 import { Logo } from '@/components/Logo';
+import { SOCIAL_INSTAGRAM, SOCIAL_FACEBOOK, SOCIAL_LINKEDIN } from '@/lib/constants';
 import { WHATSAPP_URL, CONTACT_PHONE } from '@/lib/constants';
 
 const orgLinks = [
@@ -48,9 +49,9 @@ export function Footer() {
               <span className="fphone-label"> — Call or WhatsApp</span>
             </p>
             <div className="fsoc">
-              <a className="fsc" href="#" aria-label="Instagram"><Instagram className="fsc-ico" size={18} aria-hidden /></a>
-              <a className="fsc" href="#" aria-label="Facebook"><Facebook className="fsc-ico" size={18} aria-hidden /></a>
-              <a className="fsc" href="#" aria-label="LinkedIn"><Linkedin className="fsc-ico" size={18} aria-hidden /></a>
+              <a className="fsc" href={SOCIAL_INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram className="fsc-ico" size={18} aria-hidden /></a>
+              <a className="fsc" href={SOCIAL_FACEBOOK} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Facebook className="fsc-ico" size={18} aria-hidden /></a>
+              <a className="fsc" href={SOCIAL_LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin className="fsc-ico" size={18} aria-hidden /></a>
             </div>
           </div>
           <div className="fcol">

@@ -3,6 +3,7 @@
 import { Mail, MapPin, Phone, Facebook, Linkedin, Instagram } from 'lucide-react';
 import { ContactForm } from '@/components/ContactForm';
 import { NewsletterSection } from '@/components/NewsletterSection';
+import { SOCIAL_INSTAGRAM, SOCIAL_FACEBOOK, SOCIAL_LINKEDIN } from '@/lib/constants';
 
 export function ContactPageContent() {
   return (
@@ -57,7 +58,7 @@ export function ContactPageContent() {
             </dl>
             <div className="mt-8 flex gap-4" aria-label="Social media">
               <a
-                href="https://instagram.com"
+                href={SOCIAL_INSTAGRAM}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-cta transition-colors"
@@ -66,7 +67,7 @@ export function ContactPageContent() {
                 <Instagram className="h-5 w-5" />
               </a>
               <a
-                href="https://facebook.com"
+                href={SOCIAL_FACEBOOK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-cta transition-colors"
@@ -75,7 +76,7 @@ export function ContactPageContent() {
                 <Facebook className="h-5 w-5" />
               </a>
               <a
-                href="https://linkedin.com"
+                href={SOCIAL_LINKEDIN}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-cta transition-colors"

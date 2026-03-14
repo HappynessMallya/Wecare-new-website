@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { MapPin, Mail, Globe, Phone, Instagram, Facebook, Linkedin, MessageCircle } from 'lucide-react';
-import { WHATSAPP_URL, CONTACT_PHONE } from '@/lib/constants';
+import { WHATSAPP_URL, CONTACT_PHONE, SOCIAL_INSTAGRAM, SOCIAL_FACEBOOK, SOCIAL_LINKEDIN } from '@/lib/constants';
 
 export function HomeContact() {
   const [messageSent, setMessageSent] = useState(false);
@@ -55,13 +55,13 @@ export function HomeContact() {
               </div>
             </div>
             <div className="socs">
-              <a className="socb" href="#" title="Instagram" aria-label="Instagram">
+              <a className="socb" href={SOCIAL_INSTAGRAM} target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
                 <Instagram className="socb-ico" size={20} />
               </a>
-              <a className="socb" href="#" title="Facebook" aria-label="Facebook">
+              <a className="socb" href={SOCIAL_FACEBOOK} target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook">
                 <Facebook className="socb-ico" size={20} />
               </a>
-              <a className="socb" href="#" title="LinkedIn" aria-label="LinkedIn">
+              <a className="socb" href={SOCIAL_LINKEDIN} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
                 <Linkedin className="socb-ico" size={20} />
               </a>
             </div>
