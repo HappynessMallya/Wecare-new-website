@@ -1,5 +1,64 @@
 'use client';
 
+// CMS-friendly: map your feedback/stories from the CMS into this shape
+const testimonials = [
+  {
+    id: '1',
+    image: '/parentclinic.jpg',
+    imageAlt: 'Parent testimonial',
+    name: 'Mama Zawadi',
+    role: 'Market Vendor & Parent · Mbeya',
+    quote:
+      "Since WeCare opened its daycare near Mwanjelwa market, I can work with peace of mind. My child is learning and being cared for while I run my business. This is the solution we needed as working mothers.",
+  },
+  {
+    id: '2',
+    image: '/person-back.jpg',
+    imageAlt: 'Parent clinic session participant',
+    name: 'James Mwamba',
+    role: 'Father of 2 · Mara Region',
+    quote:
+      "The parent clinic sessions taught me so much about responsive caregiving and nutrition. I now understand how to support my children's development from the earliest days — things I never knew before WeCare came to our community.",
+  },
+  {
+    id: '3',
+    image: '/kids-at-work.jpg',
+    imageAlt: 'Primary school teacher testimony',
+    name: 'Teacher Neema Shayo',
+    role: 'Primary School Teacher · Mbeya',
+    quote:
+      "WeCare children arrive at primary school already prepared. They are curious, socially confident, and ready to learn. The school readiness program has made a visible difference — these children outperform their peers from the very first week.",
+  },
+];
+
+function TestimonialCard({
+  image,
+  imageAlt,
+  name,
+  role,
+  quote,
+}: {
+  image: string;
+  imageAlt: string;
+  name: string;
+  role: string;
+  quote: string;
+}) {
+  return (
+    <div className="scard">
+      <div className="scp">
+        <img src={image} alt={imageAlt} loading="lazy" />
+      </div>
+      <div className="sct">
+        <span className="sqm">&quot;</span>
+        <div className="snm">{name}</div>
+        <span className="srl">{role}</span>
+        <p className="stxt">{quote}</p>
+      </div>
+    </div>
+  );
+}
+
 export function HomeStories() {
   return (
     <section id="stories">
@@ -34,51 +93,17 @@ export function HomeStories() {
               </p>
             </div>
           </div>
-          <div className="scards">
-            <div className="scard rv">
-              <div className="scp">
-                <img src="/parentclinic.jpg" alt="Parent testimonial" loading="lazy" />
+          <div className="scards-ticker-wrap" aria-hidden>
+            <div className="scards-ticker">
+              <div className="scards-ticker-inner">
+                {testimonials.map((t) => (
+                  <TestimonialCard key={t.id} {...t} />
+                ))}
               </div>
-              <div className="sct">
-                <span className="sqm">&quot;</span>
-                <div className="snm">Mama Zawadi</div>
-                <span className="srl">Market Vendor &amp; Parent · Mbeya</span>
-                <p className="stxt">
-                  Since WeCare opened its daycare near Mwanjelwa market, I can work with peace of
-                  mind. My child is learning and being cared for while I run my business. This is
-                  the solution we needed as working mothers.
-                </p>
-              </div>
-            </div>
-            <div className="scard rv d1">
-              <div className="scp">
-                <img src="/person-back.jpg" alt="Parent clinic session participant" loading="lazy" />
-              </div>
-              <div className="sct">
-                <span className="sqm">&quot;</span>
-                <div className="snm">James Mwamba</div>
-                <span className="srl">Father of 2 · Mara Region</span>
-                <p className="stxt">
-                  The parent clinic sessions taught me so much about responsive caregiving and
-                  nutrition. I now understand how to support my children&apos;s development from the
-                  earliest days — things I never knew before WeCare came to our community.
-                </p>
-              </div>
-            </div>
-            <div className="scard rv d2">
-              <div className="scp">
-                <img src="/kids-at-work.jpg" alt="Primary school teacher testimony" loading="lazy" />
-              </div>
-              <div className="sct">
-                <span className="sqm">&quot;</span>
-                <div className="snm">Teacher Neema Shayo</div>
-                <span className="srl">Primary School Teacher · Mbeya</span>
-                <p className="stxt">
-                  WeCare children arrive at primary school already prepared. They are curious,
-                  socially confident, and ready to learn. The school readiness program has made a
-                  visible difference — these children outperform their peers from the very first
-                  week.
-                </p>
+              <div className="scards-ticker-inner">
+                {testimonials.map((t) => (
+                  <TestimonialCard key={`dup-${t.id}`} {...t} />
+                ))}
               </div>
             </div>
           </div>
