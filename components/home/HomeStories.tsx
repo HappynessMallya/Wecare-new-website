@@ -40,7 +40,7 @@ export function HomeStories() {
                 <img src="/parentclinic.jpg" alt="Parent testimonial" loading="lazy" />
               </div>
               <div className="sct">
-                <span className="sqm">"</span>
+                <span className="sqm">&quot;</span>
                 <div className="snm">Mama Zawadi</div>
                 <span className="srl">Market Vendor &amp; Parent · Mbeya</span>
                 <p className="stxt">
@@ -55,7 +55,7 @@ export function HomeStories() {
                 <img src="/person-back.jpg" alt="Parent clinic session participant" loading="lazy" />
               </div>
               <div className="sct">
-                <span className="sqm">"</span>
+                <span className="sqm">&quot;</span>
                 <div className="snm">James Mwamba</div>
                 <span className="srl">Father of 2 · Mara Region</span>
                 <p className="stxt">
@@ -70,7 +70,7 @@ export function HomeStories() {
                 <img src="/kids-at-work.jpg" alt="Primary school teacher testimony" loading="lazy" />
               </div>
               <div className="sct">
-                <span className="sqm">"</span>
+                <span className="sqm">&quot;</span>
                 <div className="snm">Teacher Neema Shayo</div>
                 <span className="srl">Primary School Teacher · Mbeya</span>
                 <p className="stxt">
