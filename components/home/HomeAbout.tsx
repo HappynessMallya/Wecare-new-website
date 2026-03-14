@@ -76,7 +76,7 @@ export function HomeAbout() {
               and learning.
             </p>
             <p>
-              Our focus areas: Child good health, Adequate nutrition, Responsive caregiving, Child
+              <strong>Our focus areas:</strong> Child good health, Adequate nutrition, Responsive caregiving, Child
               security and safety, and Opportunities for quality early learning. We are
               community-led, delivering impact through community and stakeholder engagement. WeCare
               also provides sustainable child care solutions that support working parents.
