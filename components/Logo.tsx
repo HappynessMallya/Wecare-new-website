@@ -4,7 +4,9 @@ import { cn } from '@/lib/utils';
 
 const LOGO_SIZE = { default: 52, nav: 62 } as const;
 
-export function Logo({ className, showText = true, showTagline = false, dark = false, size = 'default' }: { className?: string; showText?: boolean; showTagline?: boolean; dark?: boolean; size?: 'default' | 'nav' }) {
+const DEFAULT_TAGLINE = 'Mbeya & Mara · Tanzania · Est. 2022';
+
+export function Logo({ className, showText = true, showTagline = false, tagline, dark = false, size = 'default' }: { className?: string; showText?: boolean; showTagline?: boolean; tagline?: string; dark?: boolean; size?: 'default' | 'nav' }) {
   const wh = LOGO_SIZE[size];
   const logoImage = (
     <Image
@@ -17,10 +19,11 @@ export function Logo({ className, showText = true, showTagline = false, dark = f
     />
   );
   const baseClass = cn('flex items-center gap-3 no-underline', className);
+  const taglineText = tagline ?? DEFAULT_TAGLINE;
   const textBlock = showText ? (
     <div className={dark ? '' : 'nltxt'}>
       <span className="top">WeCare Foundation</span>
-      {showTagline && <span className="btm">Mbeya & Mara · Tanzania · Est. 2022</span>}
+      {showTagline && <span className="btm">{taglineText}</span>}
     </div>
   ) : null;
   if (showText) {

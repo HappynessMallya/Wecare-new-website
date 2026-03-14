@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { WHATSAPP_URL } from '@/lib/constants';
 
 const HERO_SLIDES = [
@@ -35,6 +35,9 @@ const AUTOPLAY_MS = 5500;
 export function Hero() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const startTimeRef = useRef(Date.now());
+  const rafRef = useRef<number>(0);
 
   const goTo = useCallback((i: number) => {
     setIndex((prev) => {
@@ -43,25 +46,43 @@ export function Hero() {
       if (next >= HERO_SLIDES.length) next = 0;
       return next;
     });
+    startTimeRef.current = Date.now();
+    setProgress(0);
   }, []);
 
   const next = useCallback(() => goTo(index + 1), [index, goTo]);
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(next, AUTOPLAY_MS);
-    return () => clearInterval(t);
+    const tick = () => {
+      const elapsed = Date.now() - startTimeRef.current;
+      const p = Math.min(elapsed / AUTOPLAY_MS, 1);
+      setProgress(p);
+      if (p >= 1) next();
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
   }, [paused, index, next]);
+
+  const handleMouseEnter = useCallback(() => {
+    setPaused(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    startTimeRef.current = Date.now() - progress * AUTOPLAY_MS;
+    setPaused(false);
+  }, [progress]);
 
   return (
     <section id="hero">
       {/* Full-bleed background: program images show what the NGO does */}
       <div
         className="hero-bg-slider"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
-        onBlur={() => setPaused(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onFocus={handleMouseEnter}
+        onBlur={handleMouseLeave}
       >
         {HERO_SLIDES.map((slide, i) => (
           <div
@@ -74,6 +95,13 @@ export function Hero() {
         ))}
       </div>
       <div className="hero-overlay" aria-hidden />
+      {/* Progress bar: driven by same timer as slide, instant pause/resume */}
+      <div className="hero-slider-progress" role="presentation" aria-hidden>
+        <div
+          className="hero-slider-progress-bar"
+          style={{ width: `${progress * 100}%` }}
+        />
+      </div>
       <div className="hero-content">
         <div className="hero-content-inner">
           <h1 id="hero-headline">

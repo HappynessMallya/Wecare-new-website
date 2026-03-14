@@ -1,9 +1,16 @@
 'use client';
 
-import { MapPin, Mail, Globe, Phone, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { useState } from 'react';
+import { MapPin, Mail, Globe, Phone, Instagram, Facebook, Linkedin, MessageCircle } from 'lucide-react';
 import { WHATSAPP_URL, CONTACT_PHONE } from '@/lib/constants';
 
 export function HomeContact() {
+  const [messageSent, setMessageSent] = useState(false);
+
+  const handleSendMessage = () => {
+    setMessageSent(true);
+  };
+
   return (
     <section id="contact">
       <div className="container">
@@ -92,13 +99,18 @@ export function HomeContact() {
               <label>Message *</label>
               <textarea placeholder="Tell us how you'd like to connect or support WeCare Foundation in Tanzania..." />
             </div>
-            <button
-              type="button"
-              className="fsub"
-              onClick={() => alert("Thank you for reaching out to WeCare Foundation. Elizabeth's team will be in touch within 48 hours.")}
-            >
+            <button type="button" className="fsub" onClick={handleSendMessage}>
               Send Message →
             </button>
+            {messageSent && (
+              <div className="cfbox-ack" role="status">
+                <p className="cfbox-ack-text">Your message will be delivered. For a quick response, please click the button below to reach us on WhatsApp instantly.</p>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="cfbox-wabtn">
+                  <MessageCircle className="cfbox-wabtn-ico" size={20} aria-hidden />
+                  Chat on WhatsApp — {CONTACT_PHONE}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

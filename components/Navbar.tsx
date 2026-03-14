@@ -55,7 +55,7 @@ export function Navbar() {
       role="banner"
     >
       <div className="nw">
-        <Logo showText showTagline={false} className="flex-shrink-0" size="nav" />
+        <Logo showText showTagline tagline="Enriching Children's Lives" className="flex-shrink-0" size="nav" />
 
         <ul className="nl">
           {navItems.map((item) => {

@@ -5,6 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { CookieBanner } from '@/components/CookieBanner';
 import { StructuredData } from '@/components/StructuredData';
+import { WhatsAppFloat } from '@/components/WhatsAppFloat';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -53,6 +54,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <WhatsAppFloat />
         <CookieBanner />
       </body>
     </html>
