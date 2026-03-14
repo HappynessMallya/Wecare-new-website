@@ -9,6 +9,28 @@ const PARTNERS = [
   { textOnly: true, name: 'Parents' },
 ];
 
+function PartnerItem({
+  partner,
+  keySuffix,
+}: {
+  partner: (typeof PARTNERS)[number];
+  keySuffix: string;
+}) {
+  if ('textOnly' in partner && partner.textOnly) {
+    return (
+      <div key={`${partner.name}-${keySuffix}`} className="pl pl-text-only">
+        <span className="pl-text-only-label">{partner.name}</span>
+      </div>
+    );
+  }
+  return (
+    <div key={`${partner.name}-${keySuffix}`} className="pl pl-logo">
+      <img src={partner.src} alt={partner.alt} className="pl-img" />
+      <span className="pl-name">{partner.name}</span>
+    </div>
+  );
+}
+
 export function HomePartners() {
   return (
     <section id="partners">
@@ -20,19 +42,19 @@ export function HomePartners() {
             Working alongside government, international organizations, and professional associations
             aligned with children&apos;s rights and early development
           </p>
-          <div className="plg plg-logos">
-            {PARTNERS.map((partner) =>
-              'textOnly' in partner && partner.textOnly ? (
-                <div key={partner.name} className="pl pl-text-only">
-                  <span className="pl-text-only-label">{partner.name}</span>
-                </div>
-              ) : (
-                <div key={partner.name} className="pl pl-logo">
-                  <img src={partner.src} alt={partner.alt} className="pl-img" />
-                  <span className="pl-name">{partner.name}</span>
-                </div>
-              )
-            )}
+          <div className="partners-ticker-wrap" aria-hidden>
+            <div className="partners-ticker">
+              <div className="plg plg-logos plg-ticker-inner">
+                {PARTNERS.map((partner) => (
+                  <PartnerItem key={`${partner.name}-a`} partner={partner} keySuffix="a" />
+                ))}
+              </div>
+              <div className="plg plg-logos plg-ticker-inner">
+                {PARTNERS.map((partner) => (
+                  <PartnerItem key={`${partner.name}-b`} partner={partner} keySuffix="b" />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

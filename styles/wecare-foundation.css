@@ -257,8 +257,13 @@ img { display: block; }
 .pw { text-align: center; }
 .pw h2 { font-size: clamp(24px,2.8vw,36px); color: var(--blue); margin-bottom: 8px; }
 .pw .sub { font-family: Georgia, serif; font-style: italic; font-size: 15px; color: var(--g600); margin-bottom: 48px; }
+.partners-ticker-wrap { overflow: hidden; margin: 0 -20px; }
+.partners-ticker { display: flex; flex-wrap: nowrap; width: max-content; animation: partners-ticker 40s linear infinite; }
+.partners-ticker:hover { animation-play-state: paused; }
+.plg-ticker-inner { flex-wrap: nowrap; flex-shrink: 0; justify-content: flex-start; }
+@keyframes partners-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 .plg { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
-.pl { background: #fff; border: 1.5px solid rgba(10,52,135,.1); border-radius: 12px; padding: 16px 28px; display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 13px; color: var(--blue); transition: all .2s; min-width: 150px; justify-content: center; }
+.pl { background: #fff; border: 1.5px solid rgba(10,52,135,.1); border-radius: 12px; padding: 16px 28px; display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 13px; color: var(--blue); transition: all .2s; min-width: 150px; justify-content: center; flex-shrink: 0; }
 .pl:hover { border-color: var(--rose); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230,57,154,.12); }
 .plg-logos { gap: 20px; }
 .pl-logo { flex-direction: column; min-width: 140px; padding: 20px 24px; }
