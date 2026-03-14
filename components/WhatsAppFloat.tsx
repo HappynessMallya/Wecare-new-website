@@ -11,10 +11,10 @@ export function WhatsAppFloat() {
       rel="noopener noreferrer"
       className="whatsapp-float"
       aria-label="Contact us on WhatsApp"
-      title="Chat on WhatsApp"
+      title="Contact us on WhatsApp"
     >
       <MessageCircle className="whatsapp-float-ico" size={28} aria-hidden />
-      <span className="whatsapp-float-label">Chat</span>
+      <span className="whatsapp-float-label">WhatsApp</span>
     </a>
   );
 }
