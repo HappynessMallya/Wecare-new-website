@@ -1,0 +1,12 @@
+@import '../styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Full WeCare 2026 design from wecare-foundation.html — loaded after Tailwind so it takes precedence */
+@import '../styles/wecare-foundation.css';
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+}

@@ -1,0 +1,30 @@
+/* WeCare Foundation — 2026 Brand Compliant
+   #E6399A (rose) · #0A3487 (blue) · #df4917 (orange) · #25abec (azure)
+   Montserrat + Georgia
+*/
+:root {
+  /* Brand primaries */
+  --rose: #E6399A;
+  --blue: #0A3487;
+  --orange: #df4917;
+  --azure: #25abec;
+
+  /* Tints */
+  --rose-15: #ffd9ee;
+  --blue-30: #d0daf5;
+  --orange-30: #ffe5dc;
+  --azure-25: #d4f0fc;
+
+  /* Neutrals */
+  --white: #fff;
+  --off: #f9f8f6;
+  --g100: #f3f4f6;
+  --g400: #9ca3af;
+  --g600: #4b5563;
+  --g800: #1f2937;
+
+  /* Layout */
+  --nav-h: 82px;
+  --container-max: 1180px;
+  --section-padding: 96px;
+}
