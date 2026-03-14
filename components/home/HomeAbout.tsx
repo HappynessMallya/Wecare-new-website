@@ -5,28 +5,62 @@ export function HomeAbout() {
     <section id="about">
       <div className="container">
         <div className="ag">
-          <div className="aphotos rv">
-            <div className="apm">
-              <img
-                src="/parentclinic.jpg"
-                alt="WeCare Foundation parent clinic Tanzania"
-                loading="lazy"
-              />
+          <div className="ag-left">
+            <div className="aphotos rv">
+              <div className="apm">
+                <img
+                  src="/parentclinic.jpg"
+                  alt="WeCare Foundation parent clinic Tanzania"
+                  loading="lazy"
+                />
+              </div>
+              <div className="apt">
+                <img
+                  src="/kids-at-work.jpg"
+                  alt="Child at WeCare program"
+                  loading="lazy"
+                />
+              </div>
+              <div className="apb">
+                <span className="n">2</span>
+                <span className="s">
+                  Regions
+                  <br />
+                  Mbeya &amp; Mara
+                </span>
+              </div>
             </div>
-            <div className="apt">
-              <img
-                src="/kids-at-work.jpg"
-                alt="Child at WeCare program"
-                loading="lazy"
-              />
-            </div>
-            <div className="apb">
-              <span className="n">2</span>
-              <span className="s">
-                Regions
-                <br />
-                Mbeya &amp; Mara
-              </span>
+            <div className="about-pillars">
+              <div className="pill">
+                <div className="pill-ico r">🤝</div>
+                <div className="pill-txt">
+                  <strong>Collaborative Approach</strong>
+                  <small>
+                    We engage community and stakeholders, governments, policy makers, and civil society
+                    for sustainable impact.
+                  </small>
+                </div>
+              </div>
+              <div className="pill">
+                <div className="pill-ico b">🏘️</div>
+                <div className="pill-txt">
+                  <strong>Community-Led</strong>
+                  <small>
+                    Programs are designed with communities — ensuring solutions are contextual,
+                    trusted, and lasting.
+                  </small>
+                </div>
+              </div>
+              <div className="pill">
+                <div className="pill-ico a">👨‍👩‍👧</div>
+                <div className="pill-txt">
+                  <strong>Parent-Centered</strong>
+                  <small>
+                    Working parents and caregivers are at the heart of everything — we provide
+                    sustainable child care solutions.
+                  </small>
+                </div>
+              </div>
             </div>
           </div>
           <div className="ac rv d1">
@@ -61,38 +95,6 @@ export function HomeAbout() {
                   To provide access to the best start of life for all children in early development,
                   learning, and health across Tanzania.
                 </p>
-              </div>
-            </div>
-            <div className="pillars">
-              <div className="pill">
-                <div className="pill-ico r">🤝</div>
-                <div className="pill-txt">
-                  <strong>Collaborative Approach</strong>
-                  <small>
-                    We engage community and stakeholders, governments, policy makers, and civil society
-                    for sustainable impact.
-                  </small>
-                </div>
-              </div>
-              <div className="pill">
-                <div className="pill-ico b">🏘️</div>
-                <div className="pill-txt">
-                  <strong>Community-Led</strong>
-                  <small>
-                    Programs are designed with communities — ensuring solutions are contextual,
-                    trusted, and lasting.
-                  </small>
-                </div>
-              </div>
-              <div className="pill">
-                <div className="pill-ico a">👨‍👩‍👧</div>
-                <div className="pill-txt">
-                  <strong>Parent-Centered</strong>
-                  <small>
-                    Working parents and caregivers are at the heart of everything — we provide
-                    sustainable child care solutions.
-                  </small>
-                </div>
               </div>
             </div>
           </div>

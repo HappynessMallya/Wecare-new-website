@@ -6,6 +6,7 @@ const PARTNERS = [
   { src: '/HELVETAS.png', alt: 'Helvetas Tanzania', name: 'Helvetas Tanzania' },
   { src: '/GSF.svg', alt: 'Global School Forum', name: 'Global School Forum' },
   { src: '/PEDITRICIAN.png', alt: 'Pediatric Association of Tanzania', name: 'Pediatric Association of Tanzania' },
+  { textOnly: true, name: 'Parents' },
 ];
 
 export function HomePartners() {
@@ -20,12 +21,18 @@ export function HomePartners() {
             aligned with children&apos;s rights and early development
           </p>
           <div className="plg plg-logos">
-            {PARTNERS.map((partner) => (
-              <div key={partner.name} className="pl pl-logo">
-                <img src={partner.src} alt={partner.alt} className="pl-img" />
-                <span className="pl-name">{partner.name}</span>
-              </div>
-            ))}
+            {PARTNERS.map((partner) =>
+              'textOnly' in partner && partner.textOnly ? (
+                <div key={partner.name} className="pl pl-text-only">
+                  <span className="pl-text-only-label">{partner.name}</span>
+                </div>
+              ) : (
+                <div key={partner.name} className="pl pl-logo">
+                  <img src={partner.src} alt={partner.alt} className="pl-img" />
+                  <span className="pl-name">{partner.name}</span>
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>

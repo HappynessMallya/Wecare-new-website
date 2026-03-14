@@ -32,9 +32,7 @@ export function Leadership() {
             <h2>
               Elizabeth <span>Maginga Thobias</span>
             </h2>
-            <span className="ldr-title">
-              Chief Executive Officer (CEO) — WeCare Foundation
-            </span>
+           
             <p>
               Elizabeth Maginga Thobias is the visionary founder and CEO of WeCare Foundation. She
               established WeCare in 2022 with a singular mission: to ensure every child in Tanzania
