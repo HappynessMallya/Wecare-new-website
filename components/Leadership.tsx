@@ -11,6 +11,7 @@ export function Leadership({ data }: { data?: LeadershipData | null } = {}) {
   const name = data?.name?.trim() || 'Elizabeth';
   const nameHighlight = data?.nameHighlight?.trim() || 'Maginga Thobias';
   const photoUrl = data?.photoUrl?.trim() || '/ceo.png';
+  const photoAlt = data?.photoAlt?.trim() || `${name} ${nameHighlight} – CEO WeCare Foundation`;
   const badgeTitle = data?.badgeTitle?.trim() || 'WeCare\nFoundation';
   const badgeRole = data?.badgeSubtitle?.trim() || 'CEO & Founder';
   const paragraphs = data?.paragraphs?.length ? data.paragraphs : [
@@ -29,7 +30,7 @@ export function Leadership({ data }: { data?: LeadershipData | null } = {}) {
         </div>
         <div className="ldr rv d1">
           <div className="ldr-photo">
-            <img src={photoUrl} alt={`${name} ${nameHighlight} – CEO WeCare Foundation`} />
+            <img src={photoUrl} alt={photoAlt} />
             <div className="ldr-badge">
               <strong>{badgeTitle.replace('\n', '\n')}</strong>
               <small>{badgeRole}</small>

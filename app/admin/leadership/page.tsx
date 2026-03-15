@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { getLeadership, updateLeadership, getApiErrorMessage } from '@/lib/api';
 import type { Leadership } from '@/lib/api';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 const defaultLeadership: Partial<Leadership> = {
   sectionEyebrow: 'Our Leadership',
@@ -47,6 +48,7 @@ export default function AdminLeadershipPage() {
     setMessage(null);
     try {
       await updateLeadership(form);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Leadership saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

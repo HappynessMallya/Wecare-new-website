@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
+import { Plus, Pencil, Trash2, GripVertical, Download } from 'lucide-react';
 import {
   getPartnersAdmin,
   getPartnersSection,
@@ -13,11 +13,22 @@ import {
 } from '@/lib/api';
 import type { Partner, PartnersSection } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { revalidatePublicSite } from '@/lib/revalidate';
+
+const STARTER_PARTNERS: Omit<Partner, 'id'>[] = [
+  { name: 'Government of Tanzania', logoUrl: '/GOVERNMENT.svg', logoAlt: 'Government of Tanzania', textOnly: false, order: 1 },
+  { name: 'TECDEN', logoUrl: '/TECDEN.png', logoAlt: 'TECDEN', textOnly: false, order: 2 },
+  { name: 'Helvetas Tanzania', logoUrl: '/HELVETAS.png', logoAlt: 'Helvetas Tanzania', textOnly: false, order: 3 },
+  { name: 'Global School Forum', logoUrl: '/GSF.svg', logoAlt: 'Global School Forum', textOnly: false, order: 4 },
+  { name: 'Pediatric Association of Tanzania', logoUrl: '/PEDITRICIAN.png', logoAlt: 'Pediatric Association of Tanzania', textOnly: false, order: 5 },
+  { name: 'Parents', logoUrl: null, logoAlt: null, textOnly: true, order: 6 },
+];
 
 export default function AdminPartnersPage() {
   const [section, setSection] = useState<Partial<PartnersSection>>({});
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
   const [editing, setEditing] = useState<Partner | null>(null);
   const [creating, setCreating] = useState(false);
   const [message, setMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
@@ -43,10 +54,12 @@ export default function AdminPartnersPage() {
       if (editing) {
         await updatePartner(editing.id, payload);
         setPartners((prev) => prev.map((p) => (p.id === editing.id ? { ...p, ...payload } : p)));
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Partner updated.' });
       } else {
         const created = await createPartner({ ...payload, order: partners.length + 1 });
         setPartners((prev) => [...prev, created]);
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Partner added.' });
       }
       closeForm();
@@ -60,9 +73,30 @@ export default function AdminPartnersPage() {
     try {
       await deletePartner(id);
       setPartners((prev) => prev.filter((p) => p.id !== id));
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Partner removed.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
+    }
+  };
+
+  const handleSeedDefaults = async () => {
+    if (!confirm('This will add the 6 default partners to your database so you can edit or delete them. Continue?')) return;
+    setSeeding(true);
+    setMessage(null);
+    try {
+      const created: Partner[] = [];
+      for (const p of STARTER_PARTNERS) {
+        const result = await createPartner(p);
+        created.push(result);
+      }
+      setPartners((prev) => [...prev, ...created]);
+      await revalidatePublicSite();
+      setMessage({ type: 'ok', text: 'Default partners added. You can now edit or delete each one.' });
+    } catch (err) {
+      setMessage({ type: 'err', text: getApiErrorMessage(err) });
+    } finally {
+      setSeeding(false);
     }
   };
 
@@ -104,7 +138,7 @@ export default function AdminPartnersPage() {
             <input type="text" value={section.subtitle ?? ''} onChange={(e) => setSection((s) => ({ ...s, subtitle: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
           </div>
         </div>
-        <button type="button" onClick={async () => { setMessage(null); try { await updatePartnersSection(section); setMessage({ type: 'ok', text: 'Section saved.' }); } catch (err) { setMessage({ type: 'err', text: getApiErrorMessage(err) }); } }} className="mt-4 rounded-lg bg-[var(--blue)] px-4 py-2 text-sm font-600 text-white hover:opacity-90">Save section header</button>
+        <button type="button" onClick={async () => { setMessage(null); try { await updatePartnersSection(section); await revalidatePublicSite(); setMessage({ type: 'ok', text: 'Section saved.' }); } catch (err) { setMessage({ type: 'err', text: getApiErrorMessage(err) }); } }} className="mt-4 rounded-lg bg-[var(--blue)] px-4 py-2 text-sm font-600 text-white hover:opacity-90">Save section header</button>
       </div>
 
       <div className="mb-4 flex items-center justify-between">
@@ -138,7 +172,24 @@ export default function AdminPartnersPage() {
             </li>
           ))}
         </ul>
-        {partners.length === 0 && !formTarget && <p className="p-8 text-center text-[var(--g600)]">No partners. Add one above.</p>}
+        {partners.length === 0 && !formTarget && (
+          <div className="p-8 text-center">
+            <p className="mb-1 font-600 text-[var(--g800)]">No partners in database yet.</p>
+            <p className="mb-5 text-sm text-[var(--g600)]">
+              The public website is currently showing 6 built-in default partners (Government of Tanzania, TECDEN, Helvetas, etc.).
+              Load them here to manage, edit, or delete them.
+            </p>
+            <button
+              type="button"
+              onClick={handleSeedDefaults}
+              disabled={seeding}
+              className="inline-flex items-center gap-2 rounded-lg bg-[var(--blue)] px-5 py-2.5 text-sm font-700 text-white hover:opacity-90 disabled:opacity-60"
+            >
+              <Download className="h-4 w-4" />
+              {seeding ? 'Loading partners…' : 'Load default partners into database'}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

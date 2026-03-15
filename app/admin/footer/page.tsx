@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { getFooter, getFooterLinks, updateFooter, updateFooterLinks, getApiErrorMessage } from '@/lib/api';
 import type { FooterCopy, FooterLinkItem } from '@/lib/api';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 type FooterState = FooterCopy & { orgLinks: FooterLinkItem[]; programLinks: FooterLinkItem[]; involvedLinks: FooterLinkItem[] };
 
@@ -29,6 +30,7 @@ export default function AdminFooterPage() {
     setMessage(null);
     try {
       await updateFooter({ blurb: footer.blurb, copyright: footer.copyright });
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Blurb & copyright saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
@@ -39,6 +41,7 @@ export default function AdminFooterPage() {
     setMessage(null);
     try {
       await updateFooterLinks({ orgLinks: footer.orgLinks, programLinks: footer.programLinks, involvedLinks: footer.involvedLinks });
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Footer links saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

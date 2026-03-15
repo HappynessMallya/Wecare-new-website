@@ -10,6 +10,7 @@ import {
   getApiErrorMessage,
 } from '@/lib/api';
 import type { TickerItem } from '@/lib/api';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminTickerPage() {
   const [items, setItems] = useState<TickerItem[]>([]);
@@ -49,10 +50,12 @@ export default function AdminTickerPage() {
       if (editing) {
         await updateTickerItem(editing.id, payload);
         setItems((prev) => prev.map((i) => (i.id === editing.id ? { ...i, ...payload } : i)));
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Item updated.' });
       } else {
         const created = await createTickerItem({ ...payload, order: items.length + 1 });
         setItems((prev) => [...prev, created]);
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Item added.' });
       }
       closeForm();
@@ -66,6 +69,7 @@ export default function AdminTickerPage() {
     try {
       await deleteTickerItem(id);
       setItems((prev) => prev.filter((i) => i.id !== id));
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Item removed.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

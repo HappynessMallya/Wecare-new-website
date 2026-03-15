@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { MapPin, Mail, Globe, Phone, Instagram, Facebook, Linkedin, MessageCircle } from 'lucide-react';
 import { WHATSAPP_URL, CONTACT_PHONE, SOCIAL_INSTAGRAM, SOCIAL_FACEBOOK, SOCIAL_LINKEDIN } from '@/lib/constants';
-import type { ContactSection } from '@/lib/api';
+import type { ContactSection, Settings } from '@/lib/api';
 
-export function HomeContact({ data }: { data?: ContactSection | null } = {}) {
+export function HomeContact({ data, settings }: { data?: ContactSection | null; settings?: Settings | null } = {}) {
   const [messageSent, setMessageSent] = useState(false);
   const eyebrow = data?.eyebrow?.trim() || 'Get In Touch';
   const title = data?.title?.trim() || "Let's Start a";
@@ -19,7 +19,17 @@ export function HomeContact({ data }: { data?: ContactSection | null } = {}) {
   const messageLabel = data?.messageLabel?.trim() || 'Message *';
   const submitLabel = data?.submitLabel?.trim() || 'Send Message →';
   const successMessage = data?.successMessage?.trim() || "Your message will be delivered. For a quick response, please click the button below to reach us on WhatsApp instantly.";
-  const whatsappButtonLabel = data?.whatsappButtonLabel?.trim() || `Chat on WhatsApp — ${CONTACT_PHONE}`;
+
+  const whatsappUrl = settings?.whatsappUrl || WHATSAPP_URL;
+  const contactPhone = settings?.contactPhone || CONTACT_PHONE;
+  const contactEmail = settings?.contactEmail || 'Wecarefoundation025@gmail.com';
+  const officeLocation = settings?.officeLocation || 'Mbeya, Tanzania';
+  const regionsActive = settings?.regionsActive || 'Mbeya Region & Mara Region, Tanzania';
+  const socialInstagram = settings?.socialInstagram || SOCIAL_INSTAGRAM;
+  const socialFacebook = settings?.socialFacebook || SOCIAL_FACEBOOK;
+  const socialLinkedIn = settings?.socialLinkedIn || SOCIAL_LINKEDIN;
+
+  const whatsappButtonLabel = data?.whatsappButtonLabel?.trim() || `Chat on WhatsApp — ${contactPhone}`;
 
   const handleSendMessage = () => {
     setMessageSent(true);
@@ -38,39 +48,39 @@ export function HomeContact({ data }: { data?: ContactSection | null } = {}) {
                 <div className="cico ci-r"><MapPin className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
                   <strong>Office Location</strong>
-                  <span>Mbeya, Tanzania</span>
+                  <span>{officeLocation}</span>
                 </div>
               </div>
               <div className="crow">
                 <div className="cico ci-b"><Mail className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
                   <strong>Email — CEO Elizabeth Maginga</strong>
-                  <a href="mailto:Wecarefoundation025@gmail.com">Wecarefoundation025@gmail.com</a>
+                  <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
                 </div>
               </div>
               <div className="crow">
                 <div className="cico ci-a"><Globe className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
                   <strong>Regions Active</strong>
-                  <span>Mbeya Region &amp; Mara Region, Tanzania</span>
+                  <span>{regionsActive}</span>
                 </div>
               </div>
               <div className="crow">
                 <div className="cico ci-o"><Phone className="cico-svg" size={20} aria-hidden /></div>
                 <div className="crt">
                   <strong>Phone — Call or WhatsApp</strong>
-                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">{CONTACT_PHONE}</a>
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">{contactPhone}</a>
                 </div>
               </div>
             </div>
             <div className="socs">
-              <a className="socb" href={SOCIAL_INSTAGRAM} target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
+              <a className="socb" href={socialInstagram} target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram">
                 <Instagram className="socb-ico" size={20} />
               </a>
-              <a className="socb" href={SOCIAL_FACEBOOK} target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook">
+              <a className="socb" href={socialFacebook} target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook">
                 <Facebook className="socb-ico" size={20} />
               </a>
-              <a className="socb" href={SOCIAL_LINKEDIN} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
+              <a className="socb" href={socialLinkedIn} target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn">
                 <Linkedin className="socb-ico" size={20} />
               </a>
             </div>
@@ -114,7 +124,7 @@ export function HomeContact({ data }: { data?: ContactSection | null } = {}) {
             {messageSent && (
               <div className="cfbox-ack" role="status">
                 <p className="cfbox-ack-text">{successMessage}</p>
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="cfbox-wabtn">
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="cfbox-wabtn">
                   <MessageCircle className="cfbox-wabtn-ico" size={20} aria-hidden />
                   {whatsappButtonLabel}
                 </a>

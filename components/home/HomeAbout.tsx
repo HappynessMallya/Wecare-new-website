@@ -2,13 +2,17 @@
 
 import { useMemo } from 'react';
 import Image from 'next/image';
-import type { About } from '@/lib/api';
+import type { About, Settings } from '@/lib/api';
 
 const PILLAR_CLASS: Record<string, string> = { r: 'r', b: 'b', a: 'a', o: 'o' };
 
-export function HomeAbout({ data }: { data?: About | null } = {}) {
+export function HomeAbout({ data, settings }: { data?: About | null; settings?: Settings | null } = {}) {
   const mainImage = data?.mainImageUrl?.trim() || '/parentclinic.jpg';
   const secondaryImage = data?.secondaryImageUrl?.trim() || '/kids-at-work.jpg';
+  const bgLogoUrl = settings?.logoUrl?.trim() || '/logo.png';
+  const siteName = settings?.siteName?.trim() || 'WeCare Foundation';
+  const mainImageAlt = `${siteName} programme — community and children`;
+  const secondaryImageAlt = `Child at ${siteName} early learning programme`;
   const regionsNumber = data?.regionsBadgeNumber?.trim() || '2';
   const regionsLabel = data?.regionsBadgeLabel?.trim() || 'Regions\nMbeya & Mara';
   const pillars = useMemo(() => data?.pillars?.length ? data.pillars : [
@@ -30,7 +34,7 @@ export function HomeAbout({ data }: { data?: About | null } = {}) {
   return (
     <section id="about">
       <div className="about-bg-logo" aria-hidden>
-        <Image src="/logo.png" alt="" width={560} height={560} className="about-bg-logo-img" />
+        <Image src={bgLogoUrl} alt="" width={560} height={560} className="about-bg-logo-img" unoptimized={bgLogoUrl.startsWith('http')} />
       </div>
       <div className="container">
         <div className="ag">
@@ -39,7 +43,7 @@ export function HomeAbout({ data }: { data?: About | null } = {}) {
               <div className="apm">
                 <Image
                   src={mainImage}
-                  alt="WeCare Foundation parent clinic Tanzania"
+                  alt={mainImageAlt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
@@ -49,7 +53,7 @@ export function HomeAbout({ data }: { data?: About | null } = {}) {
               <div className="apt">
                 <Image
                   src={secondaryImage}
-                  alt="Child at WeCare program"
+                  alt={secondaryImageAlt}
                   width={180}
                   height={180}
                   className="object-cover w-full h-full"

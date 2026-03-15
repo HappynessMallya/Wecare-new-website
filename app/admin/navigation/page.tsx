@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
 import { getNav, updateNav, getApiErrorMessage } from '@/lib/api';
 import type { NavItem } from '@/lib/api';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminNavigationPage() {
   const [items, setItems] = useState<NavItem[]>([]);
@@ -31,12 +32,14 @@ export default function AdminNavigationPage() {
         const next = items.map((i) => (i.id === editing.id ? { ...i, ...payload } : i));
         await updateNav(next);
         setItems(next);
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Saved.' });
       } else {
         const newItem: NavItem = { id: `new-${Date.now()}`, ...payload, order: items.length + 1 };
         const next = [...items, newItem];
         await updateNav(next);
         setItems(next);
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Added.' });
       }
       closeForm();
@@ -51,6 +54,7 @@ export default function AdminNavigationPage() {
       const next = items.filter((i) => i.id !== id);
       await updateNav(next);
       setItems(next);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Removed.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

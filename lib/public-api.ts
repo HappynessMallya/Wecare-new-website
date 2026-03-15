@@ -27,12 +27,17 @@ import type {
 } from '@/lib/api';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
-const REVALIDATE = 30; // seconds; when admin saves, we also trigger on-demand revalidate so public site updates immediately
+const IS_DEV = process.env.NODE_ENV === 'development';
+const REVALIDATE = 30;
 
-async function publicGet<T>(path: string): Promise<T | null> {
+async function publicGet<T>(path: string, tag: string): Promise<T | null> {
   try {
     const res = await fetch(`${BASE}${path}`, {
-      next: { revalidate: REVALIDATE },
+      // In development, skip the data cache entirely so admin changes are
+      // always reflected immediately without needing manual revalidation.
+      ...(IS_DEV
+        ? { cache: 'no-store' }
+        : { next: { revalidate: REVALIDATE, tags: [tag, 'public-site'] } }),
       headers: { Accept: 'application/json' },
     });
     if (!res.ok) return null;
@@ -44,101 +49,100 @@ async function publicGet<T>(path: string): Promise<T | null> {
 }
 
 export async function getSettingsPublic(): Promise<Settings | null> {
-  return publicGet<Settings>('/api/settings');
+  return publicGet<Settings>('/api/settings', 'settings');
 }
 
 export async function getHeroSlidesPublic(): Promise<HeroSlide[] | null> {
-  // Try public route first (no auth); fallback to admin route for backends that only have one
   const data =
-    (await publicGet<HeroSlide[]>('/api/hero/slides')) ??
-    (await publicGet<HeroSlide[]>('/api/hero/slides/admin'));
+    (await publicGet<HeroSlide[]>('/api/hero/slides', 'hero')) ??
+    (await publicGet<HeroSlide[]>('/api/hero/slides/admin', 'hero'));
   if (!Array.isArray(data)) return null;
   return data.filter((s) => s.isActive !== false).sort((a, b) => a.order - b.order);
 }
 
 export async function getTickerItemsPublic(): Promise<TickerItem[] | null> {
-  const data = await publicGet<TickerItem[]>('/api/ticker/items');
+  const data = await publicGet<TickerItem[]>('/api/ticker/items', 'ticker');
   if (!Array.isArray(data)) return null;
   return data.sort((a, b) => a.order - b.order);
 }
 
 export async function getAboutPublic(): Promise<About | null> {
-  return publicGet<About>('/api/about');
+  return publicGet<About>('/api/about', 'about');
 }
 
 export async function getImpactBarPublic(): Promise<ImpactItem[] | null> {
-  const data = await publicGet<ImpactItem[] | { items: ImpactItem[] }>('/api/impact/bar');
+  const data = await publicGet<ImpactItem[] | { items: ImpactItem[] }>('/api/impact/bar', 'impact');
   if (!data) return null;
   const list = Array.isArray(data) ? data : data.items;
   return (list ?? []).sort((a, b) => a.order - b.order);
 }
 
 export async function getProgramSectionPublic(): Promise<ProgramSection | null> {
-  return publicGet<ProgramSection>('/api/programs/section');
+  return publicGet<ProgramSection>('/api/programs/section', 'programs');
 }
 
 export async function getProgramsPublic(): Promise<Program[] | null> {
-  const data = await publicGet<Program[]>('/api/programs/admin');
+  const data = await publicGet<Program[]>('/api/programs/admin', 'programs');
   if (!Array.isArray(data)) return null;
   return data.filter((p) => p.isActive !== false).sort((a, b) => a.order - b.order);
 }
 
 export async function getGalleryPublic(): Promise<GalleryItem[] | null> {
-  const data = await publicGet<GalleryItem[]>('/api/gallery/admin');
+  const data = await publicGet<GalleryItem[]>('/api/gallery/admin', 'gallery');
   if (!Array.isArray(data)) return null;
   return data.sort((a, b) => a.order - b.order);
 }
 
 export async function getStoriesSectionPublic(): Promise<StoriesSection | null> {
-  return publicGet<StoriesSection>('/api/stories/section');
+  return publicGet<StoriesSection>('/api/stories/section', 'stories');
 }
 
 export async function getStoriesPublic(): Promise<Story[] | null> {
-  const data = await publicGet<Story[]>('/api/stories/admin');
+  const data = await publicGet<Story[]>('/api/stories/admin', 'stories');
   if (!Array.isArray(data)) return null;
   return data.sort((a, b) => a.order - b.order);
 }
 
 export async function getPartnersSectionPublic(): Promise<PartnersSection | null> {
-  return publicGet<PartnersSection>('/api/partners/section');
+  return publicGet<PartnersSection>('/api/partners/section', 'partners');
 }
 
 export async function getPartnersPublic(): Promise<Partner[] | null> {
-  const data = await publicGet<Partner[]>('/api/partners/admin');
+  const data = await publicGet<Partner[]>('/api/partners/admin', 'partners');
   if (!Array.isArray(data)) return null;
   return data.sort((a, b) => a.order - b.order);
 }
 
 export async function getLeadershipPublic(): Promise<Leadership | null> {
-  return publicGet<Leadership>('/api/leadership');
+  return publicGet<Leadership>('/api/leadership', 'leadership');
 }
 
 export async function getCTAInvolvedPublic(): Promise<CTAInvolved | null> {
-  return publicGet<CTAInvolved>('/api/cta/involved');
+  return publicGet<CTAInvolved>('/api/cta/involved', 'cta');
 }
 
 export async function getCTABannerPublic(): Promise<CTABanner | null> {
-  return publicGet<CTABanner>('/api/cta/banner');
+  return publicGet<CTABanner>('/api/cta/banner', 'cta');
 }
 
 export async function getNewsletterPublic(): Promise<Newsletter | null> {
-  return publicGet<Newsletter>('/api/newsletter');
+  return publicGet<Newsletter>('/api/newsletter', 'newsletter');
 }
 
 export async function getContactSectionPublic(): Promise<ContactSection | null> {
-  return publicGet<ContactSection>('/api/contact/section');
+  return publicGet<ContactSection>('/api/contact/section', 'contact');
 }
 
 export async function getNavPublic(): Promise<NavItem[] | null> {
-  const data = await publicGet<NavItem[]>('/api/nav');
+  const data = await publicGet<NavItem[]>('/api/nav', 'nav');
   if (!Array.isArray(data)) return null;
   return data.sort((a, b) => a.order - b.order);
 }
 
 export async function getFooterPublic(): Promise<FooterCopy | null> {
-  return publicGet<FooterCopy>('/api/footer');
+  return publicGet<FooterCopy>('/api/footer', 'footer');
 }
 
 export async function getFooterLinksPublic(): Promise<FooterLinks | null> {
-  return publicGet<FooterLinks>('/api/footer/links');
+  return publicGet<FooterLinks>('/api/footer/links', 'footer');
 }

@@ -5,6 +5,7 @@ import { Pencil } from 'lucide-react';
 import { getCTAInvolved, getCTABanner, updateCTAInvolved, updateCTABanner, getApiErrorMessage } from '@/lib/api';
 import type { CTAInvolved, CTABanner, CTACard } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminCTAPage() {
   const [involved, setInvolved] = useState<CTAInvolved | null>(null);
@@ -32,6 +33,7 @@ export default function AdminCTAPage() {
       await updateCTAInvolved({ ...involved, cards: nextCards });
       setInvolved((p) => (p ? { ...p, cards: nextCards } : null));
       setEditingCard(null);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Card saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
@@ -43,6 +45,7 @@ export default function AdminCTAPage() {
     setMessage(null);
     try {
       await updateCTAInvolved(involved);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Section saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
@@ -53,6 +56,7 @@ export default function AdminCTAPage() {
     setMessage(null);
     try {
       await updateCTABanner(banner);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Banner saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

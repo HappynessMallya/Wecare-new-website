@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getContactSection, updateContactSection, getApiErrorMessage } from '@/lib/api';
 import type { ContactSection } from '@/lib/api';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminContactPage() {
   const [form, setForm] = useState<Partial<ContactSection>>({});
@@ -25,6 +26,7 @@ export default function AdminContactPage() {
     setMessage(null);
     try {
       await updateContactSection(form);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Contact section saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

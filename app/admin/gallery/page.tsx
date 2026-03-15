@@ -12,6 +12,7 @@ import {
 import type { GalleryItem } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
 import { GALLERY_FALLBACK_IMAGES } from '@/lib/fallbacks';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminGalleryPage() {
   const [items, setItems] = useState<GalleryItem[]>([]);
@@ -51,10 +52,12 @@ export default function AdminGalleryPage() {
       if (editing) {
         await updateGalleryItem(editing.id, payload);
         setItems((prev) => prev.map((i) => (i.id === editing.id ? { ...i, ...payload } : i)));
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Updated.' });
       } else {
         const created = await createGalleryItem({ ...payload, order: items.length + 1 });
         setItems((prev) => [...prev, created]);
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Added.' });
       }
       closeForm();
@@ -68,6 +71,7 @@ export default function AdminGalleryPage() {
     try {
       await deleteGalleryItem(id);
       setItems((prev) => prev.filter((i) => i.id !== id));
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Removed.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

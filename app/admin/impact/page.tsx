@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
 import { getImpactBar, updateImpactBar, getApiErrorMessage } from '@/lib/api';
 import type { ImpactItem } from '@/lib/api';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminImpactPage() {
   const [items, setItems] = useState<ImpactItem[]>([]);
@@ -42,6 +43,7 @@ export default function AdminImpactPage() {
     try {
       const updated = await updateImpactBar(nextItems);
       setItems(Array.isArray(updated) ? updated : nextItems);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

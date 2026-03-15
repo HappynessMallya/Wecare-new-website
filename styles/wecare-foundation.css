@@ -261,7 +261,7 @@ img { display: block; }
 .pw h2 { font-size: clamp(24px,2.8vw,36px); color: var(--blue); margin-bottom: 8px; }
 .pw .sub { font-family: Georgia, serif; font-style: italic; font-size: 15px; color: var(--g600); margin-bottom: 48px; }
 .partners-ticker-wrap { overflow: hidden; margin: 0 -20px; }
-.partners-ticker { display: flex; flex-wrap: nowrap; width: max-content; animation: partners-ticker 40s linear infinite; }
+.partners-ticker { display: flex; flex-wrap: nowrap; width: max-content; gap: 20px; animation: partners-ticker 40s linear infinite; }
 .partners-ticker:hover { animation-play-state: paused; }
 .plg-ticker-inner { flex-wrap: nowrap; flex-shrink: 0; justify-content: flex-start; }
 @keyframes partners-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }

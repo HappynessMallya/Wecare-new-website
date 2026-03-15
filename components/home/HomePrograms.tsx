@@ -63,14 +63,8 @@ export function HomePrograms({ section, programs: programsProp }: { section?: Pr
       <div className="container">
         <div className="sh rv">
           <p className="ey ct">{eyebrow}</p>
-          <h2>
-            Four Programs. <span>One Mission.</span>
-          </h2>
-          <p>
-            WeCare Foundation implements four evidence-based program areas — each designed to
-            address a critical dimension of early childhood development, learning, and community
-            wellbeing in Tanzania.
-          </p>
+          <h2>{title} <span>{titleHighlight}</span></h2>
+          <p>{intro}</p>
         </div>
         <div className="pgrid">
           {/* Program 1 */}

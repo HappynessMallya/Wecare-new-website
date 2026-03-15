@@ -3,12 +3,15 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { WHATSAPP_URL } from '@/lib/constants';
-import type { HeroSlide } from '@/lib/api';
+import type { HeroSlide, Settings } from '@/lib/api';
 import { HERO_FALLBACK_SLIDES } from '@/lib/fallbacks';
 
 const AUTOPLAY_MS = 5500;
 
-export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] | null } = {}) {
+const DEFAULT_HEADLINE = "Enriching Every Child's Life & Future";
+const DEFAULT_TAGLINE = 'Providing early childhood development, health education, and support for underserved families.';
+
+export function Hero({ slides: slidesProp, settings }: { slides?: HeroSlide[] | null; settings?: Settings | null } = {}) {
   const slides = useMemo(() => {
     if (slidesProp?.length) return slidesProp;
     return HERO_FALLBACK_SLIDES;
@@ -54,6 +57,11 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] | null } = {
     setPaused(false);
   }, [progress]);
 
+  const currentSlide = slides[index];
+  const headline = currentSlide?.title?.trim() || DEFAULT_HEADLINE;
+  const tagline = currentSlide?.subtitle?.trim() || DEFAULT_TAGLINE;
+  const donateHref = settings?.whatsappUrl || WHATSAPP_URL;
+
   return (
     <section id="hero">
       {/* Full-bleed background: program images show what the NGO does */}
@@ -92,15 +100,10 @@ export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] | null } = {
       </div>
       <div className="hero-content">
         <div className="hero-content-inner">
-          <h1 id="hero-headline">
-            <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Enriching Every Child&apos;s</span>
-            <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Life &amp; <span style={{ color: '#E6399A' }}>Future</span></span>
-          </h1>
-          <p className="htag">
-            Providing early childhood development, health education, and support for underserved families.
-          </p>
+          <h1 id="hero-headline">{headline}</h1>
+          <p className="htag">{tagline}</p>
           <div className="hctas">
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="btn b-rose">
+            <a href={donateHref} target="_blank" rel="noopener noreferrer" className="btn b-rose">
               ❤ Support Our Work <span className="arr">→</span>
             </a>
             <a href="#programs" className="btn b-ghost">

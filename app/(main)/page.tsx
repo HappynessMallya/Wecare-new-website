@@ -13,6 +13,7 @@ import { HomeContact } from '@/components/HomeContact';
 import { NewsletterSection } from '@/components/NewsletterSection';
 import { WeCareScripts } from '@/components/WeCareScripts';
 import {
+  getSettingsPublic,
   getHeroSlidesPublic,
   getTickerItemsPublic,
   getAboutPublic,
@@ -33,6 +34,7 @@ import {
 
 export default async function HomePage() {
   const [
+    settings,
     heroSlides,
     tickerItems,
     about,
@@ -50,6 +52,7 @@ export default async function HomePage() {
     newsletter,
     contactSection,
   ] = await Promise.all([
+    getSettingsPublic(),
     getHeroSlidesPublic(),
     getTickerItemsPublic(),
     getAboutPublic(),
@@ -70,9 +73,9 @@ export default async function HomePage() {
 
   return (
     <main id="main-content">
-      <Hero slides={heroSlides} />
+      <Hero slides={heroSlides} settings={settings} />
       <SDGTicker items={tickerItems} />
-      <HomeAbout data={about} />
+      <HomeAbout data={about} settings={settings} />
       <ImpactBar items={impactItems} />
       <HomePrograms section={programSection} programs={programs} />
       <HomeGallery items={gallery} />
@@ -82,7 +85,7 @@ export default async function HomePage() {
       <HomeCTA data={ctaInvolved} />
       <HomeCTABanner data={ctaBanner} />
       <NewsletterSection data={newsletter} />
-      <HomeContact data={contactSection} />
+      <HomeContact data={contactSection} settings={settings} />
       <WeCareScripts />
     </main>
   );

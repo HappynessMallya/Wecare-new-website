@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { getSettings, updateSettings, getApiErrorMessage } from '@/lib/api';
 import type { Settings } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 const defaultSettings: Partial<Settings> = {
   siteName: 'WeCare Foundation',
@@ -40,6 +41,7 @@ export default function AdminSettingsPage() {
     setMessage(null);
     try {
       await updateSettings(form);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Settings saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

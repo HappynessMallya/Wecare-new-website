@@ -28,7 +28,7 @@ export default async function MainSiteLayout({
       >
         Skip to main content
       </a>
-      <StructuredData />
+      <StructuredData settings={settings} />
       <Navbar settings={settings} navItems={navItems} />
       {children}
       <Footer settings={settings} footer={footer} footerLinks={footerLinks} />

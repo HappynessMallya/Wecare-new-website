@@ -13,6 +13,7 @@ import {
 } from '@/lib/api';
 import type { Story, StoriesSection } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminStoriesPage() {
   const [section, setSection] = useState<Partial<StoriesSection>>({});
@@ -43,10 +44,12 @@ export default function AdminStoriesPage() {
       if (editing) {
         await updateStory(editing.id, payload);
         setStories((prev) => prev.map((s) => (s.id === editing.id ? { ...s, ...payload } : s)));
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Story updated.' });
       } else {
         const created = await createStory({ ...payload, order: stories.length + 1 });
         setStories((prev) => [...prev, created]);
+        await revalidatePublicSite();
         setMessage({ type: 'ok', text: 'Story added.' });
       }
       closeForm();
@@ -60,6 +63,7 @@ export default function AdminStoriesPage() {
     try {
       await deleteStory(id);
       setStories((prev) => prev.filter((s) => s.id !== id));
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Story deleted.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
@@ -70,6 +74,7 @@ export default function AdminStoriesPage() {
     setMessage(null);
     try {
       await updateStoriesSection(section);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Section saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getNewsletter, updateNewsletter, getApiErrorMessage } from '@/lib/api';
 import type { Newsletter } from '@/lib/api';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminNewsletterPage() {
   const [form, setForm] = useState<Partial<Newsletter>>({});
@@ -23,6 +24,7 @@ export default function AdminNewsletterPage() {
     setMessage(null);
     try {
       await updateNewsletter(form);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'Newsletter saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });

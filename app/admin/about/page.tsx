@@ -6,6 +6,7 @@ import { getAbout, updateAbout, getApiErrorMessage } from '@/lib/api';
 import type { About, AboutPillar } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
 import { ABOUT_FALLBACK_IMAGES } from '@/lib/fallbacks';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 const defaultAbout: Partial<About> = {
   eyebrow: 'Who We Are',
@@ -44,6 +45,7 @@ export default function AdminAboutPage() {
     setMessage(null);
     try {
       await updateAbout(form);
+      await revalidatePublicSite();
       setMessage({ type: 'ok', text: 'About saved.' });
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
