@@ -128,12 +128,18 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
         <ul className="space-y-0.5">
           {nav.map((item) => {
             const Icon = item.icon;
+            const isActive = pathname === item.href;
             return (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={closeSidebar}
-                  className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-600 text-[var(--blue)] transition-colors hover:bg-[var(--rose-15)] hover:text-[var(--rose)]"
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-600 transition-colors ${
+                    isActive
+                      ? 'bg-[var(--blue)] text-white'
+                      : 'text-[var(--blue)] hover:bg-[var(--rose-15)] hover:text-[var(--rose)]'
+                  }`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   {item.label}

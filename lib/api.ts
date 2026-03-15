@@ -141,6 +141,7 @@ export interface Settings {
   id: string;
   siteName: string;
   tagline: string;
+  heroHeadline: string;
   logoUrl: string;
   contactPhone: string;
   whatsappUrl: string;
@@ -150,8 +151,6 @@ export interface Settings {
   socialInstagram: string;
   socialFacebook: string;
   socialLinkedIn: string;
-  donateCtaUrl: string;
-  foundedYear: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -297,7 +296,11 @@ export async function getImpactBar(): Promise<ImpactItem[]> {
 }
 
 export async function updateImpactBar(items: ImpactItem[]): Promise<ImpactItem[]> {
-  const res = await api.put<{ data: ImpactItem[] }>('/api/impact/bar', { items });
+  // Strip all IDs — the backend does a full replaceAll (soft-delete + re-create), so
+  // sending existing UUIDs causes TypeORM to update the soft-deleted rows instead of
+  // creating fresh ones, resulting in items silently disappearing.
+  const payload = items.map(({ id: _id, createdAt: _c, updatedAt: _u, ...rest }) => rest);
+  const res = await api.put<{ data: ImpactItem[] }>('/api/impact/bar', { items: payload });
   return unwrap(res);
 }
 
@@ -306,7 +309,7 @@ export interface ProgramSection {
   eyebrow: string;
   title: string;
   titleHighlight?: string;
-  intro: string;
+  introParagraph: string;
 }
 
 export interface Program {
@@ -371,6 +374,7 @@ export interface GalleryItem {
   alt: string;
   label: string;
   order: number;
+  isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -408,6 +412,7 @@ export interface Story {
   imageUrl: string;
   imageAlt: string;
   order: number;
+  isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -465,6 +470,7 @@ export interface Partner {
   logoAlt: string | null;
   textOnly: boolean;
   order: number;
+  isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -653,6 +659,7 @@ export interface NavItem {
   label: string;
   href: string;
   order: number;
+  isActive?: boolean;
 }
 
 export async function getNav(): Promise<NavItem[]> {

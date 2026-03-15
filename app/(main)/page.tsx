@@ -73,7 +73,7 @@ export default async function HomePage() {
 
   return (
     <main id="main-content">
-      <Hero slides={heroSlides} settings={settings} />
+      <Hero slides={heroSlides} settings={settings} impactItems={impactItems} />
       <SDGTicker items={tickerItems} />
       <HomeAbout data={about} settings={settings} />
       <ImpactBar items={impactItems} />

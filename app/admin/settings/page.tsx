@@ -9,6 +9,7 @@ import { revalidatePublicSite } from '@/lib/revalidate';
 const defaultSettings: Partial<Settings> = {
   siteName: 'WeCare Foundation',
   tagline: "Enriching Children's Lives",
+  heroHeadline: "Enriching Every Child's Life & Future",
   logoUrl: '/logo.png',
   contactPhone: '+255 768 257 970',
   whatsappUrl: 'https://wa.me/255768257970',
@@ -18,8 +19,6 @@ const defaultSettings: Partial<Settings> = {
   socialInstagram: '',
   socialFacebook: '',
   socialLinkedIn: '',
-  donateCtaUrl: 'https://wa.me/255768257970',
-  foundedYear: '2022',
 };
 
 export default function AdminSettingsPage() {
@@ -91,12 +90,22 @@ export default function AdminSettingsPage() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-600 text-[var(--blue)]">Tagline</label>
+            <label className="mb-1 block text-sm font-600 text-[var(--blue)]">Tagline <span className="font-400 text-[var(--g500)]">(footer & navbar)</span></label>
             <input
               type="text"
               value={form.tagline ?? ''}
               onChange={(e) => update('tagline', e.target.value)}
               className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 text-[var(--g800)] focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="mb-1 block text-sm font-600 text-[var(--blue)]">Hero headline <span className="font-400 text-[var(--g500)]">(big title on the home page banner)</span></label>
+            <input
+              type="text"
+              value={form.heroHeadline ?? ''}
+              onChange={(e) => update('heroHeadline', e.target.value)}
+              className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 text-[var(--g800)] focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
+              placeholder="Enriching Every Child's Life & Future"
             />
           </div>
         </div>
@@ -158,7 +167,7 @@ export default function AdminSettingsPage() {
           </div>
         </div>
         <div className="border-t border-[var(--blue)]/10 pt-4">
-          <h2 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Social & Donate</h2>
+          <h2 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Social links</h2>
           <div className="space-y-4">
             <div>
               <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Instagram URL</label>
@@ -187,25 +196,7 @@ export default function AdminSettingsPage() {
                 className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
               />
             </div>
-            <div>
-              <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Donate CTA URL</label>
-              <input
-                type="url"
-                value={form.donateCtaUrl ?? ''}
-                onChange={(e) => update('donateCtaUrl', e.target.value)}
-                className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
-              />
-            </div>
           </div>
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-600 text-[var(--blue)]">Founded year</label>
-          <input
-            type="text"
-            value={form.foundedYear ?? ''}
-            onChange={(e) => update('foundedYear', e.target.value)}
-            className="w-24 rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
-          />
         </div>
         <div className="flex gap-3 pt-2">
           <button

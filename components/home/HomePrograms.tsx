@@ -11,7 +11,7 @@ export function HomePrograms({ section, programs: programsProp }: { section?: Pr
   const eyebrow = section?.eyebrow?.trim() || 'Our Program Focus Areas';
   const title = section?.title?.trim() || 'Four Programs.';
   const titleHighlight = section?.titleHighlight?.trim() || 'One Mission.';
-  const intro = section?.intro?.trim() || 'WeCare Foundation implements four evidence-based program areas — each designed to address a critical dimension of early childhood development, learning, and community wellbeing in Tanzania.';
+  const intro = section?.introParagraph?.trim() || 'WeCare Foundation implements four evidence-based program areas — each designed to address a critical dimension of early childhood development, learning, and community wellbeing in Tanzania.';
 
   if (programs?.length) {
     return (

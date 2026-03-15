@@ -12,8 +12,8 @@ export function Leadership({ data }: { data?: LeadershipData | null } = {}) {
   const nameHighlight = data?.nameHighlight?.trim() || 'Maginga Thobias';
   const photoUrl = data?.photoUrl?.trim() || '/ceo.png';
   const photoAlt = data?.photoAlt?.trim() || `${name} ${nameHighlight} – CEO WeCare Foundation`;
-  const badgeTitle = data?.badgeTitle?.trim() || 'WeCare\nFoundation';
-  const badgeRole = data?.badgeSubtitle?.trim() || 'CEO & Founder';
+  const badgeTitle = 'WeCare\nFoundation';
+  const badgeRole = 'CEO & Founder';
   const paragraphs = data?.paragraphs?.length ? data.paragraphs : [
     "Elizabeth Maginga Thobias is the visionary founder and CEO of WeCare Foundation. She established WeCare in 2022 with a singular mission: to ensure every child in Tanzania — regardless of their family's economic circumstances — has access to quality early childhood development, care, and learning.",
     "Under her leadership, WeCare has grown from a community initiative in Mbeya into a nationally recognised ECD organisation operating across Mbeya and Mara regions, partnering with the Government of Tanzania, international organisations, and local communities to deliver sustainable impact for children and families.",

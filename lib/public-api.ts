@@ -90,7 +90,7 @@ export async function getProgramsPublic(): Promise<Program[] | null> {
 export async function getGalleryPublic(): Promise<GalleryItem[] | null> {
   const data = await publicGet<GalleryItem[]>('/api/gallery/admin', 'gallery');
   if (!Array.isArray(data)) return null;
-  return data.sort((a, b) => a.order - b.order);
+  return data.filter((g) => g.isActive !== false).sort((a, b) => a.order - b.order);
 }
 
 export async function getStoriesSectionPublic(): Promise<StoriesSection | null> {
@@ -100,7 +100,7 @@ export async function getStoriesSectionPublic(): Promise<StoriesSection | null> 
 export async function getStoriesPublic(): Promise<Story[] | null> {
   const data = await publicGet<Story[]>('/api/stories/admin', 'stories');
   if (!Array.isArray(data)) return null;
-  return data.sort((a, b) => a.order - b.order);
+  return data.filter((s) => s.isActive !== false).sort((a, b) => a.order - b.order);
 }
 
 export async function getPartnersSectionPublic(): Promise<PartnersSection | null> {
@@ -110,7 +110,7 @@ export async function getPartnersSectionPublic(): Promise<PartnersSection | null
 export async function getPartnersPublic(): Promise<Partner[] | null> {
   const data = await publicGet<Partner[]>('/api/partners/admin', 'partners');
   if (!Array.isArray(data)) return null;
-  return data.sort((a, b) => a.order - b.order);
+  return data.filter((p) => p.isActive !== false).sort((a, b) => a.order - b.order);
 }
 
 export async function getLeadershipPublic(): Promise<Leadership | null> {

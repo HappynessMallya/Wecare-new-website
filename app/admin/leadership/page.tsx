@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { getLeadership, updateLeadership, getApiErrorMessage } from '@/lib/api';
 import type { Leadership } from '@/lib/api';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import { revalidatePublicSite } from '@/lib/revalidate';
 
 const defaultLeadership: Partial<Leadership> = {
@@ -98,22 +99,15 @@ export default function AdminLeadershipPage() {
 
         <div className="rounded-xl border border-[var(--blue)]/10 bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Photo & badge</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-4">
+            <ImageUpload
+              label="CEO / Founder photo"
+              value={form.photoUrl ?? ''}
+              onChange={(url) => setForm((p) => ({ ...p, photoUrl: url }))}
+            />
             <div>
-              <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Photo URL</label>
-              <input type="text" value={form.photoUrl} onChange={(e) => setForm((p) => ({ ...p, photoUrl: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
-            </div>
-            <div>
-              <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Photo alt</label>
-              <input type="text" value={form.photoAlt} onChange={(e) => setForm((p) => ({ ...p, photoAlt: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
-            </div>
-            <div>
-              <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Badge title (\\n for newline)</label>
-              <input type="text" value={(form.badgeTitle ?? '').replace(/\n/g, '\\n')} onChange={(e) => setForm((p) => ({ ...p, badgeTitle: e.target.value.replace(/\\n/g, '\n') }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
-            </div>
-            <div>
-              <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Badge subtitle</label>
-              <input type="text" value={form.badgeSubtitle} onChange={(e) => setForm((p) => ({ ...p, badgeSubtitle: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
+              <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Photo alt text</label>
+              <input type="text" value={form.photoAlt ?? ''} onChange={(e) => setForm((p) => ({ ...p, photoAlt: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
             </div>
           </div>
         </div>

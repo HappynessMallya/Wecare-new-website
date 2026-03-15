@@ -3,15 +3,28 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { WHATSAPP_URL } from '@/lib/constants';
-import type { HeroSlide, Settings } from '@/lib/api';
+import type { HeroSlide, Settings, ImpactItem } from '@/lib/api';
 import { HERO_FALLBACK_SLIDES } from '@/lib/fallbacks';
 
 const AUTOPLAY_MS = 5500;
 
 const DEFAULT_HEADLINE = "Enriching Every Child's Life & Future";
-const DEFAULT_TAGLINE = 'Providing early childhood development, health education, and support for underserved families.';
 
-export function Hero({ slides: slidesProp, settings }: { slides?: HeroSlide[] | null; settings?: Settings | null } = {}) {
+const FALLBACK_STATS = [
+  { number: '5000', suffix: '+', label: 'Parents Reached' },
+  { number: '800', suffix: '+', label: 'Children in Programs' },
+  { number: '210', suffix: '+', label: 'Life Skills Trained' },
+];
+
+export function Hero({
+  slides: slidesProp,
+  settings,
+  impactItems,
+}: {
+  slides?: HeroSlide[] | null;
+  settings?: Settings | null;
+  impactItems?: ImpactItem[] | null;
+} = {}) {
   const slides = useMemo(() => {
     if (slidesProp?.length) return slidesProp;
     return HERO_FALLBACK_SLIDES;
@@ -58,9 +71,22 @@ export function Hero({ slides: slidesProp, settings }: { slides?: HeroSlide[] | 
   }, [progress]);
 
   const currentSlide = slides[index];
-  const headline = currentSlide?.title?.trim() || DEFAULT_HEADLINE;
-  const tagline = currentSlide?.subtitle?.trim() || DEFAULT_TAGLINE;
+  const headline = settings?.heroHeadline?.trim() || DEFAULT_HEADLINE;
+  const tagline = currentSlide?.subtitle?.trim() || '';
   const donateHref = settings?.whatsappUrl || WHATSAPP_URL;
+
+  // Use first 3 impact bar items that have a suffix (numeric stats), falling back to hardcoded values
+  const heroStats = useMemo(() => {
+    const live = (impactItems ?? []).slice(0, 3);
+    if (live.length >= 1) {
+      return live.map((item) => ({
+        number: item.number,
+        suffix: item.suffix,
+        label: item.label,
+      }));
+    }
+    return FALLBACK_STATS;
+  }, [impactItems]);
 
   return (
     <section id="hero">
@@ -101,7 +127,7 @@ export function Hero({ slides: slidesProp, settings }: { slides?: HeroSlide[] | 
       <div className="hero-content">
         <div className="hero-content-inner">
           <h1 id="hero-headline">{headline}</h1>
-          <p className="htag">{tagline}</p>
+          {tagline && <p className="htag">{tagline}</p>}
           <div className="hctas">
             <a href={donateHref} target="_blank" rel="noopener noreferrer" className="btn b-rose">
               ❤ Support Our Work <span className="arr">→</span>
@@ -111,27 +137,21 @@ export function Hero({ slides: slidesProp, settings }: { slides?: HeroSlide[] | 
             </a>
           </div>
           <div className="hstats">
-            <div className="hs">
-              <span className="n">
-                <span className="counter" data-target="5000">0</span>
-                <sup>+</sup>
-              </span>
-              <span className="l">Parents Reached</span>
-            </div>
-            <div className="hs">
-              <span className="n">
-                <span className="counter" data-target="800">0</span>
-                <sup>+</sup>
-              </span>
-              <span className="l">Children in Programs</span>
-            </div>
-            <div className="hs">
-              <span className="n">
-                <span className="counter" data-target="210">0</span>
-                <sup>+</sup>
-              </span>
-              <span className="l">Life Skills Trained</span>
-            </div>
+            {heroStats.map((stat, i) => (
+              <div key={i} className="hs">
+                <span className="n">
+                  {stat.suffix ? (
+                    <>
+                      <span className="counter" data-target={stat.number}>0</span>
+                      <sup>{stat.suffix}</sup>
+                    </>
+                  ) : (
+                    stat.number
+                  )}
+                </span>
+                <span className="l">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

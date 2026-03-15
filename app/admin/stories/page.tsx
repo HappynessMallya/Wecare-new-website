@@ -137,6 +137,49 @@ export default function AdminStoriesPage() {
             <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Approach body</label>
             <textarea rows={2} value={section.approachBody ?? ''} onChange={(e) => setSection((s) => ({ ...s, approachBody: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
           </div>
+          <div>
+            <div className="mb-2 flex items-center justify-between">
+              <label className="block text-sm font-600 text-[var(--g800)]">SDG tags</label>
+              <button
+                type="button"
+                onClick={() => setSection((s) => ({ ...s, sdgTags: [...(s.sdgTags ?? []), { icon: '🌍', label: 'SDG', class: 'st1' }] }))}
+                className="text-sm font-600 text-[var(--rose)] hover:underline"
+              >
+                + Add tag
+              </button>
+            </div>
+            <div className="space-y-2">
+              {(section.sdgTags ?? []).map((tag, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={tag.icon}
+                    onChange={(e) => setSection((s) => ({ ...s, sdgTags: (s.sdgTags ?? []).map((t, idx) => idx === i ? { ...t, icon: e.target.value } : t) }))}
+                    className="w-14 rounded-lg border border-[var(--g400)]/40 px-2 py-2 text-center text-lg focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
+                    placeholder="🎯"
+                    title="Emoji"
+                  />
+                  <input
+                    type="text"
+                    value={tag.label}
+                    onChange={(e) => setSection((s) => ({ ...s, sdgTags: (s.sdgTags ?? []).map((t, idx) => idx === i ? { ...t, label: e.target.value } : t) }))}
+                    className="flex-1 rounded-lg border border-[var(--g400)]/40 px-3 py-2 text-sm focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
+                    placeholder="SDG 4: Education"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setSection((s) => ({ ...s, sdgTags: (s.sdgTags ?? []).filter((_, idx) => idx !== i) }))}
+                    className="shrink-0 rounded border border-[var(--g400)]/40 px-2 py-2 text-sm text-[var(--g600)] hover:bg-[var(--orange-30)] hover:text-[var(--orange)]"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              {!(section.sdgTags ?? []).length && (
+                <p className="text-xs text-[var(--g600)]">No SDG tags added. Click "+ Add tag" to add one.</p>
+              )}
+            </div>
+          </div>
           <button type="button" onClick={handleSaveSection} className="rounded-lg bg-[var(--blue)] px-4 py-2 text-sm font-600 text-white hover:opacity-90">Save section header</button>
         </div>
       </div>

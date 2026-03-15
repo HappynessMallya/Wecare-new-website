@@ -90,7 +90,14 @@ export default function AdminHeroPage() {
         <div>
           <h1 className="text-2xl font-800 text-[var(--blue)]">Hero</h1>
           <p className="mt-1 text-sm text-[var(--g600)]">
-            Manage hero carousel slides. Order is used for display order.
+            Each slide has an <strong>image</strong>, a <strong>headline</strong>, and a <strong>tagline</strong> — click the pencil icon on a slide to edit them.
+          </p>
+          <p className="mt-1 text-sm text-[var(--g600)]">
+            The three stat numbers shown on the hero (5000+ parents, etc.) come from{' '}
+            <Link href="/admin/impact" className="font-600 text-[var(--rose)] underline">
+              Impact Bar
+            </Link>
+            {' '}— edit them there.
           </p>
         </div>
         {!creating && !editing && (

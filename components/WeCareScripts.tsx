@@ -21,7 +21,7 @@ export function WeCareScripts() {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const el = entry.target as HTMLElement;
-          const target = parseInt(el.dataset.target ?? '0', 10);
+          const target = parseInt((el.dataset.target ?? '0').replace(/[^\d]/g, ''), 10);
           const dur = 2000;
           const start = performance.now();
           const tick = (now: number) => {

@@ -126,7 +126,7 @@ export default function AdminProgramsPage() {
           </div>
           <div>
             <label className="mb-1 block text-sm font-600 text-[var(--g800)]">Intro paragraph</label>
-            <textarea rows={3} value={section.intro ?? ''} onChange={(e) => setSection((s) => ({ ...s, intro: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
+            <textarea rows={3} value={section.introParagraph ?? ''} onChange={(e) => setSection((s) => ({ ...s, introParagraph: e.target.value }))} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
           </div>
           <button type="button" onClick={handleSaveSection} className="rounded-lg bg-[var(--blue)] px-4 py-2 text-sm font-600 text-white hover:opacity-90">Save section header</button>
         </div>
