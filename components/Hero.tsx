@@ -1,39 +1,18 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { WHATSAPP_URL } from '@/lib/constants';
-
-const HERO_SLIDES = [
-  {
-    src: '/parent-clinic.jpg',
-    alt: 'Parent clinic sessions Tanzania',
-    title: 'Parent Clinic Sessions',
-    subtitle: 'Responsive caregiving & nutrition',
-  },
-  {
-    src: '/sports.jpg',
-    alt: 'WeCare sports and life skills Tanzania',
-    title: 'Sports & Life Skills',
-    subtitle: 'Ages 3–15+ · Academy Clubs',
-  },
-  {
-    src: '/life-skills.jpg',
-    alt: 'Early life skills program Tanzania',
-    title: 'Early Life Skills',
-    subtitle: 'Quality early learning',
-  },
-  {
-    src: '/airport.jpg',
-    alt: 'WeCare Foundation community and travel',
-    title: 'Community & Outreach',
-    subtitle: 'Reaching families where they are',
-  },
-];
+import type { HeroSlide } from '@/lib/api';
+import { HERO_FALLBACK_SLIDES } from '@/lib/fallbacks';
 
 const AUTOPLAY_MS = 5500;
 
-export function Hero() {
+export function Hero({ slides: slidesProp }: { slides?: HeroSlide[] | null } = {}) {
+  const slides = useMemo(() => {
+    if (slidesProp?.length) return slidesProp;
+    return HERO_FALLBACK_SLIDES;
+  }, [slidesProp]);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -43,13 +22,13 @@ export function Hero() {
   const goTo = useCallback((i: number) => {
     setIndex((prev) => {
       let next = i;
-      if (next < 0) next = HERO_SLIDES.length - 1;
-      if (next >= HERO_SLIDES.length) next = 0;
+      if (next < 0) next = slides.length - 1;
+      if (next >= slides.length) next = 0;
       return next;
     });
     startTimeRef.current = Date.now();
     setProgress(0);
-  }, []);
+  }, [slides.length]);
 
   const next = useCallback(() => goTo(index + 1), [index, goTo]);
 
@@ -85,19 +64,20 @@ export function Hero() {
         onFocus={handleMouseEnter}
         onBlur={handleMouseLeave}
       >
-        {HERO_SLIDES.map((slide, i) => (
+        {slides.map((slide, i) => (
           <div
-            key={i}
+            key={slide.id ?? i}
             className={`hero-bg-slide ${i === index ? 'active' : ''}`}
             aria-hidden={i !== index}
           >
             <Image
-              src={slide.src}
+              src={slide.imageUrl}
               alt={slide.alt}
               fill
               sizes="100vw"
               priority={i === 0}
               className="object-cover object-[center_40%] brightness-[0.85]"
+              unoptimized={slide.imageUrl.startsWith('http')}
             />
           </div>
         ))}

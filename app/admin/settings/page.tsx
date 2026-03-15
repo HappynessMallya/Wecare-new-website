@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getSettings, updateSettings, getApiErrorMessage } from '@/lib/api';
 import type { Settings } from '@/lib/api';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 
 const defaultSettings: Partial<Settings> = {
   siteName: 'WeCare Foundation',
@@ -98,13 +99,10 @@ export default function AdminSettingsPage() {
           </div>
         </div>
         <div>
-          <label className="mb-1 block text-sm font-600 text-[var(--blue)]">Logo URL</label>
-          <input
-            type="text"
+          <ImageUpload
+            label="Site logo"
             value={form.logoUrl ?? ''}
-            onChange={(e) => update('logoUrl', e.target.value)}
-            placeholder="/logo.png"
-            className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 text-[var(--g800)] focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
+            onChange={(url) => update('logoUrl', url)}
           />
         </div>
         <div className="border-t border-[var(--blue)]/10 pt-4">

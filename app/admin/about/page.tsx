@@ -5,6 +5,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import { getAbout, updateAbout, getApiErrorMessage } from '@/lib/api';
 import type { About, AboutPillar } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { ABOUT_FALLBACK_IMAGES } from '@/lib/fallbacks';
 
 const defaultAbout: Partial<About> = {
   eyebrow: 'Who We Are',
@@ -54,7 +55,7 @@ export default function AdminAboutPage() {
   const updatePillar = (id: string, patch: Partial<AboutPillar>) => {
     setForm((prev) => ({
       ...prev,
-      pillars: prev.pillars.map((p) => (p.id === id ? { ...p, ...patch } : p)),
+      pillars: (prev.pillars ?? []).map((p) => (p.id === id ? { ...p, ...patch } : p)),
     }));
   };
   const addPillar = () => {
@@ -197,6 +198,27 @@ export default function AdminAboutPage() {
             </div>
           </div>
         </div>
+        {/* Fallback images: shown on public site when API has no data; preview so you can remove from project */}
+        <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50/50 p-4">
+          <h3 className="mb-2 text-sm font-700 uppercase tracking-wider text-amber-800">Fallback images (code-only)</h3>
+          <p className="mb-3 text-xs text-amber-800/90">
+            Used on the public About section when the API returns no data. Remove these files from the project when no longer needed.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            {ABOUT_FALLBACK_IMAGES.map(({ label, path }) => (
+              <div key={path} className="w-32 overflow-hidden rounded-lg border border-amber-200 bg-white shadow-sm">
+                <div className="aspect-[4/3] bg-[var(--g100)]">
+                  <img src={path} alt={label} className="h-full w-full object-cover" />
+                </div>
+                <div className="p-2 text-xs">
+                  <p className="font-600 text-[var(--g800)]">{label}</p>
+                  <p className="truncate text-[var(--g500)]" title={path}>{path}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="rounded-xl border border-[var(--blue)]/10 bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Images & badge</h2>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -276,7 +298,7 @@ export default function AdminAboutPage() {
                     <label className="mb-0.5 block text-xs font-600 text-[var(--g600)]">Color</label>
                     <select
                       value={p.colorKey}
-                      onChange={(e) => updatePillar(p.id, { colorKey: e.target.value as Pillar['colorKey'] })}
+                      onChange={(e) => updatePillar(p.id, { colorKey: e.target.value as AboutPillar['colorKey'] })}
                       className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 text-sm focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]"
                     >
                       <option value="r">Rose</option>

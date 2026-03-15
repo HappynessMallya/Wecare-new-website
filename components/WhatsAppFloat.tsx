@@ -3,10 +3,11 @@
 import { MessageCircle } from 'lucide-react';
 import { WHATSAPP_URL } from '@/lib/constants';
 
-export function WhatsAppFloat() {
+export function WhatsAppFloat({ whatsappUrl }: { whatsappUrl?: string | null } = {}) {
+  const href = whatsappUrl?.trim() || WHATSAPP_URL;
   return (
     <a
-      href={WHATSAPP_URL}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-float"

@@ -1,8 +1,32 @@
 'use client';
 
+import { useMemo } from 'react';
 import Image from 'next/image';
+import type { About } from '@/lib/api';
 
-export function HomeAbout() {
+const PILLAR_CLASS: Record<string, string> = { r: 'r', b: 'b', a: 'a', o: 'o' };
+
+export function HomeAbout({ data }: { data?: About | null } = {}) {
+  const mainImage = data?.mainImageUrl?.trim() || '/parentclinic.jpg';
+  const secondaryImage = data?.secondaryImageUrl?.trim() || '/kids-at-work.jpg';
+  const regionsNumber = data?.regionsBadgeNumber?.trim() || '2';
+  const regionsLabel = data?.regionsBadgeLabel?.trim() || 'Regions\nMbeya & Mara';
+  const pillars = useMemo(() => data?.pillars?.length ? data.pillars : [
+    { id: '1', title: 'Collaborative Approach', description: 'We engage community and stakeholders, governments, policy makers, and civil society for sustainable impact.', iconEmoji: '🤝', colorKey: 'r' as const },
+    { id: '2', title: 'Community-Led', description: 'Programs are designed with communities — ensuring solutions are contextual, trusted, and lasting.', iconEmoji: '🏘️', colorKey: 'b' as const },
+    { id: '3', title: 'Parent-Centered', description: 'Working parents and caregivers are at the heart of everything — we provide sustainable child care solutions.', iconEmoji: '👨‍👩‍👧', colorKey: 'a' as const },
+  ], [data?.pillars]);
+  const eyebrow = data?.eyebrow?.trim() || 'Who We Are';
+  const title = data?.title?.trim() || "Tanzania's Community-Led ECD Foundation";
+  const titleHighlight = data?.titleHighlight?.trim() || 'ECD Foundation';
+  const tagline = data?.tagline?.trim() || "Enriching Children's Lives — One Family at a Time";
+  const intro1 = data?.introParagraph1?.trim() || "WeCare Foundation (WeF) is a Non-Governmental Organization founded in 2022 in Tanzania. WeCare partners with the Government of Tanzania and national ECD stakeholders to implement programs for quality early childhood development and learning.";
+  const intro2 = data?.introParagraph2?.trim() || "Our focus areas: Child good health, Adequate nutrition, Responsive caregiving, Child security and safety, and Opportunities for quality early learning. We are community-led, delivering impact through community and stakeholder engagement. WeCare also provides sustainable child care solutions that support working parents.";
+  const missionTitle = data?.missionTitle?.trim() || 'Our Mission';
+  const missionBody = data?.missionBody?.trim() || "To contribute towards attainment of quality early childhood development, learning, and health outcomes through innovative solutions, community and family engagement.";
+  const visionTitle = data?.visionTitle?.trim() || 'Our Vision';
+  const visionBody = data?.visionBody?.trim() || "To provide access to the best start of life for all children in early development, learning, and health across Tanzania.";
+
   return (
     <section id="about">
       <div className="about-bg-logo" aria-hidden>
@@ -14,96 +38,62 @@ export function HomeAbout() {
             <div className="aphotos rv">
               <div className="apm">
                 <Image
-                  src="/parentclinic.jpg"
+                  src={mainImage}
                   alt="WeCare Foundation parent clinic Tanzania"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
+                  unoptimized={mainImage.startsWith('http')}
                 />
               </div>
               <div className="apt">
                 <Image
-                  src="/kids-at-work.jpg"
+                  src={secondaryImage}
                   alt="Child at WeCare program"
                   width={180}
                   height={180}
                   className="object-cover w-full h-full"
+                  unoptimized={secondaryImage.startsWith('http')}
                 />
               </div>
               <div className="apb">
-                <span className="n">2</span>
+                <span className="n">{regionsNumber}</span>
                 <span className="s">
-                  Regions
-                  <br />
-                  Mbeya &amp; Mara
+                  {regionsLabel.split('\n').map((line, i) => (
+                    <span key={i}>{i > 0 && <br />}{line}</span>
+                  ))}
                 </span>
               </div>
             </div>
             <div className="about-pillars">
-              <div className="pill">
-                <div className="pill-ico r">🤝</div>
-                <div className="pill-txt">
-                  <strong>Collaborative Approach</strong>
-                  <small>
-                    We engage community and stakeholders, governments, policy makers, and civil society
-                    for sustainable impact.
-                  </small>
+              {pillars.map((pill) => (
+                <div key={pill.id} className="pill">
+                  <div className={`pill-ico ${PILLAR_CLASS[pill.colorKey] ?? 'r'}`}>{pill.iconEmoji}</div>
+                  <div className="pill-txt">
+                    <strong>{pill.title}</strong>
+                    <small>{pill.description}</small>
+                  </div>
                 </div>
-              </div>
-              <div className="pill">
-                <div className="pill-ico b">🏘️</div>
-                <div className="pill-txt">
-                  <strong>Community-Led</strong>
-                  <small>
-                    Programs are designed with communities — ensuring solutions are contextual,
-                    trusted, and lasting.
-                  </small>
-                </div>
-              </div>
-              <div className="pill">
-                <div className="pill-ico a">👨‍👩‍👧</div>
-                <div className="pill-txt">
-                  <strong>Parent-Centered</strong>
-                  <small>
-                    Working parents and caregivers are at the heart of everything — we provide
-                    sustainable child care solutions.
-                  </small>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="ac rv d1">
-            <p className="ey">Who We Are</p>
+            <p className="ey">{eyebrow}</p>
             <h2>
-              Tanzania&apos;s Community-Led <span>ECD Foundation</span>
+              {title.replace(titleHighlight, '').trim()}{' '}
+              <span>{titleHighlight}</span>
             </h2>
-            <span className="acit">Enriching Children&apos;s Lives — One Family at a Time</span>
-            <p>
-              WeCare Foundation (WeF) is a Non-Governmental Organization founded in{' '}
-              <strong>2022 in Tanzania</strong>. WeCare partners with the Government of Tanzania and
-              national ECD stakeholders to implement programs for quality early childhood development
-              and learning.
-            </p>
-            <p>
-              <strong>Our focus areas:</strong> Child good health, Adequate nutrition, Responsive caregiving, Child
-              security and safety, and Opportunities for quality early learning. We are
-              community-led, delivering impact through community and stakeholder engagement. WeCare
-              also provides sustainable child care solutions that support working parents.
-            </p>
+            <span className="acit">{tagline}</span>
+            <p>{intro1}</p>
+            <p>{intro2}</p>
             <div className="mvcards">
               <div className="mvc">
-                <h4>Our Mission</h4>
-                <p>
-                  To contribute towards attainment of quality early childhood development, learning,
-                  and health outcomes through innovative solutions, community and family engagement.
-                </p>
+                <h4>{missionTitle}</h4>
+                <p>{missionBody}</p>
               </div>
               <div className="mvc v">
-                <h4>Our Vision</h4>
-                <p>
-                  To provide access to the best start of life for all children in early development,
-                  learning, and health across Tanzania.
-                </p>
+                <h4>{visionTitle}</h4>
+                <p>{visionBody}</p>
               </div>
             </div>
           </div>

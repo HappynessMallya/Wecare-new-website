@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/Logo';
 import { WHATSAPP_URL } from '@/lib/constants';
+import type { Settings } from '@/lib/api';
+import type { NavItem } from '@/lib/api';
 
-const navItems = [
+const DEFAULT_NAV: { label: string; href: string }[] = [
   { label: 'About', href: '#about' },
   { label: 'Programs', href: '#programs' },
   { label: 'Impact', href: '#stories' },
@@ -14,9 +16,21 @@ const navItems = [
   { label: 'Contact', href: '#contact' },
 ];
 
-const SECTION_IDS = navItems.map((item) => item.href.slice(1));
+function navFromApi(items: NavItem[] | null): { label: string; href: string }[] {
+  if (!items?.length) return DEFAULT_NAV;
+  return items.map((i) => ({ label: i.label, href: i.href }));
+}
 
-export function Navbar() {
+export function Navbar({
+  settings,
+  navItems: navItemsProp,
+}: {
+  settings?: Settings | null;
+  navItems?: NavItem[] | null;
+} = {}) {
+  const navItems = useMemo(() => navFromApi(navItemsProp ?? null), [navItemsProp]);
+  const sectionIds = useMemo(() => navItems.map((i) => i.href.replace(/^#/, '')), [navItems]);
+  const whatsappUrl = settings?.whatsappUrl || WHATSAPP_URL;
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -31,7 +45,7 @@ export function Navbar() {
     const updateActive = () => {
       const top = 120;
       let current: string | null = null;
-      for (const id of SECTION_IDS) {
+      for (const id of sectionIds) {
         const el = document.getElementById(id);
         if (!el) continue;
         const rect = el.getBoundingClientRect();
@@ -45,7 +59,7 @@ export function Navbar() {
     updateActive();
     window.addEventListener('scroll', updateActive, { passive: true });
     return () => window.removeEventListener('scroll', updateActive);
-  }, []);
+  }, [sectionIds]);
 
   return (
     <nav
@@ -55,11 +69,19 @@ export function Navbar() {
       role="banner"
     >
       <div className="nw">
-        <Logo showText showTagline tagline="Enriching Children's Lives" className="flex-shrink-0" size="nav" />
+        <Logo
+          showText
+          showTagline
+          tagline={settings?.tagline ?? "Enriching Children's Lives"}
+          logoUrl={settings?.logoUrl}
+          siteName={settings?.siteName}
+          className="flex-shrink-0"
+          size="nav"
+        />
 
         <ul className="nl">
           {navItems.map((item) => {
-            const id = item.href.slice(1);
+            const id = item.href.replace(/^#/, '');
             const isActive = activeId === id;
             return (
               <li key={item.label}>
@@ -70,7 +92,7 @@ export function Navbar() {
         </ul>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="nd">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="nd">
             ❤ Donate Now
           </a>
           <button
@@ -88,13 +110,12 @@ export function Navbar() {
       </div>
 
       <div id="mn" className={mobileOpen ? 'open' : ''}>
-        <Link href="#about" className={activeId === 'about' ? 'active' : undefined} onClick={() => setMobileOpen(false)}>About Us</Link>
-        <Link href="#programs" className={activeId === 'programs' ? 'active' : undefined} onClick={() => setMobileOpen(false)}>Our Programs</Link>
-        <Link href="#stories" className={activeId === 'stories' ? 'active' : undefined} onClick={() => setMobileOpen(false)}>Impact</Link>
-        <Link href="#partners" className={activeId === 'partners' ? 'active' : undefined} onClick={() => setMobileOpen(false)}>Partners</Link>
-        <Link href="#leadership" className={activeId === 'leadership' ? 'active' : undefined} onClick={() => setMobileOpen(false)}>Leadership</Link>
-        <Link href="#contact" className={activeId === 'contact' ? 'active' : undefined} onClick={() => setMobileOpen(false)}>Contact</Link>
-        <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)} style={{ marginTop: 20, border: 'none', background: 'var(--rose)', color: 'white', borderRadius: 6, textAlign: 'center', padding: 16 }}>
+        {navItems.map((item) => (
+          <Link key={item.label} href={item.href} className={activeId === item.href.replace(/^#/, '') ? 'active' : undefined} onClick={() => setMobileOpen(false)}>
+            {item.label}
+          </Link>
+        ))}
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" onClick={() => setMobileOpen(false)} style={{ marginTop: 20, border: 'none', background: 'var(--rose)', color: 'white', borderRadius: 6, textAlign: 'center', padding: 16 }}>
           ❤ Donate Now
         </a>
       </div>

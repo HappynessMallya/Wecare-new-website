@@ -1,58 +1,47 @@
 'use client';
 
 import { Mail } from 'lucide-react';
+import type { Leadership as LeadershipData } from '@/lib/api';
 
-export function Leadership() {
+export function Leadership({ data }: { data?: LeadershipData | null } = {}) {
+  const eyebrow = data?.sectionEyebrow?.trim() || 'Our Leadership';
+  const sectionTitle = data?.sectionTitle?.trim() || 'Meet the';
+  const sectionHighlight = data?.sectionTitleHighlight?.trim() || 'Founder & CEO';
+  const roleLabel = data?.eyebrow?.trim() || 'Founder & Chief Executive Officer';
+  const name = data?.name?.trim() || 'Elizabeth';
+  const nameHighlight = data?.nameHighlight?.trim() || 'Maginga Thobias';
+  const photoUrl = data?.photoUrl?.trim() || '/ceo.png';
+  const badgeTitle = data?.badgeTitle?.trim() || 'WeCare\nFoundation';
+  const badgeRole = data?.badgeSubtitle?.trim() || 'CEO & Founder';
+  const paragraphs = data?.paragraphs?.length ? data.paragraphs : [
+    "Elizabeth Maginga Thobias is the visionary founder and CEO of WeCare Foundation. She established WeCare in 2022 with a singular mission: to ensure every child in Tanzania — regardless of their family's economic circumstances — has access to quality early childhood development, care, and learning.",
+    "Under her leadership, WeCare has grown from a community initiative in Mbeya into a nationally recognised ECD organisation operating across Mbeya and Mara regions, partnering with the Government of Tanzania, international organisations, and local communities to deliver sustainable impact for children and families.",
+    "Elizabeth leads WeCare's four core programs: Early Childhood Development, Quality Early Learning, Child Care in Public Spaces, and Early Life Skills Training — reaching over 5,000 parents and 800+ children across Tanzania.",
+  ];
+  const email = data?.email?.trim() || 'Wecarefoundation025@gmail.com';
+
   return (
     <section id="leadership">
       <div className="container">
         <div className="sh rv" style={{ marginBottom: 56 }}>
-          <p className="ey ct">Our Leadership</p>
-          <h2>
-            Meet the <span>Founder &amp; CEO</span>
-          </h2>
+          <p className="ey ct">{eyebrow}</p>
+          <h2>{sectionTitle} <span>{sectionHighlight}</span></h2>
         </div>
         <div className="ldr rv d1">
           <div className="ldr-photo">
-            <img
-              src="/ceo.png"
-              alt="Elizabeth Maginga Thobias – CEO WeCare Foundation"
-            />
+            <img src={photoUrl} alt={`${name} ${nameHighlight} – CEO WeCare Foundation`} />
             <div className="ldr-badge">
-              <strong>
-                WeCare
-                <br />
-                Foundation
-              </strong>
-              <small>CEO &amp; Founder</small>
+              <strong>{badgeTitle.replace('\n', '\n')}</strong>
+              <small>{badgeRole}</small>
             </div>
           </div>
           <div className="ldr-content">
-            <p className="ey">Founder &amp; Chief Executive Officer</p>
-            <h2>
-              Elizabeth <span>Maginga Thobias</span>
-            </h2>
-           
-            <p>
-              Elizabeth Maginga Thobias is the visionary founder and CEO of WeCare Foundation. She
-              established WeCare in 2022 with a singular mission: to ensure every child in Tanzania
-              — regardless of their family&apos;s economic circumstances — has access to quality
-              early childhood development, care, and learning.
-            </p>
-            <p>
-              Under her leadership, WeCare has grown from a community initiative in Mbeya into a
-              nationally recognised ECD organisation operating across Mbeya and Mara regions,
-              partnering with the Government of Tanzania, international organisations, and local
-              communities to deliver sustainable impact for children and families.
-            </p>
-            <p>
-              Elizabeth leads WeCare&apos;s four core programs: Early Childhood Development, Quality
-              Early Learning, Child Care in Public Spaces, and Early Life Skills Training — reaching
-              over 5,000 parents and 800+ children across Tanzania.
-            </p>
-            <a href="mailto:Wecarefoundation025@gmail.com" className="ldr-email">
+            <p className="ey">{roleLabel}</p>
+            <h2>{name} <span>{nameHighlight}</span></h2>
+            {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+            <a href={`mailto:${email}`} className="ldr-email">
               <Mail className="ldr-email-ico" size={16} aria-hidden />
-              Wecarefoundation025@gmail.com
+              {email}
             </a>
           </div>
         </div>

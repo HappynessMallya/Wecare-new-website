@@ -11,6 +11,7 @@ import {
 } from '@/lib/api';
 import type { GalleryItem } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { GALLERY_FALLBACK_IMAGES } from '@/lib/fallbacks';
 
 export default function AdminGalleryPage() {
   const [items, setItems] = useState<GalleryItem[]>([]);
@@ -100,6 +101,27 @@ export default function AdminGalleryPage() {
       {formTarget && (
         <GalleryItemForm initial={formTarget} onSave={handleSave} onCancel={closeForm} isEdit={!!editing} />
       )}
+
+      {/* Fallback images: shown on public site when API has no data; preview so you can remove from project */}
+      <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50/50 p-4">
+        <h3 className="mb-2 text-sm font-700 uppercase tracking-wider text-amber-800">Fallback images (code-only)</h3>
+        <p className="mb-3 text-xs text-amber-800/90">
+          Used on the public Gallery when the API returns no data. Remove these files from the project when no longer needed.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          {GALLERY_FALLBACK_IMAGES.map(({ path, label }) => (
+            <div key={path} className="w-28 overflow-hidden rounded-lg border border-amber-200 bg-white shadow-sm">
+              <div className="aspect-square bg-[var(--g100)]">
+                <img src={path} alt={label} className="h-full w-full object-cover" />
+              </div>
+              <div className="p-1.5 text-xs">
+                <p className="font-600 text-[var(--g800)] truncate" title={label}>{label}</p>
+                <p className="truncate text-[var(--g500)]" title={path}>{path}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {loading ? (
         <p className="text-[var(--g600)]">Loading…</p>

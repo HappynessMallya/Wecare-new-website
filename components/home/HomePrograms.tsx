@@ -1,11 +1,68 @@
 'use client';
 
-export function HomePrograms() {
+import { useMemo } from 'react';
+import type { Program, ProgramSection } from '@/lib/api';
+
+const DELAY = ['', 'd1', 'd2', 'd3'];
+const TAG_CLASS: Record<string, string> = { t1: 't1', t2: 't2', t3: 't3', t4: 't4' };
+
+export function HomePrograms({ section, programs: programsProp }: { section?: ProgramSection | null; programs?: Program[] | null } = {}) {
+  const programs = useMemo(() => programsProp?.length ? programsProp : null, [programsProp]);
+  const eyebrow = section?.eyebrow?.trim() || 'Our Program Focus Areas';
+  const title = section?.title?.trim() || 'Four Programs.';
+  const titleHighlight = section?.titleHighlight?.trim() || 'One Mission.';
+  const intro = section?.intro?.trim() || 'WeCare Foundation implements four evidence-based program areas — each designed to address a critical dimension of early childhood development, learning, and community wellbeing in Tanzania.';
+
+  if (programs?.length) {
+    return (
+      <section id="programs">
+        <div className="container">
+          <div className="sh rv">
+            <p className="ey ct">{eyebrow}</p>
+            <h2>{title} <span>{titleHighlight}</span></h2>
+            <p>{intro}</p>
+          </div>
+          <div className="pgrid">
+            {programs.map((prog, i) => (
+              <div key={prog.id} className={`prog rv ${DELAY[i] ?? ''}`}>
+                <div className="pimg">
+                  <img src={prog.imageUrl} alt={prog.imageAlt || prog.title} loading="lazy" />
+                  <div className="pov" />
+                  {prog.tagLabel && <span className={`ptag ${TAG_CLASS[prog.tagType] ?? 't1'}`}>{prog.tagLabel}</span>}
+                </div>
+                <div className="pb">
+                  {prog.regionBadge && <span className="rg-badge">📍 {prog.regionBadge}</span>}
+                  <h3>{prog.title}</h3>
+                  {prog.subtitle && <span className="psub">{prog.subtitle}</span>}
+                  <p dangerouslySetInnerHTML={{ __html: prog.body || '' }} />
+                  {prog.outcomes?.length ? (
+                    <ul className="pout">
+                      {prog.outcomes.filter(Boolean).map((o, j) => <li key={j}>{o}</li>)}
+                    </ul>
+                  ) : null}
+                </div>
+                <div className="pfoot">
+                  {prog.footerStat && (
+                    <div>
+                      <strong>{prog.footerStat}</strong>
+                      {prog.footerStatLabel && <small>{prog.footerStatLabel}</small>}
+                    </div>
+                  )}
+                  <a href={prog.ctaHref || '#contact'} className="plink">{prog.ctaLabel || 'Learn more'} →</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="programs">
       <div className="container">
         <div className="sh rv">
-          <p className="ey ct">Our Program Focus Areas</p>
+          <p className="ey ct">{eyebrow}</p>
           <h2>
             Four Programs. <span>One Mission.</span>
           </h2>

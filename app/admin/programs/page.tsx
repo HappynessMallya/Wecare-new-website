@@ -13,6 +13,7 @@ import {
 } from '@/lib/api';
 import type { Program, ProgramSection } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminProgramsPage() {
   const [section, setSection] = useState<Partial<ProgramSection>>({});
@@ -49,6 +50,7 @@ export default function AdminProgramsPage() {
         setPrograms((prev) => [...prev, created]);
         setMessage({ type: 'ok', text: 'Program added.' });
       }
+      await revalidatePublicSite();
       closeForm();
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
@@ -61,6 +63,7 @@ export default function AdminProgramsPage() {
       await deleteProgram(id);
       setPrograms((prev) => prev.filter((p) => p.id !== id));
       setMessage({ type: 'ok', text: 'Program deleted.' });
+      await revalidatePublicSite();
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
     }
@@ -71,12 +74,13 @@ export default function AdminProgramsPage() {
     try {
       await updateProgramSection(section);
       setMessage({ type: 'ok', text: 'Section header saved.' });
+      await revalidatePublicSite();
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
     }
   };
 
-  const formTarget = editingProgram ?? (creating ? { id: '', imageUrl: '', imageAlt: '', tagLabel: '', tagType: 't1', regionBadge: '', title: '', subtitle: '', body: '', outcomes: [''], footerStat: '', footerStatLabel: '', ctaLabel: 'Learn more', ctaHref: '#contact', order: 0 } : null);
+  const formTarget = editingProgram ?? (creating ? { id: '', imageUrl: '', imageAlt: '', tagLabel: '', tagType: 't1', regionBadge: '', title: '', subtitle: '', body: '', outcomes: [''], footerStat: '', footerStatLabel: '', ctaLabel: 'Learn more', ctaHref: '#contact', order: 0, isActive: true } : null);
 
   if (loading) {
     return (
@@ -191,6 +195,7 @@ function ProgramForm({
   const [footerStatLabel, setFooterStatLabel] = useState(initial.footerStatLabel);
   const [ctaLabel, setCtaLabel] = useState(initial.ctaLabel);
   const [ctaHref, setCtaHref] = useState(initial.ctaHref);
+  const [isActive, setIsActive] = useState(initial.isActive !== false);
 
   const addOutcome = () => setOutcomes((o) => [...o, '']);
   const removeOutcome = (i: number) => setOutcomes((o) => o.filter((_, idx) => idx !== i));
@@ -267,9 +272,16 @@ function ProgramForm({
             <input type="text" value={ctaHref} onChange={(e) => setCtaHref(e.target.value)} className="w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]" />
           </div>
         </div>
+        <div>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} className="rounded border-[var(--g400)]" />
+            <span className="text-sm font-600 text-[var(--g800)]">Show on public site (active)</span>
+          </label>
+          <p className="mt-0.5 text-xs text-[var(--g600)]">Uncheck to hide this program from the public site without deleting it.</p>
+        </div>
       </div>
       <div className="mt-4 flex gap-3">
-        <button type="button" onClick={() => onSave({ imageUrl, imageAlt, tagLabel, tagType, regionBadge, title, subtitle, body, outcomes: outcomesFiltered.length ? outcomesFiltered : [''], footerStat, footerStatLabel, ctaLabel, ctaHref })} className="rounded-lg bg-[var(--rose)] px-4 py-2 text-sm font-600 text-white hover:opacity-90">Save</button>
+        <button type="button" onClick={() => onSave({ imageUrl, imageAlt, tagLabel, tagType, regionBadge, title, subtitle, body, outcomes: outcomesFiltered.length ? outcomesFiltered : [''], footerStat, footerStatLabel, ctaLabel, ctaHref, isActive })} className="rounded-lg bg-[var(--rose)] px-4 py-2 text-sm font-600 text-white hover:opacity-90">Save</button>
         <button type="button" onClick={onCancel} className="rounded-lg border border-[var(--g400)]/40 px-4 py-2 text-sm font-600 text-[var(--g800)] hover:bg-[var(--g100)]">Cancel</button>
       </div>
     </div>

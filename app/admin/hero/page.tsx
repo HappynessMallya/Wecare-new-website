@@ -9,8 +9,11 @@ import {
   deleteHeroSlide,
   getApiErrorMessage,
 } from '@/lib/api';
+import Link from 'next/link';
 import type { HeroSlide } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
+import { HERO_FALLBACK_SLIDES } from '@/lib/fallbacks';
+import { revalidatePublicSite } from '@/lib/revalidate';
 
 export default function AdminHeroPage() {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
@@ -60,6 +63,7 @@ export default function AdminHeroPage() {
         setSlides((prev) => [...prev, created]);
         setMessage({ type: 'ok', text: 'Slide added.' });
       }
+      await revalidatePublicSite();
       closeForm();
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
@@ -72,6 +76,7 @@ export default function AdminHeroPage() {
       await deleteHeroSlide(id);
       setSlides((prev) => prev.filter((s) => s.id !== id));
       setMessage({ type: 'ok', text: 'Slide deleted.' });
+      await revalidatePublicSite();
     } catch (err) {
       setMessage({ type: 'err', text: getApiErrorMessage(err) });
     }
@@ -122,7 +127,40 @@ export default function AdminHeroPage() {
               isEdit={!!editing}
             />
           )}
+          {/* Fallback slides: shown on public site when API has no data; preview here so you can remove from project */}
+          <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-4">
+            <h3 className="mb-2 text-sm font-700 uppercase tracking-wider text-amber-800">Fallback slides (code-only)</h3>
+            <p className="mb-3 text-xs text-amber-800/90">
+              These are used on the public site only when the API returns no data. They live in the codebase (not the database). Preview below to remove the files from your project when you no longer need them.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {HERO_FALLBACK_SLIDES.map((s) => (
+                <div key={s.id} className="w-36 overflow-hidden rounded-lg border border-amber-200 bg-white shadow-sm">
+                  <div className="aspect-video bg-[var(--g100)]">
+                    <img src={s.imageUrl} alt={s.alt} className="h-full w-full object-cover" />
+                  </div>
+                  <div className="p-2 text-xs">
+                    <p className="font-600 text-[var(--g800)] truncate" title={s.title}>{s.title}</p>
+                    <p className="mt-0.5 truncate text-[var(--g500)]" title={s.imageUrl}>{s.imageUrl}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Why new slides might not show on public site */}
+          <div className="rounded-xl border border-[var(--blue)]/20 bg-[var(--blue-30)]/30 p-4">
+            <h3 className="mb-1 text-sm font-700 text-[var(--blue)]">Slides not showing on the public site?</h3>
+            <p className="text-sm text-[var(--g700)]">
+              The public site fetches slides without login. It tries <code className="rounded bg-white/60 px-1">/api/hero/slides</code> first, then <code className="rounded bg-white/60 px-1">/api/hero/slides/admin</code>. If both require auth, the request fails and the site shows the fallback slides above. Allow unauthenticated GET on one of these routes so new slides appear. When you save or delete a slide, the public site is revalidated so the next visit shows the update (no need to wait or refresh repeatedly).
+            </p>
+            <Link href="/#hero" target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sm font-600 text-[var(--blue)] hover:underline">
+              Open public site → Hero
+            </Link>
+          </div>
+
           <div className="rounded-xl border border-[var(--blue)]/10 bg-white shadow-sm overflow-hidden">
+            <h3 className="border-b border-[var(--blue)]/10 bg-[var(--off)] px-4 py-2 text-sm font-700 text-[var(--blue)]">Slides from API (saved in database)</h3>
             <ul className="divide-y divide-[var(--blue)]/10">
               {slides.map((s) => (
                 <li key={s.id} className="flex items-center gap-4 p-4">

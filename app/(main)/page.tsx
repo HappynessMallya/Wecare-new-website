@@ -12,23 +12,77 @@ import { HomeCTABanner } from '@/components/home/HomeCTABanner';
 import { HomeContact } from '@/components/HomeContact';
 import { NewsletterSection } from '@/components/NewsletterSection';
 import { WeCareScripts } from '@/components/WeCareScripts';
+import {
+  getHeroSlidesPublic,
+  getTickerItemsPublic,
+  getAboutPublic,
+  getImpactBarPublic,
+  getProgramSectionPublic,
+  getProgramsPublic,
+  getGalleryPublic,
+  getStoriesSectionPublic,
+  getStoriesPublic,
+  getPartnersSectionPublic,
+  getPartnersPublic,
+  getLeadershipPublic,
+  getCTAInvolvedPublic,
+  getCTABannerPublic,
+  getNewsletterPublic,
+  getContactSectionPublic,
+} from '@/lib/public-api';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [
+    heroSlides,
+    tickerItems,
+    about,
+    impactItems,
+    programSection,
+    programs,
+    gallery,
+    storiesSection,
+    stories,
+    partnersSection,
+    partners,
+    leadership,
+    ctaInvolved,
+    ctaBanner,
+    newsletter,
+    contactSection,
+  ] = await Promise.all([
+    getHeroSlidesPublic(),
+    getTickerItemsPublic(),
+    getAboutPublic(),
+    getImpactBarPublic(),
+    getProgramSectionPublic(),
+    getProgramsPublic(),
+    getGalleryPublic(),
+    getStoriesSectionPublic(),
+    getStoriesPublic(),
+    getPartnersSectionPublic(),
+    getPartnersPublic(),
+    getLeadershipPublic(),
+    getCTAInvolvedPublic(),
+    getCTABannerPublic(),
+    getNewsletterPublic(),
+    getContactSectionPublic(),
+  ]);
+
   return (
     <main id="main-content">
-      <Hero />
-      <SDGTicker />
-      <HomeAbout />
-      <ImpactBar />
-      <HomePrograms />
-      <HomeGallery />
-      <HomeStories />
-      <HomePartners />
-      <Leadership />
-      <HomeCTA />
-      <HomeCTABanner />
-      <NewsletterSection />
-      <HomeContact />
+      <Hero slides={heroSlides} />
+      <SDGTicker items={tickerItems} />
+      <HomeAbout data={about} />
+      <ImpactBar items={impactItems} />
+      <HomePrograms section={programSection} programs={programs} />
+      <HomeGallery items={gallery} />
+      <HomeStories section={storiesSection} stories={stories} />
+      <HomePartners section={partnersSection} partners={partners} />
+      <Leadership data={leadership} />
+      <HomeCTA data={ctaInvolved} />
+      <HomeCTABanner data={ctaBanner} />
+      <NewsletterSection data={newsletter} />
+      <HomeContact data={contactSection} />
       <WeCareScripts />
     </main>
   );

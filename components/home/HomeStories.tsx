@@ -55,6 +55,7 @@ function TestimonialCard({
           width={96}
           height={96}
           className="object-cover w-full h-full"
+          unoptimized={image.startsWith('http')}
         />
       </div>
       <div className="sct">
@@ -67,50 +68,56 @@ function TestimonialCard({
   );
 }
 
-export function HomeStories() {
+export function HomeStories({ section, stories: storiesProp }: { section?: import('@/lib/api').StoriesSection | null; stories?: import('@/lib/api').Story[] | null } = {}) {
+  const stories: Array<{ id: string; name: string; role: string; quote: string; imageUrl: string; imageAlt: string }> = storiesProp?.length
+    ? storiesProp
+    : testimonials.map((t, i) => ({ id: t.id, name: t.name, role: t.role, quote: t.quote, imageUrl: t.image, imageAlt: t.imageAlt, order: i }));
+  const eyebrow = section?.eyebrow?.trim() || 'Impact Stories';
+  const title = section?.title?.trim() || 'Real Change in';
+  const titleHighlight = section?.titleHighlight?.trim() || 'Real Communities';
+  const introItalic = section?.introItalic?.trim() || "Our school readiness program is a success story — WeCare kids are doing very well in primary school activities, attracting many parents to return for their children.";
+  const introParagraph = section?.introParagraph?.trim() || "WeCare's impact goes beyond statistics. Families in Mbeya and Mara regions are experiencing real transformation — in health literacy, child development, and school readiness.";
+  const approachTitle = section?.approachTitle?.trim() || '📊 Our Approach to Impact';
+  const approachBody = section?.approachBody?.trim() || "WeCare uses a collaborative approach engaging communities and stakeholders. We partner with governments, policy makers, and civil society to ensure our programs are evidence-based, community-owned, and sustainable across Tanzania.";
+
   return (
     <section id="stories">
       <div className="container">
         <div className="stg">
           <div className="stl rv">
-            <p className="ey">Impact Stories</p>
-            <h2>
-              Real Change in <span>Real Communities</span>
-            </h2>
-            <span className="stlit">
-              Our school readiness program is a success story — WeCare kids are doing very well in
-              primary school activities, attracting many parents to return for their children.
-            </span>
-            <p>
-              WeCare&apos;s impact goes beyond statistics. Families in Mbeya and Mara regions are
-              experiencing real transformation — in health literacy, child development, and school
-              readiness.
-            </p>
-            <div className="sdgtags">
-              <span className="sdgtag st1">🎯 SDG 4: Education</span>
-              <span className="sdgtag st2">💗 SDG 3: Health</span>
-              <span className="sdgtag st3">⚡ SDG 1: No Poverty</span>
-              <span className="sdgtag st4">🌊 SDG 17: Partnerships</span>
-            </div>
+            <p className="ey">{eyebrow}</p>
+            <h2>{title} <span>{titleHighlight}</span></h2>
+            <span className="stlit">{introItalic}</span>
+            <p>{introParagraph}</p>
+            {section?.sdgTags?.length ? (
+              <div className="sdgtags">
+                {section.sdgTags.map((tag, i) => (
+                  <span key={i} className={`sdgtag st${(i % 4) + 1}`}>{tag.icon} {tag.label}</span>
+                ))}
+              </div>
+            ) : (
+              <div className="sdgtags">
+                <span className="sdgtag st1">🎯 SDG 4: Education</span>
+                <span className="sdgtag st2">💗 SDG 3: Health</span>
+                <span className="sdgtag st3">⚡ SDG 1: No Poverty</span>
+                <span className="sdgtag st4">🌊 SDG 17: Partnerships</span>
+              </div>
+            )}
             <div className="mebox">
-              <h4>📊 Our Approach to Impact</h4>
-              <p>
-                WeCare uses a collaborative approach engaging communities and stakeholders. We
-                partner with governments, policy makers, and civil society to ensure our programs
-                are evidence-based, community-owned, and sustainable across Tanzania.
-              </p>
+              <h4>{approachTitle}</h4>
+              <p>{approachBody}</p>
             </div>
           </div>
           <div className="scards-ticker-wrap" aria-hidden>
             <div className="scards-ticker">
               <div className="scards-ticker-inner">
-                {testimonials.map((t) => (
-                  <TestimonialCard key={t.id} {...t} />
+                {stories.map((t) => (
+                  <TestimonialCard key={t.id} image={t.imageUrl} imageAlt={t.imageAlt} name={t.name} role={t.role} quote={t.quote} />
                 ))}
               </div>
               <div className="scards-ticker-inner">
-                {testimonials.map((t) => (
-                  <TestimonialCard key={`dup-${t.id}`} {...t} />
+                {stories.map((t) => (
+                  <TestimonialCard key={`dup-${t.id}`} image={t.imageUrl} imageAlt={t.imageAlt} name={t.name} role={t.role} quote={t.quote} />
                 ))}
               </div>
             </div>

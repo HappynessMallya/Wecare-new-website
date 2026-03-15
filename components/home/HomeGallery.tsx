@@ -1,28 +1,33 @@
 'use client';
 
+import { useMemo } from 'react';
 import Image from 'next/image';
+import type { GalleryItem } from '@/lib/api';
 
-const GALLERY_ITEMS = [
-  { src: '/parent-clinic.jpg', alt: 'WeCare parent clinic', label: 'Parent Clinic' },
-  { src: '/kids.jpg', alt: 'WeCare daycare and children', label: 'Daycare & Children' },
-  { src: '/parentclinic.jpg', alt: 'Parent engagement', label: 'Parent Engagement' },
-  { src: '/kids-at-work.jpg', alt: 'Child at WeCare program', label: 'Child at WeCare' },
-  { src: '/kids-planting.jpg', alt: 'WeCare life skills and environment', label: 'Life Skills & Environment' },
+const FALLBACK: GalleryItem[] = [
+  { id: '1', imageUrl: '/parent-clinic.jpg', alt: 'WeCare parent clinic', label: 'Parent Clinic', order: 0 },
+  { id: '2', imageUrl: '/kids.jpg', alt: 'WeCare daycare and children', label: 'Daycare & Children', order: 1 },
+  { id: '3', imageUrl: '/parentclinic.jpg', alt: 'Parent engagement', label: 'Parent Engagement', order: 2 },
+  { id: '4', imageUrl: '/kids-at-work.jpg', alt: 'Child at WeCare program', label: 'Child at WeCare', order: 3 },
+  { id: '5', imageUrl: '/kids-planting.jpg', alt: 'WeCare life skills and environment', label: 'Life Skills & Environment', order: 4 },
 ];
 
-export function HomeGallery() {
+export function HomeGallery({ items: itemsProp }: { items?: GalleryItem[] | null } = {}) {
+  const items = useMemo(() => itemsProp?.length ? itemsProp : FALLBACK, [itemsProp]);
+  const duplicated = useMemo(() => [...items, ...items], [items]);
   return (
     <section id="gallery">
       <div className="gallery-scroll-wrap">
         <div className="gstrip" aria-hidden>
-          {[...GALLERY_ITEMS, ...GALLERY_ITEMS].map((item, i) => (
-            <div key={i} className="gi">
+          {duplicated.map((item, i) => (
+            <div key={`${item.id}-${i}`} className="gi">
               <Image
-                src={item.src}
+                src={item.imageUrl}
                 alt={item.alt}
                 fill
                 sizes="(max-width: 768px) 50vw, 260px"
                 className="object-cover"
+                unoptimized={item.imageUrl.startsWith('http')}
               />
               <div className="giov">
                 <span>{item.label}</span>
