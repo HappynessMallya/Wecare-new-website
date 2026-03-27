@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Instagram, Facebook, Linkedin } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { SOCIAL_INSTAGRAM, SOCIAL_FACEBOOK, SOCIAL_LINKEDIN } from '@/lib/constants';
+import { normalizeInternalNavHref } from '@/lib/nav-hrefs';
 import { WHATSAPP_URL, CONTACT_PHONE } from '@/lib/constants';
 import type { Settings } from '@/lib/api';
 import type { FooterCopy, FooterLinks } from '@/lib/api';
@@ -76,7 +77,7 @@ export function Footer({
             <ul>
               {orgLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href}>{link.label}</Link>
+                  <Link href={normalizeInternalNavHref(link.href)}>{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -86,7 +87,7 @@ export function Footer({
             <ul>
               {programLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href}>{link.label}</Link>
+                  <Link href={normalizeInternalNavHref(link.href)}>{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -99,7 +100,7 @@ export function Footer({
                   {link.external ? (
                     <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
                   ) : (
-                    <Link href={link.href}>{link.label}</Link>
+                    <Link href={normalizeInternalNavHref(link.href)}>{link.label}</Link>
                   )}
                 </li>
               ))}

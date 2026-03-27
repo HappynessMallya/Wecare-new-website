@@ -10,7 +10,7 @@ export function HomeContact() {
       className="bg-white section-padding scroll-mt-24"
       aria-labelledby="home-contact-heading"
     >
-      <div className="mx-auto max-w-[1180px] px-7 grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)]">
+      <div className="mx-auto max-w-[1380px] px-7 grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.2fr)]">
         <div>
           <motion.p
             className="eyebrow"

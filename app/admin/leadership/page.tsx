@@ -9,14 +9,14 @@ import { revalidatePublicSite } from '@/lib/revalidate';
 
 const defaultLeadership: Partial<Leadership> = {
   sectionEyebrow: 'Our Leadership',
-  sectionTitle: 'Meet the Founder & CEO',
-  sectionTitleHighlight: 'Founder & CEO',
+  sectionTitle: 'Message from the',
+  sectionTitleHighlight: 'CEO',
   photoUrl: '/ceo.png',
   photoAlt: 'Elizabeth Maginga Thobias – CEO WeCare Foundation',
   badgeTitle: 'WeCare\nFoundation',
   badgeSubtitle: 'CEO & Founder',
   eyebrow: 'Founder & Chief Executive Officer',
-  name: 'Elizabeth Maginga Thobias',
+  name: 'Elizabeth',
   nameHighlight: 'Maginga Thobias',
   paragraphs: [
     'Elizabeth Maginga Thobias is the visionary founder and CEO...',

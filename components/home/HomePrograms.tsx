@@ -6,7 +6,15 @@ import type { Program, ProgramSection } from '@/lib/api';
 const DELAY = ['', 'd1', 'd2', 'd3'];
 const TAG_CLASS: Record<string, string> = { t1: 't1', t2: 't2', t3: 't3', t4: 't4' };
 
-export function HomePrograms({ section, programs: programsProp }: { section?: ProgramSection | null; programs?: Program[] | null } = {}) {
+export function HomePrograms({
+  section,
+  programs: programsProp,
+  linkToDetail = false,
+}: {
+  section?: ProgramSection | null;
+  programs?: Program[] | null;
+  linkToDetail?: boolean;
+} = {}) {
   const programs = useMemo(() => programsProp?.length ? programsProp : null, [programsProp]);
   const eyebrow = section?.eyebrow?.trim() || 'Our Program Focus Areas';
   const title = section?.title?.trim() || 'Four Programs.';
@@ -48,7 +56,12 @@ export function HomePrograms({ section, programs: programsProp }: { section?: Pr
                       {prog.footerStatLabel && <small>{prog.footerStatLabel}</small>}
                     </div>
                   )}
-                  <a href={prog.ctaHref || '#contact'} className="plink">{prog.ctaLabel || 'Learn more'} →</a>
+                  <a
+                    href={linkToDetail ? `/programs/${prog.id}` : (prog.ctaHref || '#contact')}
+                    className="plink"
+                  >
+                    {prog.ctaLabel || 'Learn more'} →
+                  </a>
                 </div>
               </div>
             ))}

@@ -76,7 +76,10 @@ export default function AdminNavigationPage() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-800 text-[var(--blue)]">Navigation</h1>
-        <p className="mt-1 text-sm text-[var(--g600)]">Main nav links. API: GET/PUT /api/nav.</p>
+        <p className="mt-1 text-sm text-[var(--g600)]">
+          Main nav links (API: GET/PUT /api/nav). Header currently uses: Home /#hero, About Us /#about, Programs
+          /programs, Impact /#stories, Partners /#partners, Contact /#contact.
+        </p>
       </div>
 
       {message && (

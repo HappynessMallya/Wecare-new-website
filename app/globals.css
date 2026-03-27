@@ -7,12 +7,9 @@
 /* Full WeCare 2026 design from wecare-foundation.html — loaded after Tailwind so it takes precedence */
 @import '../styles/wecare-foundation.css';
 
-/* Hero headline: exactly two lines, no wrap; pink "Future" */
-#hero #hero-headline > span { display: block !important; white-space: nowrap !important; }
-#hero #hero-headline span span { color: #E6399A !important; }
-@media (max-width: 480px) {
-  #hero #hero-headline > span { white-space: normal !important; }
-}
+/* Hero headline: single line; pink only the highlighted word */
+#hero #hero-headline { white-space: nowrap !important; }
+#hero #hero-headline .accent { color: #E6399A !important; }
 
 @layer utilities {
   .text-balance { text-wrap: balance; }

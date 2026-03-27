@@ -1,127 +1,160 @@
 'use client';
 
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import type { StoriesSection, Story } from '@/lib/api';
 
-// CMS-friendly: map your feedback/stories from the CMS into this shape
-const testimonials = [
+const AUTOPLAY_MS = 7000;
+
+const STORY_FALLBACKS: Story[] = [
   {
     id: '1',
-    image: '/parentclinic.jpg',
-    imageAlt: 'Parent testimonial',
     name: 'Mama Zawadi',
-    role: 'Market Vendor & Parent · Mbeya',
+    role: 'Market vendor & parent · Mbeya',
     quote:
-      "Since WeCare opened its daycare near Mwanjelwa market, I can work with peace of mind. My child is learning and being cared for while I run my business. This is the solution we needed as working mothers.",
+      'Since WeCare opened its daycare near Mwanjelwa market, I can work with peace of mind. My child is learning and being cared for while I run my business.',
+    imageUrl: '/parentclinic.jpg',
+    imageAlt: 'Parent testimonial',
+    order: 0,
   },
   {
     id: '2',
-    image: '/person-back.jpg',
-    imageAlt: 'Parent clinic session participant',
     name: 'James Mwamba',
-    role: 'Father of 2 · Mara Region',
+    role: 'Father of two · Mara',
     quote:
-      "The parent clinic sessions taught me so much about responsive caregiving and nutrition. I now understand how to support my children's development from the earliest days — things I never knew before WeCare came to our community.",
+      'The parent clinic sessions taught me about responsive caregiving and nutrition. I understand how to support my children’s development in ways I never knew before WeCare.',
+    imageUrl: '/person-back.jpg',
+    imageAlt: 'Parent at clinic session',
+    order: 1,
   },
   {
     id: '3',
-    image: '/kids-at-work.jpg',
-    imageAlt: 'Primary school teacher testimony',
     name: 'Teacher Neema Shayo',
-    role: 'Primary School Teacher · Mbeya',
+    role: 'Primary school teacher · Mbeya',
     quote:
-      "WeCare children arrive at primary school already prepared. They are curious, socially confident, and ready to learn. The school readiness program has made a visible difference — these children outperform their peers from the very first week.",
+      'WeCare children arrive at primary school prepared — curious, confident, and ready to learn. The difference is visible from the first week.',
+    imageUrl: '/kids-at-work.jpg',
+    imageAlt: 'Teacher testimonial',
+    order: 2,
   },
 ];
 
-function TestimonialCard({
-  image,
-  imageAlt,
-  name,
-  role,
-  quote,
-}: {
-  image: string;
-  imageAlt: string;
-  name: string;
-  role: string;
-  quote: string;
-}) {
-  return (
-    <div className="scard">
-      <div className="scp">
-        <Image
-          src={image}
-          alt={imageAlt}
-          width={96}
-          height={96}
-          className="object-cover w-full h-full"
-          unoptimized={image.startsWith('http')}
-        />
-      </div>
-      <div className="sct">
-        <span className="sqm">&quot;</span>
-        <div className="snm">{name}</div>
-        <span className="srl">{role}</span>
-        <p className="stxt">{quote}</p>
-      </div>
-    </div>
-  );
+function sortStories(list: Story[]) {
+  return [...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }
 
-export function HomeStories({ section, stories: storiesProp }: { section?: import('@/lib/api').StoriesSection | null; stories?: import('@/lib/api').Story[] | null } = {}) {
-  const stories: Array<{ id: string; name: string; role: string; quote: string; imageUrl: string; imageAlt: string }> = storiesProp?.length
-    ? storiesProp
-    : testimonials.map((t, i) => ({ id: t.id, name: t.name, role: t.role, quote: t.quote, imageUrl: t.image, imageAlt: t.imageAlt, order: i }));
-  const eyebrow = section?.eyebrow?.trim() || 'Impact Stories';
-  const title = section?.title?.trim() || 'Real Change in';
-  const titleHighlight = section?.titleHighlight?.trim() || 'Real Communities';
-  const introItalic = section?.introItalic?.trim() || "Our school readiness program is a success story — WeCare kids are doing very well in primary school activities, attracting many parents to return for their children.";
-  const introParagraph = section?.introParagraph?.trim() || "WeCare's impact goes beyond statistics. Families in Mbeya and Mara regions are experiencing real transformation — in health literacy, child development, and school readiness.";
-  const approachTitle = section?.approachTitle?.trim() || '📊 Our Approach to Impact';
-  const approachBody = section?.approachBody?.trim() || "WeCare uses a collaborative approach engaging communities and stakeholders. We partner with governments, policy makers, and civil society to ensure our programs are evidence-based, community-owned, and sustainable across Tanzania.";
+export function HomeStories({
+  section,
+  stories: storiesProp,
+}: { section?: StoriesSection | null; stories?: Story[] | null } = {}) {
+  const items = useMemo(() => {
+    if (storiesProp?.length) return sortStories(storiesProp);
+    return STORY_FALLBACKS;
+  }, [storiesProp]);
+
+  const [index, setIndex] = useState(0);
+  const [autoplayEpoch, setAutoplayEpoch] = useState(0);
+
+  const n = items.length;
+  const normalize = useCallback(
+    (i: number) => {
+      let x = i;
+      if (x < 0) x = n - 1;
+      if (x >= n) x = 0;
+      return x;
+    },
+    [n],
+  );
+
+  const go = useCallback(
+    (i: number) => {
+      setIndex(normalize(i));
+      setAutoplayEpoch((e) => e + 1);
+    },
+    [normalize],
+  );
+
+  const prev = useCallback(() => go(index - 1), [go, index]);
+  const next = useCallback(() => go(index + 1), [go, index]);
+
+  useEffect(() => {
+    if (n <= 1) return;
+    const id = window.setInterval(() => {
+      setIndex((prevI) => normalize(prevI + 1));
+    }, AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [n, autoplayEpoch, normalize]);
+
+  const eyebrow = section?.eyebrow?.trim() || 'Voices from the community';
+  const title = section?.title?.trim() || 'What people say';
+  const titleHighlight = section?.titleHighlight?.trim() || 'about WeCare';
+
+  const s = items[index];
+  const showNav = n > 1;
+
+  if (!s) return null;
 
   return (
-    <section id="stories">
+    <section id="stories" className="impact-stories" aria-roledescription="carousel" aria-label="Impact stories">
       <div className="container">
-        <div className="stg">
-          <div className="stl rv">
-            <p className="ey">{eyebrow}</p>
-            <h2>{title} <span>{titleHighlight}</span></h2>
-            <span className="stlit">{introItalic}</span>
-            <p>{introParagraph}</p>
-            {section?.sdgTags?.length ? (
-              <div className="sdgtags">
-                {section.sdgTags.map((tag, i) => (
-                  <span key={i} className={`sdgtag st${(i % 4) + 1}`}>{tag.icon} {tag.label}</span>
-                ))}
-              </div>
-            ) : (
-              <div className="sdgtags">
-                <span className="sdgtag st1">🎯 SDG 4: Education</span>
-                <span className="sdgtag st2">💗 SDG 3: Health</span>
-                <span className="sdgtag st3">⚡ SDG 1: No Poverty</span>
-                <span className="sdgtag st4">🌊 SDG 17: Partnerships</span>
-              </div>
-            )}
-            <div className="mebox">
-              <h4>{approachTitle}</h4>
-              <p>{approachBody}</p>
+        <header className="is-head">
+          <p className="ey is-head-ey">{eyebrow}</p>
+          <h2 className="is-title">
+            {title} <span>{titleHighlight}</span>
+          </h2>
+        </header>
+      </div>
+
+      <div className="is-panel">
+        <div className="container is-panel-inner">
+          {showNav && (
+            <div className="is-nav">
+              <button type="button" className="is-nav-btn" onClick={prev} aria-label="Previous story">
+                <ChevronLeft size={24} strokeWidth={2} aria-hidden />
+              </button>
+              <button type="button" className="is-nav-btn" onClick={next} aria-label="Next story">
+                <ChevronRight size={24} strokeWidth={2} aria-hidden />
+              </button>
             </div>
-          </div>
-          <div className="scards-ticker-wrap" aria-hidden>
-            <div className="scards-ticker">
-              <div className="scards-ticker-inner">
-                {stories.map((t) => (
-                  <TestimonialCard key={t.id} image={t.imageUrl} imageAlt={t.imageAlt} name={t.name} role={t.role} quote={t.quote} />
-                ))}
-              </div>
-              <div className="scards-ticker-inner">
-                {stories.map((t) => (
-                  <TestimonialCard key={`dup-${t.id}`} image={t.imageUrl} imageAlt={t.imageAlt} name={t.name} role={t.role} quote={t.quote} />
-                ))}
-              </div>
+          )}
+
+          <article className="is-slide" aria-live="polite">
+            <div className="is-photo">
+              <Image
+                src={s.imageUrl}
+                alt={s.imageAlt || `${s.name} — community voice`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 280px"
+                unoptimized={s.imageUrl.startsWith('http')}
+              />
             </div>
-          </div>
+            <div className="is-quote-wrap">
+              <blockquote className="is-quote">
+                <p>&ldquo;{s.quote}&rdquo;</p>
+              </blockquote>
+              <footer className="is-attrib">
+                <strong className="is-name">{s.name}</strong>
+                <span className="is-role">{s.role}</span>
+              </footer>
+            </div>
+          </article>
+
+          {showNav && (
+            <div className="is-dots" role="navigation" aria-label="Stories">
+              {items.map((item, i) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`is-dot ${i === index ? 'active' : ''}`}
+                  onClick={() => go(i)}
+                  aria-label={`Show story ${i + 1}`}
+                  aria-current={i === index ? 'true' : undefined}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

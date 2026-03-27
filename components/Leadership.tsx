@@ -1,47 +1,52 @@
 'use client';
 
+import Image from 'next/image';
 import { Mail } from 'lucide-react';
 import type { Leadership as LeadershipData } from '@/lib/api';
 
+const DEFAULT_INTRO =
+  "Elizabeth Maginga Thobias founded WeCare Foundation in 2022 to ensure every child in Tanzania has access to quality early childhood development, care, and learning — working with communities and partners across Mbeya and Mara.";
+
 export function Leadership({ data }: { data?: LeadershipData | null } = {}) {
-  const eyebrow = data?.sectionEyebrow?.trim() || 'Our Leadership';
-  const sectionTitle = data?.sectionTitle?.trim() || 'Meet the';
-  const sectionHighlight = data?.sectionTitleHighlight?.trim() || 'Founder & CEO';
+  const heading =
+    [data?.sectionTitle?.trim(), data?.sectionTitleHighlight?.trim()].filter(Boolean).join(' ') ||
+    'Message from the CEO';
   const roleLabel = data?.eyebrow?.trim() || 'Founder & Chief Executive Officer';
   const name = data?.name?.trim() || 'Elizabeth';
   const nameHighlight = data?.nameHighlight?.trim() || 'Maginga Thobias';
   const photoUrl = data?.photoUrl?.trim() || '/ceo.png';
-  const photoAlt = data?.photoAlt?.trim() || `${name} ${nameHighlight} – CEO WeCare Foundation`;
-  const badgeTitle = 'WeCare\nFoundation';
-  const badgeRole = 'CEO & Founder';
-  const paragraphs = data?.paragraphs?.length ? data.paragraphs : [
-    "Elizabeth Maginga Thobias is the visionary founder and CEO of WeCare Foundation. She established WeCare in 2022 with a singular mission: to ensure every child in Tanzania — regardless of their family's economic circumstances — has access to quality early childhood development, care, and learning.",
-    "Under her leadership, WeCare has grown from a community initiative in Mbeya into a nationally recognised ECD organisation operating across Mbeya and Mara regions, partnering with the Government of Tanzania, international organisations, and local communities to deliver sustainable impact for children and families.",
-    "Elizabeth leads WeCare's four core programs: Early Childhood Development, Quality Early Learning, Child Care in Public Spaces, and Early Life Skills Training — reaching over 5,000 parents and 800+ children across Tanzania.",
-  ];
+  const photoAlt = data?.photoAlt?.trim() || `${name} ${nameHighlight} – CEO, WeCare Foundation`;
+  const message =
+    data?.paragraphs?.[0]?.trim() ||
+    DEFAULT_INTRO;
   const email = data?.email?.trim() || 'Wecarefoundation025@gmail.com';
 
   return (
-    <section id="leadership">
+    <section id="leadership" className="ceo-section" aria-labelledby="ceo-heading">
       <div className="container">
-        <div className="sh rv" style={{ marginBottom: 56 }}>
-          <p className="ey ct">{eyebrow}</p>
-          <h2>{sectionTitle} <span>{sectionHighlight}</span></h2>
-        </div>
-        <div className="ldr rv d1">
-          <div className="ldr-photo">
-            <img src={photoUrl} alt={photoAlt} />
-            <div className="ldr-badge">
-              <strong>{badgeTitle.replace('\n', '\n')}</strong>
-              <small>{badgeRole}</small>
-            </div>
+        <h2 id="ceo-heading" className="ceo-heading">
+          {heading}
+        </h2>
+        <div className="ceo-card rv d1">
+          <div className="ceo-photo-wrap">
+            <Image
+              src={photoUrl}
+              alt={photoAlt}
+              fill
+              sizes="(max-width: 1024px) 160px, 200px"
+              className="ceo-photo"
+              unoptimized={photoUrl.startsWith('http')}
+            />
           </div>
-          <div className="ldr-content">
-            <p className="ey">{roleLabel}</p>
-            <h2>{name} <span>{nameHighlight}</span></h2>
-            {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
-            <a href={`mailto:${email}`} className="ldr-email">
-              <Mail className="ldr-email-ico" size={16} aria-hidden />
+          <div className="ceo-body">
+            <p className="ceo-role">{roleLabel}</p>
+            <p className="ceo-name">
+              <span className="ceo-name-main">{name}</span>{' '}
+              <span className="ceo-name-highlight">{nameHighlight}</span>
+            </p>
+            <p className="ceo-message">{message}</p>
+            <a href={`mailto:${email}`} className="ceo-email">
+              <Mail className="ceo-email-ico" size={15} aria-hidden />
               {email}
             </a>
           </div>

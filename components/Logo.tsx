@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { normalizeInternalNavHref } from '@/lib/nav-hrefs';
 
 const LOGO_SIZE = { default: 52, nav: 62 } as const;
 
@@ -59,7 +60,7 @@ export function Logo({
       );
     }
     return (
-      <Link href="#hero" className={cn(baseClass, 'nlogo')}>
+      <Link href={normalizeInternalNavHref('#hero')} className={cn(baseClass, 'nlogo')}>
         {logoImage}
         {textBlock}
       </Link>

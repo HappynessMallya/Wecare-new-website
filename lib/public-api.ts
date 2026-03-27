@@ -25,6 +25,7 @@ import type {
   FooterCopy,
   FooterLinks,
 } from '@/lib/api';
+import { PROGRAMS_FALLBACK, PROGRAMS_SECTION_FALLBACK } from '@/lib/fallbacks';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 const IS_DEV = process.env.NODE_ENV === 'development';
@@ -78,13 +79,14 @@ export async function getImpactBarPublic(): Promise<ImpactItem[] | null> {
 }
 
 export async function getProgramSectionPublic(): Promise<ProgramSection | null> {
-  return publicGet<ProgramSection>('/api/programs/section', 'programs');
+  return (await publicGet<ProgramSection>('/api/programs/section', 'programs')) ?? PROGRAMS_SECTION_FALLBACK;
 }
 
 export async function getProgramsPublic(): Promise<Program[] | null> {
   const data = await publicGet<Program[]>('/api/programs/admin', 'programs');
-  if (!Array.isArray(data)) return null;
-  return data.filter((p) => p.isActive !== false).sort((a, b) => a.order - b.order);
+  if (!Array.isArray(data) || !data.length) return PROGRAMS_FALLBACK;
+  const active = data.filter((p) => p.isActive !== false).sort((a, b) => a.order - b.order);
+  return active.length ? active : PROGRAMS_FALLBACK;
 }
 
 export async function getGalleryPublic(): Promise<GalleryItem[] | null> {
