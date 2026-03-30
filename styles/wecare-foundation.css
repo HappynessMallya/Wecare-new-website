@@ -254,7 +254,7 @@ img { display: block; }
 .hero-bg-single { position: absolute; inset: 0; z-index: 0; }
 .hero-bg-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease-in-out; }
 .hero-bg-slide.active { opacity: 1; }
-.hero-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(105deg, rgba(6,21,74,.52) 0%, rgba(10,52,135,.35) 45%, rgba(10,52,135,.08) 100%); }
+.hero-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(105deg, rgba(6,21,74,.62) 0%, rgba(10,52,135,.42) 45%, rgba(10,52,135,.15) 100%); }
 .hero-blobs { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
 .hero-blobs::before { content: ''; position: absolute; top: -80px; right: -80px; width: 600px; height: 600px; border-radius: 50%; border: 1px solid rgba(230,57,154,0.2); }
 .hero-blobs::after { content: ''; position: absolute; bottom: -120px; right: 15%; width: 400px; height: 400px; border-radius: 50%; border: 1px solid rgba(37,171,236,0.18); }
