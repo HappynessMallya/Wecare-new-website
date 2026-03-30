@@ -12,7 +12,7 @@ export async function revalidatePublicSite() {
   const tags = [
     'settings', 'hero', 'ticker', 'about', 'impact', 'programs',
     'gallery', 'stories', 'partners', 'leadership', 'cta',
-    'newsletter', 'contact', 'nav', 'footer',
+    'newsletter', 'contact', 'nav', 'footer', 'team',
   ] as const;
   tags.forEach((t) => revalidateTag(t));
   revalidatePath('/', 'layout');
@@ -26,7 +26,7 @@ export async function revalidatePublicSite() {
 export async function revalidateSection(
   tag: 'settings' | 'hero' | 'ticker' | 'about' | 'impact' | 'programs' |
        'gallery' | 'stories' | 'partners' | 'leadership' | 'cta' |
-       'newsletter' | 'contact' | 'nav' | 'footer'
+       'newsletter' | 'contact' | 'nav' | 'footer' | 'team'
 ) {
   revalidateTag(tag);
   revalidatePath('/', 'page');

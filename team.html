@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Team — WeCare Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --rose:#E6399A; --rose-dark:#c52d86;
+      --blue:#0A3487; --blue-dark:#06154A; --blue-light:#EEF2FF;
+      --orange:#df4917; --azure:#25abec;
+      --white:#ffffff; --off-white:#f9f8f6; --light-gray:#f3f4f6;
+      --body:#4b5563; --heading:#1f2937;
+      --font:'Montserrat',sans-serif;
+      --container:1380px;
+      --radius-sm:8px; --radius-md:12px; --radius-lg:20px; --radius-xl:28px;
+      --shadow-sm:0 2px 12px rgba(10,52,135,0.07);
+      --shadow-md:0 8px 32px rgba(10,52,135,0.10);
+      --shadow-lg:0 20px 60px rgba(10,52,135,0.14);
+      --transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:var(--font); color:var(--body); background:var(--white); line-height:1.7; overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+    button { font-family:var(--font); cursor:pointer; border:none; outline:none; }
+
+    /* SHARED NAV */
+    .nav { position:fixed; top:0; left:0; right:0; z-index:500; height:72px; background:rgba(255,255,255,0.96); backdrop-filter:blur(16px); border-bottom:1px solid rgba(10,52,135,0.07); transition:var(--transition); }
+    .nav.scrolled { box-shadow:0 4px 24px rgba(10,52,135,0.08); }
+    .nav-inner { max-width:var(--container); margin:0 auto; padding:0 60px; height:100%; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { display:flex; align-items:center; gap:10px; }
+    .logo-mark { width:38px; height:38px; border-radius:9px; background:var(--rose); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:16px; box-shadow:0 4px 12px rgba(230,57,154,0.35); }
+    .logo-text { font-weight:800; font-size:16px; color:var(--blue); letter-spacing:-0.4px; }
+    .logo-text span { color:var(--rose); }
+    .nav-links { display:flex; align-items:center; gap:6px; }
+    .nav-link { font-size:13px; font-weight:600; color:var(--heading); padding:8px 14px; border-radius:var(--radius-sm); transition:var(--transition); }
+    .nav-link:hover, .nav-link.active { color:var(--rose); background:rgba(230,57,154,0.07); }
+    .nav-dropdown { position:relative; }
+    .nav-dropdown-btn { font-size:13px; font-weight:600; color:var(--heading); padding:8px 14px; border-radius:var(--radius-sm); background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:5px; font-family:var(--font); transition:var(--transition); }
+    .nav-dropdown-btn:hover { color:var(--rose); background:rgba(230,57,154,0.07); }
+    .chevron { transition:transform 0.2s; font-size:10px; }
+    .nav-dropdown:hover .chevron { transform:rotate(180deg); }
+    .dropdown-menu { position:absolute; top:calc(100% + 8px); left:0; background:var(--white); border:1px solid rgba(10,52,135,0.08); border-radius:var(--radius-md); padding:8px; min-width:280px; box-shadow:var(--shadow-lg); opacity:0; visibility:hidden; transform:translateY(-8px); transition:var(--transition); }
+    .nav-dropdown:hover .dropdown-menu { opacity:1; visibility:visible; transform:translateY(0); }
+    .dropdown-item { display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:var(--radius-sm); font-size:13px; font-weight:600; color:var(--heading); transition:var(--transition); }
+    .dropdown-item:hover { background:rgba(230,57,154,0.06); color:var(--rose); }
+    .dropdown-item-icon { width:30px; height:30px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .nav-cta { background:var(--rose); color:#fff; border-radius:50px; padding:10px 22px; font-size:13px; font-weight:700; box-shadow:0 4px 16px rgba(230,57,154,0.3); transition:var(--transition); margin-left:8px; }
+    .nav-cta:hover { background:var(--rose-dark); transform:translateY(-1px); }
+
+    /* TEAM PAGE HERO */
+    .team-hero {
+      padding-top:72px;
+      background:linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 60%, #1245b8 100%);
+      position:relative; overflow:hidden;
+    }
+    .team-hero-bg {
+      position:absolute; inset:0;
+      background-image: url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1600&q=80&auto=format&fit=crop');
+      background-size:cover; background-position:center top;
+      opacity:0.12;
+    }
+    .team-hero-pattern {
+      position:absolute; inset:0;
+      background-image:radial-gradient(circle, rgba(255,255,255,0.04) 1.5px, transparent 1.5px);
+      background-size:32px 32px;
+    }
+    .team-hero-blobs::before {
+      content:''; position:absolute; top:-100px; right:-100px;
+      width:500px; height:500px; border-radius:50%;
+      border:1px solid rgba(230,57,154,0.15);
+    }
+    .team-hero-blobs::after {
+      content:''; position:absolute; bottom:-80px; left:15%;
+      width:350px; height:350px; border-radius:50%;
+      border:1px solid rgba(37,171,236,0.12);
+    }
+    .team-hero-inner {
+      position:relative; z-index:2;
+      max-width:var(--container); margin:0 auto; padding:88px 60px 80px;
+      text-align:center;
+    }
+    .team-hero-eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(230,57,154,0.18); border:1px solid rgba(230,57,154,0.3);
+      border-radius:50px; padding:7px 18px;
+      font-size:11px; font-weight:700; letter-spacing:1.5px;
+      color:#f48dc8; text-transform:uppercase; margin-bottom:24px;
+    }
+    .team-hero-title { font-size:clamp(36px,5vw,64px); font-weight:900; color:#fff; letter-spacing:-2px; line-height:1.08; margin-bottom:18px; }
+    .team-hero-title .accent { color:var(--rose); }
+    .team-hero-sub { font-size:18px; color:rgba(255,255,255,0.65); max-width:560px; margin:0 auto; line-height:1.65; }
+
+    /* LEADERSHIP SECTION */
+    .team-section { padding:88px 0; }
+    .team-section:nth-child(even) { background:var(--off-white); }
+    .team-section:nth-child(odd) { background:var(--white); }
+    .team-inner { max-width:var(--container); margin:0 auto; padding:0 60px; }
+    .team-section-header { margin-bottom:52px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--rose); margin-bottom:14px; }
+    .eyebrow::before { content:''; display:block; width:28px; height:2.5px; background:var(--rose); border-radius:2px; }
+    .section-title { font-size:clamp(26px,3vw,42px); font-weight:800; color:var(--heading); letter-spacing:-1px; line-height:1.15; }
+
+    /* FEATURED LEADER CARD */
+    .leader-card {
+      display:grid; grid-template-columns:320px 1fr; gap:56px;
+      background:var(--white); border-radius:var(--radius-xl);
+      padding:48px; border:1px solid rgba(10,52,135,0.08);
+      box-shadow:var(--shadow-lg); align-items:start;
+      transition:var(--transition);
+      margin-bottom:24px;
+    }
+    .leader-card:hover { box-shadow:0 24px 72px rgba(10,52,135,0.15); }
+    .leader-img-wrap { position:relative; }
+    .leader-img {
+      width:100%; aspect-ratio:3/4; border-radius:var(--radius-lg);
+      object-fit:cover; background-size:cover; background-position:center top;
+    }
+    .leader-img-founder {
+      background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop');
+    }
+    .leader-img-director {
+      background-image:url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80&auto=format&fit=crop');
+    }
+    .leader-badge {
+      position:absolute; bottom:-16px; left:24px;
+      background:var(--rose); color:#fff; border-radius:50px;
+      padding:8px 18px; font-size:12px; font-weight:700;
+      box-shadow:0 4px 16px rgba(230,57,154,0.4);
+      white-space:nowrap;
+    }
+    .leader-content { padding-top:8px; }
+    .leader-role { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--rose); margin-bottom:8px; }
+    .leader-name { font-size:clamp(22px,2.5vw,34px); font-weight:900; color:var(--blue); letter-spacing:-1px; line-height:1.1; margin-bottom:20px; }
+    .leader-bio { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:24px; }
+    .leader-divider { width:40px; height:3px; background:var(--rose); border-radius:2px; margin-bottom:24px; }
+    .leader-meta { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+    .leader-meta-row { display:flex; align-items:center; gap:10px; }
+    .leader-meta-icon { width:32px; height:32px; border-radius:7px; background:var(--light-gray); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .leader-meta-label { font-size:11px; color:var(--body); font-weight:600; letter-spacing:0.5px; text-transform:uppercase; }
+    .leader-meta-val { font-size:14px; font-weight:700; color:var(--heading); }
+    .leader-links { display:flex; gap:10px; }
+    .leader-link-btn {
+      display:inline-flex; align-items:center; gap:7px;
+      padding:10px 18px; border-radius:var(--radius-sm);
+      font-size:13px; font-weight:700; transition:var(--transition);
+    }
+    .leader-link-btn.primary { background:var(--blue); color:#fff; }
+    .leader-link-btn.primary:hover { background:var(--blue-dark); }
+    .leader-link-btn.secondary { background:var(--light-gray); color:var(--heading); }
+    .leader-link-btn.secondary:hover { background:var(--rose); color:#fff; }
+
+    /* TEAM GRID — for founders & leaders */
+    .team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .team-card {
+      background:var(--white); border-radius:var(--radius-lg);
+      border:1px solid rgba(10,52,135,0.08);
+      overflow:hidden; transition:var(--transition); cursor:pointer;
+    }
+    .team-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-lg); }
+    .team-card-img {
+      width:100%; aspect-ratio:4/3;
+      background-size:cover; background-position:center top;
+    }
+    .team-card-img.img-1 { background-image:url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&q=80&auto=format&fit=crop'); }
+    .team-card-img.img-2 { background-image:url('https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80&auto=format&fit=crop'); }
+    .team-card-img.img-3 { background-image:url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop'); }
+    .team-card-img.img-4 { background-image:url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80&auto=format&fit=crop'); }
+    .team-card-img.img-5 { background-image:url('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80&auto=format&fit=crop'); }
+    .team-card-img.img-6 { background-image:url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80&auto=format&fit=crop'); }
+    .team-card-body { padding:24px; }
+    .team-card-role { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--rose); margin-bottom:6px; }
+    .team-card-name { font-size:18px; font-weight:800; color:var(--heading); letter-spacing:-0.4px; margin-bottom:10px; }
+    .team-card-bio { font-size:13px; color:var(--body); line-height:1.7; margin-bottom:16px; }
+    .team-card-region {
+      display:inline-flex; align-items:center; gap:5px;
+      background:var(--blue-light); color:var(--blue);
+      border-radius:50px; padding:5px 12px; font-size:11px; font-weight:700;
+      margin-bottom:16px;
+    }
+    .team-card-links { display:flex; gap:8px; }
+    .team-card-link-btn {
+      padding:8px 14px; border-radius:var(--radius-sm);
+      font-size:12px; font-weight:700; transition:var(--transition);
+    }
+    .team-card-link-btn.li { background:var(--light-gray); color:var(--heading); }
+    .team-card-link-btn.li:hover { background:#0A66C2; color:#fff; }
+    .team-card-link-btn.email { background:rgba(230,57,154,0.1); color:var(--rose); }
+    .team-card-link-btn.email:hover { background:var(--rose); color:#fff; }
+
+    /* SCHOOL LEADERS special section */
+    .school-leaders { background:var(--blue); padding:88px 0; }
+    .school-leaders-inner { max-width:var(--container); margin:0 auto; padding:0 60px; }
+    .school-leaders .eyebrow { color:rgba(230,57,154,0.9); }
+    .school-leaders .eyebrow::before { background:rgba(230,57,154,0.9); }
+    .school-leaders .section-title { color:#fff; }
+    .school-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:48px; }
+    .school-card {
+      background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1);
+      border-radius:var(--radius-xl); overflow:hidden;
+      backdrop-filter:blur(10px); transition:var(--transition);
+    }
+    .school-card:hover { background:rgba(255,255,255,0.12); transform:translateY(-4px); }
+    .school-card-header {
+      padding:28px 32px 0;
+      display:flex; align-items:flex-start; gap:18px;
+    }
+    .school-card-avatar {
+      width:64px; height:64px; border-radius:50%; flex-shrink:0;
+      background-size:cover; background-position:center top;
+    }
+    .school-card-avatar.av1 { background-image:url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&q=80&auto=format&fit=crop'); }
+    .school-card-avatar.av2 { background-image:url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80&auto=format&fit=crop'); }
+    .school-card-role { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(230,57,154,0.85); margin-bottom:5px; }
+    .school-card-name { font-size:20px; font-weight:800; color:#fff; letter-spacing:-0.5px; margin-bottom:5px; }
+    .school-card-region { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.75); border-radius:50px; padding:4px 12px; font-size:11px; font-weight:700; }
+    .school-card-body { padding:24px 32px 32px; }
+    .school-card-bio { font-size:14px; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:20px; }
+    .school-card-links { display:flex; gap:8px; }
+    .school-link-btn { padding:9px 16px; border-radius:var(--radius-sm); font-size:12px; font-weight:700; transition:var(--transition); }
+    .school-link-btn.li { background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.15); }
+    .school-link-btn.li:hover { background:#0A66C2; border-color:#0A66C2; }
+    .school-link-btn.contact { background:rgba(230,57,154,0.2); color:#f48dc8; border:1px solid rgba(230,57,154,0.3); }
+    .school-link-btn.contact:hover { background:var(--rose); color:#fff; border-color:var(--rose); }
+
+    /* JOIN SECTION */
+    .join-section {
+      background:var(--light-gray); padding:88px 0;
+    }
+    .join-inner { max-width:var(--container); margin:0 auto; padding:0 60px; text-align:center; }
+    .join-title { font-size:clamp(28px,3.5vw,48px); font-weight:900; color:var(--heading); letter-spacing:-1.5px; margin-bottom:18px; }
+    .join-title .accent { color:var(--rose); }
+    .join-sub { font-size:17px; color:var(--body); max-width:560px; margin:0 auto 40px; line-height:1.7; }
+    .join-btns { display:flex; gap:14px; justify-content:center; }
+    .join-btn-primary { background:var(--rose); color:#fff; border-radius:50px; padding:15px 34px; font-size:15px; font-weight:800; transition:var(--transition); }
+    .join-btn-primary:hover { background:var(--rose-dark); transform:translateY(-2px); box-shadow:0 8px 24px rgba(230,57,154,0.35); }
+    .join-btn-secondary { background:var(--white); color:var(--blue); border:2px solid var(--blue); border-radius:50px; padding:15px 34px; font-size:15px; font-weight:800; transition:var(--transition); }
+    .join-btn-secondary:hover { background:var(--blue); color:#fff; }
+
+    /* FOOTER */
+    .footer { background:var(--blue-dark); padding:56px 0 0; }
+    .footer-accent { width:100%; height:4px; background:linear-gradient(to right,var(--rose),var(--azure),var(--blue)); }
+    .footer-inner { max-width:var(--container); margin:0 auto; padding:0 60px; }
+    .footer-grid { display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:64px; padding-bottom:48px; padding-top:48px; }
+    .footer-desc { font-size:13px; color:rgba(255,255,255,0.5); line-height:1.75; max-width:300px; margin:16px 0 24px; }
+    .footer-socials { display:flex; gap:8px; }
+    .footer-social { width:36px; height:36px; border-radius:var(--radius-sm); background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:14px; cursor:pointer; color:rgba(255,255,255,0.6); transition:var(--transition); }
+    .footer-social:hover { background:var(--rose); border-color:var(--rose); color:#fff; }
+    .footer-col-title { font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:20px; }
+    .footer-link { display:block; font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:12px; transition:var(--transition); }
+    .footer-link:hover { color:#fff; transform:translateX(3px); }
+    .footer-logo-text { font-weight:800; font-size:17px; color:#fff; letter-spacing:-0.4px; }
+    .footer-logo-text span { color:var(--rose); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,0.07); padding:20px 0; display:flex; justify-content:space-between; align-items:center; }
+    .footer-bottom p { font-size:12px; color:rgba(255,255,255,0.35); }
+    .footer-tagline { font-size:12px; font-weight:700; color:var(--rose); }
+
+    /* Reveal animation */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.65s ease,transform 0.65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-delay-1 { transition-delay:0.1s; }
+    .reveal-delay-2 { transition-delay:0.2s; }
+    .reveal-delay-3 { transition-delay:0.3s; }
+
+    /* WA float */
+    .wa-float { position:fixed; bottom:28px; right:28px; z-index:999; width:56px; height:56px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 4px 20px rgba(37,211,102,0.45); transition:var(--transition); }
+    .wa-float:hover { transform:scale(1.1); }
+  </style>
+</head>
+<body>
+
+  <a class="wa-float" href="https://wa.me/255000000000" target="_blank">💬</a>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html">
+        <div class="logo-mark">W</div>
+        <div class="logo-text">WeCare <span>Foundation</span></div>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="#">About Us</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-btn">Programs <span class="chevron">▾</span></button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="program-ecd.html"><div class="dropdown-item-icon" style="background:rgba(230,57,154,0.12);">🌱</div>Early Childhood Development</a>
+            <a class="dropdown-item" href="#"><div class="dropdown-item-icon" style="background:rgba(37,171,236,0.12);">📚</div>Quality ECD Education</a>
+            <a class="dropdown-item" href="#"><div class="dropdown-item-icon" style="background:rgba(223,73,23,0.12);">🏪</div>Child Care in Public Spaces</a>
+            <a class="dropdown-item" href="#"><div class="dropdown-item-icon" style="background:rgba(10,52,135,0.12);">🎯</div>Early Life Skills Training</a>
+          </div>
+        </div>
+        <a class="nav-link" href="#">Partners</a>
+        <a class="nav-link active" href="team.html">Our Team</a>
+        <a class="nav-link" href="#">Contact</a>
+        <button class="nav-cta">💚 Donate Now</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- TEAM HERO -->
+  <section class="team-hero">
+    <div class="team-hero-bg"></div>
+    <div class="team-hero-pattern"></div>
+    <div class="team-hero-blobs" style="position:absolute;inset:0;pointer-events:none;"></div>
+    <div class="team-hero-inner">
+      <div class="team-hero-eyebrow">The People Behind the Mission</div>
+      <h1 class="team-hero-title">
+        Meet Our <span class="accent">Team</span>
+      </h1>
+      <p class="team-hero-sub">
+        Dedicated leaders, educators, and community builders working together to give Tanzania's youngest children the foundation they deserve.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 1: LEADERSHIP — CEO / FOUNDER
+  ============================================================ -->
+  <section class="team-section">
+    <div class="team-inner">
+      <div class="team-section-header reveal">
+        <div class="eyebrow">Leadership</div>
+        <h2 class="section-title">Founder & Director</h2>
+      </div>
+      <div class="leader-card reveal reveal-delay-1">
+        <div class="leader-img-wrap">
+          <div class="leader-img leader-img-founder"></div>
+          <div class="leader-badge">CEO & Founder</div>
+        </div>
+        <div class="leader-content">
+          <div class="leader-role">Founder & Chief Executive Officer</div>
+          <h2 class="leader-name">Elizabeth Maginga<br>Thobias</h2>
+          <p class="leader-bio">
+            Elizabeth founded WeCare Foundation in 2022 after witnessing firsthand the developmental gaps facing Tanzania's youngest children. With a deep commitment to community-led change, she has built WeCare from the ground up — creating programs that reach over 5,000 families across Mbeya and Mara.
+          </p>
+          <p class="leader-bio">
+            Her approach centres on parent empowerment, community trust, and innovative solutions tailored to Tanzania's unique context. Under her leadership, WeCare has partnered with government bodies, international organizations, and grassroots networks to drive lasting change.
+          </p>
+          <div class="leader-divider"></div>
+          <div class="leader-meta">
+            <div class="leader-meta-row">
+              <div class="leader-meta-icon">📍</div>
+              <div>
+                <div class="leader-meta-label">Based in</div>
+                <div class="leader-meta-val">Mbeya, Tanzania</div>
+              </div>
+            </div>
+            <div class="leader-meta-row">
+              <div class="leader-meta-icon">🌍</div>
+              <div>
+                <div class="leader-meta-label">Focus Regions</div>
+                <div class="leader-meta-val">Mbeya & Mara</div>
+              </div>
+            </div>
+            <div class="leader-meta-row">
+              <div class="leader-meta-icon">📅</div>
+              <div>
+                <div class="leader-meta-label">With WeCare Since</div>
+                <div class="leader-meta-val">2022 (Founder)</div>
+              </div>
+            </div>
+          </div>
+          <div class="leader-links">
+            <a class="leader-link-btn primary" href="mailto:elizabeth@wecare.or.tz">✉ Email Elizabeth</a>
+            <a class="leader-link-btn secondary" href="#">in LinkedIn</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Co-Director -->
+      <div class="leader-card reveal reveal-delay-2" style="grid-template-columns:280px 1fr; padding:36px 44px;">
+        <div class="leader-img-wrap">
+          <div class="leader-img leader-img-director" style="aspect-ratio:3/3.5;"></div>
+          <div class="leader-badge">Co-Founder & Director</div>
+        </div>
+        <div class="leader-content">
+          <div class="leader-role">Director & Co-Founder</div>
+          <h2 class="leader-name" style="font-size:clamp(20px,2vw,28px);">Director Name<br><span style="color:var(--body); font-weight:600; font-size:0.75em;">Placeholder — Add from CMS</span></h2>
+          <p class="leader-bio">
+            A dedicated co-founder bringing expertise in community engagement, programme management, and early childhood development policy across Tanzania's regions.
+          </p>
+          <div class="leader-links">
+            <a class="leader-link-btn primary" href="#">✉ Send Email</a>
+            <a class="leader-link-btn secondary" href="#">in LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2: OTHER FOUNDERS
+  ============================================================ -->
+  <section class="team-section">
+    <div class="team-inner">
+      <div class="team-section-header reveal">
+        <div class="eyebrow">Founding Team</div>
+        <h2 class="section-title">Our Founders</h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card reveal">
+          <div class="team-card-img img-1"></div>
+          <div class="team-card-body">
+            <div class="team-card-role">Co-Founder</div>
+            <div class="team-card-name">Founder Name One</div>
+            <div class="team-card-region">📍 Mbeya</div>
+            <p class="team-card-bio">A passionate advocate for children's rights with a background in public health and community mobilisation across Southern Tanzania.</p>
+            <div class="team-card-links">
+              <a class="team-card-link-btn li" href="#">in LinkedIn</a>
+              <a class="team-card-link-btn email" href="#">✉ Email</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-1">
+          <div class="team-card-img img-2"></div>
+          <div class="team-card-body">
+            <div class="team-card-role">Co-Founder</div>
+            <div class="team-card-name">Founder Name Two</div>
+            <div class="team-card-region">📍 Mara</div>
+            <p class="team-card-bio">Brings expertise in early education curriculum design and teacher training, having worked in ECD centres across Mara region for over a decade.</p>
+            <div class="team-card-links">
+              <a class="team-card-link-btn li" href="#">in LinkedIn</a>
+              <a class="team-card-link-btn email" href="#">✉ Email</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-2">
+          <div class="team-card-img img-3"></div>
+          <div class="team-card-body">
+            <div class="team-card-role">Co-Founder</div>
+            <div class="team-card-name">Founder Name Three</div>
+            <div class="team-card-region">📍 Dar es Salaam</div>
+            <p class="team-card-bio">A strategic operations leader with experience scaling NGO programmes in East Africa, driving WeCare's partnerships and institutional fundraising.</p>
+            <div class="team-card-links">
+              <a class="team-card-link-btn li" href="#">in LinkedIn</a>
+              <a class="team-card-link-btn email" href="#">✉ Email</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3: SCHOOL & PROGRAMME LEADERS (dark blue bg)
+  ============================================================ -->
+  <section class="school-leaders">
+    <div class="school-leaders-inner">
+      <div class="team-section-header reveal">
+        <div class="eyebrow">On the Ground</div>
+        <h2 class="section-title">Programme Leaders</h2>
+        <p style="font-size:16px; color:rgba(255,255,255,0.6); max-width:520px; margin-top:14px; line-height:1.7;">
+          Our regional leaders work directly with communities, schools, and families to bring WeCare's programmes to life every day.
+        </p>
+      </div>
+      <div class="school-grid">
+        <div class="school-card reveal">
+          <div class="school-card-header">
+            <div class="school-card-avatar av1"></div>
+            <div>
+              <div class="school-card-role">School / Programme Leader</div>
+              <div class="school-card-name">Leader Name — Mbeya</div>
+              <div class="school-card-region">📍 Mbeya Region</div>
+            </div>
+          </div>
+          <div class="school-card-body">
+            <p class="school-card-bio">
+              Leads WeCare's ECD school and community programmes across Mbeya region, managing local staff, caregiver training, and government relations with a hands-on, community-first approach.
+            </p>
+            <div class="school-card-links">
+              <a class="school-link-btn li" href="#">in LinkedIn</a>
+              <a class="school-link-btn contact" href="#">✉ Contact</a>
+            </div>
+          </div>
+        </div>
+        <div class="school-card reveal reveal-delay-1">
+          <div class="school-card-header">
+            <div class="school-card-avatar av2"></div>
+            <div>
+              <div class="school-card-role">School / Programme Leader</div>
+              <div class="school-card-name">Leader Name — Tarime</div>
+              <div class="school-card-region">📍 Mara Region (Tarime)</div>
+            </div>
+          </div>
+          <div class="school-card-body">
+            <p class="school-card-bio">
+              Oversees WeCare's Tarime-based ECD programmes including school operations, Life Skills Training for children, and partnerships with local health facilities and ward offices.
+            </p>
+            <div class="school-card-links">
+              <a class="school-link-btn li" href="#">in LinkedIn</a>
+              <a class="school-link-btn contact" href="#">✉ Contact</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4: ADDITIONAL TEAM MEMBERS
+  ============================================================ -->
+  <section class="team-section">
+    <div class="team-inner">
+      <div class="team-section-header reveal">
+        <div class="eyebrow">Our Team</div>
+        <h2 class="section-title">Staff & Volunteers</h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card reveal">
+          <div class="team-card-img img-4"></div>
+          <div class="team-card-body">
+            <div class="team-card-role">Programme Officer</div>
+            <div class="team-card-name">Staff Member</div>
+            <div class="team-card-region">📍 Mbeya</div>
+            <p class="team-card-bio">Coordinates daily programme activities, caregiver workshops, and community outreach across WeCare's Mbeya operations.</p>
+            <div class="team-card-links">
+              <a class="team-card-link-btn li" href="#">in LinkedIn</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-1">
+          <div class="team-card-img img-5"></div>
+          <div class="team-card-body">
+            <div class="team-card-role">Monitoring & Evaluation</div>
+            <div class="team-card-name">Staff Member</div>
+            <div class="team-card-region">📍 Mara</div>
+            <p class="team-card-bio">Manages impact data collection, programme reporting, and learning documentation to demonstrate WeCare's evidence base to partners.</p>
+            <div class="team-card-links">
+              <a class="team-card-link-btn li" href="#">in LinkedIn</a>
+            </div>
+          </div>
+        </div>
+        <div class="team-card reveal reveal-delay-2">
+          <div class="team-card-img img-6"></div>
+          <div class="team-card-body">
+            <div class="team-card-role">Communications</div>
+            <div class="team-card-name">Staff Member</div>
+            <div class="team-card-region">📍 Mbeya</div>
+            <p class="team-card-bio">Manages WeCare's community communications, social media presence, and storytelling to amplify programme impact across Tanzania.</p>
+            <div class="team-card-links">
+              <a class="team-card-link-btn li" href="#">in LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN THE TEAM CTA -->
+  <section class="join-section">
+    <div class="join-inner reveal">
+      <div class="eyebrow" style="justify-content:center;">Join Us</div>
+      <h2 class="join-title">Passionate about <span class="accent">children's futures?</span></h2>
+      <p class="join-sub">We're always looking for dedicated people to join WeCare as staff, volunteers, or partners. Get in touch and let's make a difference together.</p>
+      <div class="join-btns">
+        <button class="join-btn-primary">View Open Roles</button>
+        <button class="join-btn-secondary">Volunteer With Us</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-accent"></div>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="logo-mark">W</div>
+            <div class="footer-logo-text">WeCare <span>Foundation</span></div>
+          </div>
+          <p class="footer-desc">Committed to the best start in life for every child in Tanzania — through community, family, and innovative solutions since 2022.</p>
+          <div class="footer-socials">
+            <div class="footer-social">𝕏</div>
+            <div class="footer-social">in</div>
+            <div class="footer-social">f</div>
+            <div class="footer-social">📸</div>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Quick Links</div>
+          <a class="footer-link" href="#">About Us</a>
+          <a class="footer-link" href="team.html">Our Team</a>
+          <a class="footer-link" href="#">Partners</a>
+          <a class="footer-link" href="#">Contact</a>
+        </div>
+        <div>
+          <div class="footer-col-title">Programs</div>
+          <a class="footer-link" href="program-ecd.html">Early Childhood Development</a>
+          <a class="footer-link" href="#">Quality ECD Education</a>
+          <a class="footer-link" href="#">Child Care in Public Spaces</a>
+          <a class="footer-link" href="#">Early Life Skills Training</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 WeCare Foundation. All rights reserved.</p>
+        <p class="footer-tagline">Every child deserves the best start. 💙</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

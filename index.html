@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WeCare Foundation — Enriching Children's Lives</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Georgia:ital@1&display=swap" rel="stylesheet"/>
+  <style>
+    /* ============================================================
+       GLOBAL RESET & DESIGN TOKENS
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --rose:        #E6399A;
+      --rose-dark:   #c52d86;
+      --blue:        #0A3487;
+      --blue-dark:   #06154A;
+      --blue-light:  #EEF2FF;
+      --orange:      #df4917;
+      --azure:       #25abec;
+      --white:       #ffffff;
+      --off-white:   #f9f8f6;
+      --light-gray:  #f3f4f6;
+      --body:        #4b5563;
+      --heading:     #1f2937;
+      --font:        'Montserrat', sans-serif;
+      --serif:       Georgia, 'Times New Roman', serif;
+      --container:   1380px;
+      --radius-sm:   8px;
+      --radius-md:   12px;
+      --radius-lg:   20px;
+      --radius-xl:   28px;
+      --shadow-sm:   0 2px 12px rgba(10,52,135,0.07);
+      --shadow-md:   0 8px 32px rgba(10,52,135,0.10);
+      --shadow-lg:   0 20px 60px rgba(10,52,135,0.14);
+      --transition:  all 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      color: var(--body);
+      background: var(--white);
+      line-height: 1.7;
+      font-size: 15px;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    /* Eyebrow label */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      margin-bottom: 14px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block; width: 28px; height: 2.5px;
+      background: var(--rose); border-radius: 2px;
+    }
+    .eyebrow.center { justify-content: center; }
+
+    /* Section headings */
+    .section-title {
+      font-size: clamp(28px, 3.2vw, 48px);
+      font-weight: 800; color: var(--heading);
+      letter-spacing: -1.5px; line-height: 1.1;
+      margin-bottom: 18px;
+    }
+    .section-title .accent { color: var(--rose); }
+    .section-title.white { color: #fff; }
+
+    .section-sub {
+      font-size: 16px; color: var(--body);
+      line-height: 1.75; max-width: 580px;
+    }
+    .section-sub.white { color: rgba(255,255,255,0.65); }
+
+    /* Utility */
+    .text-center { text-align: center; }
+
+    /* ============================================================
+       FLOATING WHATSAPP BUTTON
+    ============================================================ */
+    .wa-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+      transition: var(--transition);
+      animation: wa-pulse 2.5s ease-in-out infinite;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    @keyframes wa-pulse {
+      0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,0.45); }
+      50% { box-shadow: 0 4px 32px rgba(37,211,102,0.7); }
+    }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      height: 72px;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(10,52,135,0.07);
+      transition: var(--transition);
+    }
+    .nav.scrolled {
+      box-shadow: 0 4px 24px rgba(10,52,135,0.08);
+    }
+    .nav-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 60px;
+      height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Logo */
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: var(--rose);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 16px;
+      letter-spacing: -0.5px;
+      box-shadow: 0 4px 12px rgba(230,57,154,0.35);
+      flex-shrink: 0;
+    }
+    .logo-text {
+      font-weight: 800; font-size: 16px;
+      color: var(--blue); letter-spacing: -0.4px;
+    }
+    .logo-text span { color: var(--rose); }
+
+    /* Nav links */
+    .nav-links {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-link {
+      font-size: 13px; font-weight: 600; color: var(--heading);
+      padding: 8px 14px; border-radius: var(--radius-sm);
+      transition: var(--transition); letter-spacing: 0.1px;
+      position: relative;
+    }
+    .nav-link:hover { color: var(--rose); background: rgba(230,57,154,0.07); }
+    .nav-link.active { color: var(--rose); }
+    .nav-link.active::after {
+      content: ''; position: absolute; bottom: 4px;
+      left: 50%; transform: translateX(-50%);
+      width: 18px; height: 2px;
+      background: var(--rose); border-radius: 2px;
+    }
+
+    /* Programs dropdown */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-btn {
+      font-size: 13px; font-weight: 600; color: var(--heading);
+      padding: 8px 14px; border-radius: var(--radius-sm);
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+      font-family: var(--font); transition: var(--transition);
+    }
+    .nav-dropdown-btn:hover { color: var(--rose); background: rgba(230,57,154,0.07); }
+    .chevron { transition: transform 0.2s; font-size: 10px; }
+    .nav-dropdown:hover .chevron { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: absolute; top: calc(100% + 8px); left: 0;
+      background: var(--white);
+      border: 1px solid rgba(10,52,135,0.08);
+      border-radius: var(--radius-md);
+      padding: 8px;
+      min-width: 280px;
+      box-shadow: var(--shadow-lg);
+      opacity: 0; visibility: hidden; transform: translateY(-8px);
+      transition: var(--transition);
+    }
+    .nav-dropdown:hover .dropdown-menu {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    .dropdown-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 14px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 600; color: var(--heading);
+      transition: var(--transition);
+    }
+    .dropdown-item:hover { background: rgba(230,57,154,0.06); color: var(--rose); }
+    .dropdown-item-icon {
+      width: 30px; height: 30px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+
+    /* Nav CTA */
+    .nav-cta {
+      background: var(--rose); color: #fff;
+      border-radius: 50px; padding: 10px 22px;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+      box-shadow: 0 4px 16px rgba(230,57,154,0.3);
+      transition: var(--transition); margin-left: 8px;
+    }
+    .nav-cta:hover {
+      background: var(--rose-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(230,57,154,0.45);
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      overflow: hidden;
+      padding-top: 72px;
+    }
+
+    /* Background slideshow */
+    .hero-slides { position: absolute; inset: 0; }
+    .hero-slide {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      opacity: 0; transition: opacity 1.4s ease-in-out;
+    }
+    .hero-slide.active { opacity: 1; }
+
+    /* Real Unsplash images — children / Tanzania / education */
+    .hero-slide:nth-child(1) {
+      background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&q=80&auto=format&fit=crop');
+    }
+    .hero-slide:nth-child(2) {
+      background-image: url('https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=1600&q=80&auto=format&fit=crop');
+    }
+    .hero-slide:nth-child(3) {
+      background-image: url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1600&q=80&auto=format&fit=crop');
+    }
+    .hero-slide:nth-child(4) {
+      background-image: url('https://images.unsplash.com/photo-1568218648773-78a4ad42c2a2?w=1600&q=80&auto=format&fit=crop');
+    }
+
+    /* Dark cinematic overlay */
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        105deg,
+        rgba(6,21,74,0.82) 0%,
+        rgba(10,52,135,0.65) 45%,
+        rgba(10,52,135,0.2) 100%
+      );
+      z-index: 1;
+    }
+    /* Bottom fade for smooth transition */
+    .hero-bottom-fade {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 160px;
+      background: linear-gradient(to top, rgba(6,21,74,0.55), transparent);
+      z-index: 1;
+    }
+
+    /* Geometric decorative blobs */
+    .hero-blobs {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-blobs::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 600px; height: 600px; border-radius: 50%;
+      border: 1px solid rgba(230,57,154,0.2);
+    }
+    .hero-blobs::after {
+      content: '';
+      position: absolute; bottom: -120px; right: 15%;
+      width: 400px; height: 400px; border-radius: 50%;
+      border: 1px solid rgba(37,171,236,0.18);
+    }
+
+    /* Hero content */
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 60px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .hero-left { }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(230,57,154,0.18);
+      border: 1px solid rgba(230,57,154,0.3);
+      border-radius: 50px;
+      padding: 7px 18px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      color: #f48dc8; text-transform: uppercase;
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+    }
+    .hero-eyebrow-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--rose);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 5.5vw, 72px);
+      font-weight: 900; color: #fff;
+      line-height: 1.05; letter-spacing: -2px;
+      margin-bottom: 22px;
+    }
+    .hero-title .accent { color: var(--rose); }
+    .hero-title .accent-azure { color: var(--azure); }
+
+    .hero-sub {
+      font-size: 18px; color: rgba(255,255,255,0.72);
+      max-width: 500px; line-height: 1.65;
+      font-weight: 400; margin-bottom: 44px;
+    }
+
+    /* Hero nav dots */
+    .hero-dots {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .hero-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.35); cursor: pointer;
+      transition: var(--transition);
+    }
+    .hero-dot.active {
+      width: 28px; border-radius: 4px;
+      background: var(--rose);
+    }
+
+    /* Hero arrow buttons */
+    .hero-arrows {
+      display: flex; gap: 10px; margin-bottom: 32px;
+    }
+    .hero-arrow-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transition);
+      backdrop-filter: blur(8px);
+    }
+    .hero-arrow-btn:hover {
+      background: var(--rose);
+      border-color: var(--rose);
+    }
+
+    /* Hero right: program buttons */
+    .hero-programs-panel {
+      background: rgba(6,21,74,0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-xl);
+      padding: 32px 28px;
+    }
+    .hero-programs-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-program-btn {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px; border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 10px;
+      color: #fff; cursor: pointer;
+      transition: var(--transition); text-align: left;
+      width: 100%;
+    }
+    .hero-program-btn:last-child { margin-bottom: 0; }
+    .hero-program-btn:hover {
+      background: rgba(230,57,154,0.22);
+      border-color: rgba(230,57,154,0.4);
+      transform: translateX(4px);
+    }
+    .prog-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; flex-shrink: 0;
+    }
+    .prog-title {
+      font-size: 13px; font-weight: 700; color: #fff;
+      line-height: 1.3; flex: 1;
+    }
+    .prog-arrow {
+      font-size: 16px; opacity: 0.3;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .hero-program-btn:hover .prog-arrow { opacity: 1; transform: translateX(3px); }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    .stats-bar {
+      background: var(--blue);
+      padding: 0;
+    }
+    .stats-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 60px;
+      display: flex;
+    }
+    .stat-item {
+      flex: 1; text-align: center;
+      padding: 24px 20px;
+      border-right: 1px solid rgba(255,255,255,0.10);
+      position: relative;
+      transition: var(--transition);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(255,255,255,0.04); }
+    .stat-num {
+      font-size: 32px; font-weight: 900; color: #fff;
+      letter-spacing: -1.5px; line-height: 1;
+    }
+    .stat-num em { color: var(--rose); font-style: normal; }
+    .stat-label {
+      font-size: 11px; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 1px;
+      font-weight: 600; margin-top: 5px;
+    }
+
+    /* ============================================================
+       WHO WE ARE
+    ============================================================ */
+    .about { padding: 112px 0; background: var(--white); }
+    .about-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-main {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: var(--radius-xl);
+      object-fit: cover;
+      background: url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=800&q=80&auto=format&fit=crop') center/cover;
+    }
+    .about-img-accent {
+      position: absolute;
+      bottom: -28px; right: -28px;
+      width: 55%;
+      aspect-ratio: 1;
+      border-radius: var(--radius-lg);
+      object-fit: cover;
+      background: url('https://images.unsplash.com/photo-1567057419565-4349c49d8a04?w=600&q=80&auto=format&fit=crop') center/cover;
+      border: 6px solid var(--white);
+      box-shadow: var(--shadow-lg);
+    }
+    .about-badge {
+      position: absolute; top: 28px; left: -20px;
+      background: var(--rose);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(230,57,154,0.35);
+    }
+    .about-badge-num {
+      font-size: 28px; font-weight: 900; letter-spacing: -1px;
+    }
+    .about-badge-label {
+      font-size: 11px; font-weight: 600; opacity: 0.85; margin-top: 2px;
+    }
+
+    .about-content { }
+    .about-text {
+      font-size: 15px; color: var(--body); line-height: 1.8;
+      margin-bottom: 18px;
+    }
+    .about-text strong { color: var(--heading); font-weight: 700; }
+    .about-divider {
+      width: 48px; height: 3px; background: var(--rose);
+      border-radius: 2px; margin: 28px 0;
+    }
+    .value-list { display: flex; flex-direction: column; gap: 10px; margin-top: 32px; }
+    .value-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 15px 20px; border-radius: var(--radius-md);
+      background: var(--off-white);
+      border-left: 3px solid var(--rose);
+      transition: var(--transition);
+    }
+    .value-row:hover {
+      background: rgba(230,57,154,0.05);
+      transform: translateX(4px);
+    }
+    .value-icon { font-size: 20px; }
+    .value-text { font-size: 14px; font-weight: 700; color: var(--heading); }
+    .value-sub { font-size: 12px; color: var(--body); margin-left: auto; }
+
+    /* ============================================================
+       CEO MESSAGE
+    ============================================================ */
+    .ceo { padding: 112px 0; background: var(--blue-light); position: relative; overflow: hidden; }
+    .ceo-pattern {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(10,52,135,0.06) 1.5px, transparent 1.5px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+    .ceo-inner {
+      max-width: var(--container);
+      margin: 0 auto; padding: 0 60px;
+      position: relative; z-index: 1;
+    }
+    .ceo-header { text-align: center; margin-bottom: 56px; }
+    .ceo-card {
+      max-width: 860px; margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 48px 52px;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 44px;
+      align-items: start;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(10,52,135,0.07);
+    }
+    .ceo-photo-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .ceo-photo {
+      width: 110px; height: 110px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose) 0%, var(--blue) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 900; color: #fff;
+      box-shadow: 0 8px 28px rgba(230,57,154,0.3);
+    }
+    .ceo-socials { display: flex; gap: 6px; }
+    .ceo-social-btn {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: var(--light-gray);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; cursor: pointer;
+      transition: var(--transition);
+    }
+    .ceo-social-btn:hover { background: var(--rose); color: #fff; }
+    .ceo-role {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--rose); margin-bottom: 6px;
+    }
+    .ceo-name {
+      font-size: 24px; font-weight: 800; color: var(--blue);
+      letter-spacing: -0.5px; margin-bottom: 20px;
+    }
+    .ceo-quote {
+      font-family: var(--serif);
+      font-size: 16px; font-style: italic;
+      color: var(--body); line-height: 1.8;
+      border-left: 4px solid var(--rose);
+      padding-left: 20px;
+      margin-bottom: 22px;
+    }
+    .ceo-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 700; color: var(--azure);
+      transition: var(--transition);
+    }
+    .ceo-link:hover { color: var(--blue); gap: 12px; }
+
+    /* ============================================================
+       IMPACT / EVIDENCE
+    ============================================================ */
+    .impact {
+      padding: 112px 0;
+      background: var(--blue);
+      position: relative; overflow: hidden;
+    }
+    .impact-bg-art {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .impact-bg-art::before {
+      content: '';
+      position: absolute; top: -200px; right: -200px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: rgba(230,57,154,0.06);
+    }
+    .impact-bg-art::after {
+      content: '';
+      position: absolute; bottom: -150px; left: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: rgba(37,171,236,0.07);
+    }
+    .impact-inner {
+      max-width: var(--container); margin: 0 auto;
+      padding: 0 60px; position: relative; z-index: 1;
+    }
+    .impact-header {
+      text-align: center; margin-bottom: 64px;
+    }
+    .impact-header .eyebrow { color: rgba(230,57,154,0.9); justify-content: center; }
+    .impact-header .eyebrow::before { background: rgba(230,57,154,0.9); }
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .impact-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius-lg);
+      padding: 32px 20px 28px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: var(--transition);
+      cursor: default;
+    }
+    .impact-card:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(230,57,154,0.35);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+    .impact-icon-wrap {
+      width: 52px; height: 52px; border-radius: var(--radius-sm);
+      background: rgba(230,57,154,0.18);
+      margin: 0 auto 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+    }
+    .impact-num {
+      font-size: 38px; font-weight: 900; color: #fff;
+      letter-spacing: -2px; line-height: 1; margin-bottom: 8px;
+    }
+    .impact-num em { color: var(--rose); font-style: normal; }
+    .impact-label {
+      font-size: 11px; color: rgba(255,255,255,0.55);
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+      line-height: 1.4;
+    }
+
+    /* ============================================================
+       PARTNERS
+    ============================================================ */
+    .partners {
+      padding: 96px 0;
+      background: var(--off-white);
+    }
+    .partners-header {
+      text-align: center; margin-bottom: 56px;
+      max-width: var(--container); margin-left: auto; margin-right: auto;
+      padding: 0 60px;
+    }
+    .partners-header .section-sub { margin: 0 auto; text-align: center; }
+    .ticker-wrap { overflow: hidden; position: relative; padding: 4px 0; }
+    .ticker-fade-l, .ticker-fade-r {
+      position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+    }
+    .ticker-fade-l { left: 0; background: linear-gradient(to right, var(--off-white), transparent); }
+    .ticker-fade-r { right: 0; background: linear-gradient(to left, var(--off-white), transparent); }
+    .ticker-track {
+      display: flex; gap: 14px;
+      width: max-content;
+      animation: scroll-ticker 22s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    @keyframes scroll-ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .partner-chip {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--white);
+      border: 1px solid rgba(10,52,135,0.09);
+      border-radius: var(--radius-md);
+      padding: 16px 28px;
+      font-size: 13px; font-weight: 700; color: var(--blue);
+      white-space: nowrap; min-width: 190px; justify-content: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .partner-chip:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+      transform: translateY(-2px);
+    }
+    .partner-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--rose); flex-shrink: 0;
+    }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    .contact {
+      padding: 112px 0;
+      background: var(--light-gray);
+    }
+    .contact-inner {
+      max-width: var(--container); margin: 0 auto; padding: 0 60px;
+      display: grid; grid-template-columns: 1fr 1.3fr; gap: 80px; align-items: start;
+    }
+    .contact-info .section-sub { margin-bottom: 44px; }
+    .contact-row {
+      display: flex; gap: 16px; align-items: flex-start; margin-bottom: 28px;
+    }
+    .contact-icon {
+      width: 46px; height: 46px; border-radius: var(--radius-sm);
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .contact-row-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--body); margin-bottom: 4px;
+    }
+    .contact-row-val { font-size: 14px; color: var(--heading); font-weight: 700; }
+    .contact-form-card {
+      background: var(--white); border-radius: var(--radius-xl);
+      padding: 44px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(10,52,135,0.07);
+    }
+    .form-title { font-size: 22px; font-weight: 800; color: var(--heading); margin-bottom: 28px; letter-spacing: -0.5px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 0; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.4px; color: var(--heading);
+      margin-bottom: 7px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid rgba(10,52,135,0.12);
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-family: var(--font); color: var(--heading);
+      background: var(--white); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px rgba(230,57,154,0.10);
+    }
+    .form-textarea { resize: vertical; min-height: 120px; }
+    .form-submit {
+      width: 100%; margin-top: 20px;
+      background: var(--rose); color: #fff;
+      border-radius: var(--radius-sm); padding: 15px;
+      font-size: 15px; font-weight: 800; letter-spacing: 0.3px;
+      transition: var(--transition);
+    }
+    .form-submit:hover {
+      background: var(--rose-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(230,57,154,0.35);
+    }
+
+    /* ============================================================
+       GALLERY STRIP
+    ============================================================ */
+    .gallery {
+      padding: 72px 0;
+      background: var(--white);
+      overflow: hidden;
+    }
+    .gallery-header {
+      padding: 0 60px; margin-bottom: 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .gallery-track {
+      display: flex; gap: 16px;
+      width: max-content;
+      animation: scroll-ticker 30s linear infinite;
+    }
+    .gallery-track:hover { animation-play-state: paused; }
+    .gallery-item {
+      width: 280px; height: 190px; border-radius: var(--radius-md);
+      overflow: hidden; position: relative; flex-shrink: 0; cursor: pointer;
+    }
+    .gallery-item-img {
+      width: 100%; height: 100%; object-fit: cover;
+      background-size: cover; background-position: center;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover .gallery-item-img { transform: scale(1.05); }
+    .gallery-item:nth-child(1) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(2) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(3) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(4) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1568218648773-78a4ad42c2a2?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(5) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1567057419565-4349c49d8a04?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(6) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=70&auto=format&fit=crop'); }
+    /* Duplicate for seamless loop */
+    .gallery-item:nth-child(7) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(8) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(9) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(10) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1568218648773-78a4ad42c2a2?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(11) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1567057419565-4349c49d8a04?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-item:nth-child(12) .gallery-item-img { background-image: url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=70&auto=format&fit=crop'); }
+    .gallery-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 10px 14px;
+      background: linear-gradient(to top, rgba(6,21,74,0.75), transparent);
+      color: #fff; font-size: 12px; font-weight: 700;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer {
+      background: var(--blue-dark);
+      padding: 72px 0 0;
+    }
+    .footer-inner {
+      max-width: var(--container); margin: 0 auto; padding: 0 60px;
+    }
+    .footer-accent {
+      width: 100%; height: 4px;
+      background: linear-gradient(to right, var(--rose), var(--azure), var(--blue));
+      margin-bottom: 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 64px;
+      padding-bottom: 56px;
+    }
+    .footer-brand-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .footer-logo-mark {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: var(--rose);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: 16px;
+    }
+    .footer-logo-text { font-weight: 800; font-size: 17px; color: #fff; letter-spacing: -0.4px; }
+    .footer-logo-text span { color: var(--rose); }
+    .footer-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.75; max-width: 300px; margin-bottom: 28px; }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-social {
+      width: 36px; height: 36px; border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; cursor: pointer; color: rgba(255,255,255,0.6);
+      transition: var(--transition);
+    }
+    .footer-social:hover { background: var(--rose); border-color: var(--rose); color: #fff; }
+    .footer-col-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.8px;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+      margin-bottom: 22px;
+    }
+    .footer-link {
+      display: block; font-size: 13px; color: rgba(255,255,255,0.6);
+      margin-bottom: 12px; transition: var(--transition);
+    }
+    .footer-link:hover { color: #fff; transform: translateX(3px); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 22px 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 12px; color: rgba(255,255,255,0.35); }
+    .footer-tagline { font-size: 12px; font-weight: 700; color: var(--rose); }
+
+    /* ============================================================
+       SCROLL REVEAL ANIMATIONS
+    ============================================================ */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING WHATSAPP -->
+  <a class="wa-float" href="https://wa.me/255000000000" target="_blank" title="Chat on WhatsApp">💬</a>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html">
+        <div class="logo-mark">W</div>
+        <div class="logo-text">WeCare <span>Foundation</span></div>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link active" href="index.html">Home</a>
+        <a class="nav-link" href="#">About Us</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-btn">
+            Programs <span class="chevron">▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="program-ecd.html">
+              <div class="prog-icon dropdown-item-icon" style="background:rgba(230,57,154,0.12);">🌱</div>
+              Early Childhood Development
+            </a>
+            <a class="dropdown-item" href="program-qece.html">
+              <div class="prog-icon dropdown-item-icon" style="background:rgba(37,171,236,0.12);">📚</div>
+              Quality Early Childhood Education
+            </a>
+            <a class="dropdown-item" href="program-ccps.html">
+              <div class="prog-icon dropdown-item-icon" style="background:rgba(223,73,23,0.12);">🏪</div>
+              Child Care in Public Spaces
+            </a>
+            <a class="dropdown-item" href="program-elst.html">
+              <div class="prog-icon dropdown-item-icon" style="background:rgba(10,52,135,0.12);">🎯</div>
+              Early Life Skills Training
+            </a>
+          </div>
+        </div>
+        <a class="nav-link" href="#">Partners</a>
+        <a class="nav-link" href="team.html">Our Team</a>
+        <a class="nav-link" href="#">Contact</a>
+        <button class="nav-cta">💚 Donate Now</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero" id="hero">
+    <!-- Background slides -->
+    <div class="hero-slides">
+      <div class="hero-slide active"></div>
+      <div class="hero-slide"></div>
+      <div class="hero-slide"></div>
+      <div class="hero-slide"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-bottom-fade"></div>
+    <div class="hero-blobs"></div>
+
+    <div class="hero-content">
+      <!-- Left: headline + controls -->
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          WeCare Foundation Tanzania
+        </div>
+        <h1 class="hero-title">
+          Enriching<br>
+          <span class="accent">Children's</span><br>
+          <span class="accent-azure">Lives</span>
+        </h1>
+        <p class="hero-sub">
+          Providing quality early childhood development, care, and learning across Mbeya and Mara — for every child's best start in life.
+        </p>
+        <div class="hero-arrows">
+          <button class="hero-arrow-btn" id="prevBtn" onclick="changeSlide(-1)">←</button>
+          <button class="hero-arrow-btn" id="nextBtn" onclick="changeSlide(1)">→</button>
+        </div>
+        <div class="hero-dots">
+          <div class="hero-dot active" onclick="goSlide(0)"></div>
+          <div class="hero-dot" onclick="goSlide(1)"></div>
+          <div class="hero-dot" onclick="goSlide(2)"></div>
+          <div class="hero-dot" onclick="goSlide(3)"></div>
+        </div>
+      </div>
+
+      <!-- Right: programs panel -->
+      <div class="hero-programs-panel">
+        <div class="hero-programs-label">Explore our programs</div>
+        <a class="hero-program-btn" href="program-ecd.html">
+          <div class="prog-icon" style="background:rgba(230,57,154,0.25);">🌱</div>
+          <span class="prog-title">Early Childhood Development</span>
+          <span class="prog-arrow">→</span>
+        </a>
+        <a class="hero-program-btn" href="program-qece.html">
+          <div class="prog-icon" style="background:rgba(37,171,236,0.25);">📚</div>
+          <span class="prog-title">Quality Early Childhood Education</span>
+          <span class="prog-arrow">→</span>
+        </a>
+        <a class="hero-program-btn" href="program-ccps.html">
+          <div class="prog-icon" style="background:rgba(223,73,23,0.25);">🏪</div>
+          <span class="prog-title">Child Care in Public Spaces</span>
+          <span class="prog-arrow">→</span>
+        </a>
+        <a class="hero-program-btn" href="program-elst.html">
+          <div class="prog-icon" style="background:rgba(37,171,236,0.18);">🎯</div>
+          <span class="prog-title">Early Life Skills Training</span>
+          <span class="prog-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STATS BAR
+  ============================================================ -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item reveal">
+        <div class="stat-num">5,000<em>+</em></div>
+        <div class="stat-label">Parents Reached</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-num">800<em>+</em></div>
+        <div class="stat-label">Children Enrolled</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-num">210<em>+</em></div>
+        <div class="stat-label">Life-Skilled Children</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-num">2</div>
+        <div class="stat-label">ECD Schools</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-4">
+        <div class="stat-num">2 <em>Regions</em></div>
+        <div class="stat-label">Mbeya & Mara</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       WHO WE ARE
+  ============================================================ -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <div class="about-img-wrap reveal">
+        <div class="about-img-main"></div>
+        <div class="about-img-accent"></div>
+        <div class="about-badge">
+          <div class="about-badge-num">Est. 2022</div>
+          <div class="about-badge-label">Tanzania</div>
+        </div>
+      </div>
+      <div class="about-content reveal reveal-delay-2">
+        <div class="eyebrow">Who We Are</div>
+        <h2 class="section-title">Every child deserves the <span class="accent">best start</span> in life</h2>
+        <p class="about-text">
+          <strong>Our mission</strong> is to contribute towards attainment of quality early childhood development, learning, and health outcomes through innovative solutions, community and family engagement.
+        </p>
+        <div class="about-divider"></div>
+        <p class="about-text">
+          <strong>Our vision</strong> is to provide access to the best start of life for all children in early development, learning, and health across Tanzania.
+        </p>
+        <div class="value-list">
+          <div class="value-row">
+            <span class="value-icon">🤝</span>
+            <span class="value-text">Collaborative Approach</span>
+          </div>
+          <div class="value-row">
+            <span class="value-icon">🌍</span>
+            <span class="value-text">Community-Led</span>
+          </div>
+          <div class="value-row">
+            <span class="value-icon">👨‍👩‍👧</span>
+            <span class="value-text">Parent-Centered</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CEO MESSAGE
+  ============================================================ -->
+  <section class="ceo" id="leadership">
+    <div class="ceo-pattern"></div>
+    <div class="ceo-inner">
+      <div class="ceo-header reveal">
+        <div class="eyebrow center">Leadership</div>
+        <h2 class="section-title">Message from the CEO</h2>
+      </div>
+      <div class="ceo-card reveal reveal-delay-2">
+        <div class="ceo-photo-wrap">
+          <div class="ceo-photo">ET</div>
+          <div class="ceo-socials">
+            <div class="ceo-social-btn">in</div>
+            <div class="ceo-social-btn">✉</div>
+          </div>
+        </div>
+        <div>
+          <div class="ceo-role">Founder & Chief Executive Officer</div>
+          <div class="ceo-name">Elizabeth Maginga Thobias</div>
+          <p class="ceo-quote">
+            "Elizabeth Maginga Thobias founded WeCare Foundation in 2022 to ensure every child in Tanzania has access to quality early childhood development, care, and learning — working with communities and partners across Mbeya and Mara."
+          </p>
+          <a class="ceo-link" href="mailto:elizabeth@wecare.or.tz">
+            ✉️ Get in touch with Elizabeth →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       IMPACT EVIDENCE
+  ============================================================ -->
+  <section class="impact" id="ibar">
+    <div class="impact-bg-art"></div>
+    <div class="impact-inner">
+      <div class="impact-header reveal">
+        <div class="eyebrow">Impact Evidence</div>
+        <h2 class="section-title white">Evidence of Change</h2>
+        <p class="section-sub white" style="margin:0 auto; text-align:center;">
+          We measure progress through participation, access, and practical outcomes across families, children, and communities in Mbeya and Mara.
+        </p>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-card reveal">
+          <div class="impact-icon-wrap">👨‍👩‍👧</div>
+          <div class="impact-num">5,000<em>+</em></div>
+          <div class="impact-label">Parents & Caregivers Reached with ECD Info</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-1">
+          <div class="impact-icon-wrap">👶</div>
+          <div class="impact-num">800<em>+</em></div>
+          <div class="impact-label">Children Enrolled in Daycare & Pre-School</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-2">
+          <div class="impact-icon-wrap">🛒</div>
+          <div class="impact-num">1</div>
+          <div class="impact-label">Market Centre — Mwanjelwa, Mbeya</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-3">
+          <div class="impact-icon-wrap">🎯</div>
+          <div class="impact-num">210<em>+</em></div>
+          <div class="impact-label">Children Life-Skilled Ages 3–5, 6–9, 10–12</div>
+        </div>
+        <div class="impact-card reveal reveal-delay-4">
+          <div class="impact-icon-wrap">🏫</div>
+          <div class="impact-num">2</div>
+          <div class="impact-label">Schools for ECD Education — Mara & Mbeya</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PARTNERS
+  ============================================================ -->
+  <section class="partners" id="partners">
+    <div class="partners-header reveal">
+      <div class="eyebrow center">Our Partners & Collaborators</div>
+      <h2 class="section-title">Trusted Partners in Impact</h2>
+      <p class="section-sub">
+        Working alongside government, international organizations, and professional associations aligned with children's rights and early development.
+      </p>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker-fade-l"></div>
+      <div class="ticker-fade-r"></div>
+      <div class="ticker-track">
+        <div class="partner-chip"><span class="partner-dot"></span>Government of Tanzania</div>
+        <div class="partner-chip"><span class="partner-dot"></span>TECDEN</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Helvetas Tanzania</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Global School Forum</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Pediatric Association of Tanzania</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Parents Network</div>
+        <!-- Duplicate set for seamless loop -->
+        <div class="partner-chip"><span class="partner-dot"></span>Government of Tanzania</div>
+        <div class="partner-chip"><span class="partner-dot"></span>TECDEN</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Helvetas Tanzania</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Global School Forum</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Pediatric Association of Tanzania</div>
+        <div class="partner-chip"><span class="partner-dot"></span>Parents Network</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT
+  ============================================================ -->
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <div class="eyebrow">Get In Touch</div>
+        <h2 class="section-title">Let's Start a Conversation</h2>
+        <p class="section-sub">
+          Whether you're a potential funder, partner, researcher, community member, or journalist — Elizabeth and the WeCare team would love to hear from you.
+        </p>
+        <div style="margin-top:40px;">
+          <div class="contact-row">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-row-label">Office Location</div>
+              <div class="contact-row-val">Mbeya, Tanzania</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div class="contact-row-label">CEO Email</div>
+              <div class="contact-row-val">elizabeth@wecare.or.tz</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">🌍</div>
+            <div>
+              <div class="contact-row-label">Active Regions</div>
+              <div class="contact-row-val">Mbeya & Mara, Tanzania</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📱</div>
+            <div>
+              <div class="contact-row-label">Phone / WhatsApp</div>
+              <div class="contact-row-val">+255 XXX XXX XXX</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-card reveal reveal-delay-2">
+        <div class="form-title">Send us a message</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input class="form-input" type="text" placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Organization</label>
+            <input class="form-input" type="text" placeholder="Your organization">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input class="form-input" type="email" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Inquiry Type</label>
+            <select class="form-select">
+              <option>Partnership</option>
+              <option>Funding / Donation</option>
+              <option>Research</option>
+              <option>Media / Press</option>
+              <option>Community</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Message *</label>
+            <textarea class="form-textarea" placeholder="Tell us about your inquiry..."></textarea>
+          </div>
+        </div>
+        <button class="form-submit">Send Message →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       GALLERY STRIP
+  ============================================================ -->
+  <section class="gallery" id="gallery">
+    <div class="gallery-header reveal">
+      <div>
+        <div class="eyebrow">Gallery</div>
+        <h3 style="font-size:26px; font-weight:800; color:var(--heading); letter-spacing:-0.5px;">Life at WeCare</h3>
+      </div>
+      <!-- <a href="#" style="font-size:13px; font-weight:700; color:var(--rose);">View All Photos →</a> -->
+    </div>
+    <div style="overflow:hidden; position:relative;">
+      <div class="gallery-track">
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Parent Clinic</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Daycare & Children</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Parent Engagement</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Child at WeCare</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Life Skills Training</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">ECD School — Mara</div></div>
+        <!-- Duplicates for seamless loop -->
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Parent Clinic</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Daycare & Children</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Parent Engagement</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Child at WeCare</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">Life Skills Training</div></div>
+        <div class="gallery-item"><div class="gallery-item-img"></div><div class="gallery-caption">ECD School — Mbeya</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer">
+    <div class="footer-accent"></div>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-logo">
+            <div class="footer-logo-mark">W</div>
+            <div class="footer-logo-text">WeCare <span>Foundation</span></div>
+          </div>
+          <p class="footer-desc">
+            Committed to the best start in life for every child in Tanzania — through community, family, and innovative solutions since 2022.
+          </p>
+          <div class="footer-socials">
+            <div class="footer-social">𝕏</div>
+            <div class="footer-social">in</div>
+            <div class="footer-social">f</div>
+            <div class="footer-social">📸</div>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Quick Links</div>
+          <a class="footer-link" href="#">About Us</a>
+          <a class="footer-link" href="team.html">Our Team</a>
+          <a class="footer-link" href="#">Partners</a>
+          <a class="footer-link" href="#contact">Contact</a>
+        </div>
+        <div>
+          <div class="footer-col-title">Programs</div>
+          <a class="footer-link" href="program-ecd.html">Early Childhood Development</a>
+          <a class="footer-link" href="program-qece.html">Quality ECD Education</a>
+          <a class="footer-link" href="program-ccps.html">Child Care in Public Spaces</a>
+          <a class="footer-link" href="program-elst.html">Early Life Skills Training</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 WeCare Foundation. All rights reserved.</p>
+        <p class="footer-tagline">Every child deserves the best start. 💙</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // --- NAV SCROLL STATE ---
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // --- HERO SLIDESHOW ---
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots   = document.querySelectorAll('.hero-dot');
+    let current  = 0;
+    let timer;
+
+    function goSlide(n) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+      resetTimer();
+    }
+
+    function changeSlide(dir) { goSlide(current + dir); }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => changeSlide(1), 5000);
+    }
+
+    resetTimer();
+
+    // --- SCROLL REVEAL ---
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

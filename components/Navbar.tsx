@@ -136,22 +136,20 @@ export function Navbar({
   return (
     <nav
       id="nav"
-      className={scrolled ? 'sc' : ''}
+      className={`nav ${scrolled ? 'scrolled' : ''}`}
       data-menu-open={mobileOpen ? 'true' : undefined}
       role="banner"
     >
-      <div className="nw">
+      <div className="nav-inner">
         <Logo
           showText
-          showTagline
-          tagline={settings?.tagline ?? "Enriching Children's Lives"}
           logoUrl={settings?.logoUrl}
           siteName={settings?.siteName}
-          className="flex-shrink-0"
+          className="nav-logo"
           size="nav"
         />
 
-        <ul className="nl">
+        <div className="nav-links">
           {navItems.map((item) => {
             const scrollId = hrefToScrollId(item.href);
             const isPrograms = isProgramsNavItem(item);
@@ -163,46 +161,45 @@ export function Navbar({
                   ? pathname === '/team'
                   : scrollId != null && activeId === scrollId;
             const hasPrograms = programs.length > 0;
+            if (isPrograms) {
+              return (
+                <div key={item.label} className="nav-dropdown nav-program-details">
+                  <button type="button" className="nav-dropdown-btn" aria-haspopup="menu">
+                    <span>{item.label}</span>
+                    <ChevronDown className="chevron" size={13} strokeWidth={2.4} aria-hidden />
+                  </button>
+                  <div className="dropdown-menu nav-program-menu" role="menu" aria-label="Programs">
+                    {hasPrograms ? programs.map((p) => (
+                      <Link
+                        key={p.id}
+                        href={`/programs/${p.id}`}
+                        className="dropdown-item nav-program-link"
+                        role="menuitem"
+                        onClick={closeDetailsFromLink}
+                      >
+                        {p.title}
+                      </Link>
+                    )) : (
+                      <span className="dropdown-item nav-program-empty" aria-hidden>
+                        Program list coming soon
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            }
+
             return (
-              <li key={item.label}>
-                {isPrograms ? (
-                  <details className="nav-program-details">
-                    <summary className={isActive ? 'active' : undefined} aria-haspopup="menu">
-                      <span>{item.label}</span>
-                      <ChevronDown className="nav-program-chevron" size={16} strokeWidth={2.5} aria-hidden />
-                    </summary>
-                    <div className="nav-program-menu" role="menu" aria-label="Programs">
-                      {hasPrograms ? programs.map((p) => (
-                        <Link
-                          key={p.id}
-                          href={`/programs/${p.id}`}
-                          className="nav-program-link"
-                          role="menuitem"
-                          onClick={closeDetailsFromLink}
-                        >
-                          {p.title}
-                        </Link>
-                      )) : (
-                        <span className="nav-program-link nav-program-empty" aria-hidden>
-                          Program list coming soon
-                        </span>
-                      )}
-                    </div>
-                  </details>
-                ) : (
-                  <Link href={item.href} className={isActive ? 'active' : undefined}>
-                    {item.label}
-                  </Link>
-                )}
-              </li>
+              <Link key={item.label} href={item.href} className={`nav-link ${isActive ? 'active' : ''}`}>
+                {item.label}
+              </Link>
             );
           })}
-        </ul>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="nd">
-            ❤ Donate Now
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="nav-cta">
+            💚 Donate Now
           </a>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button
             type="button"
             className="bg"

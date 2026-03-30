@@ -710,6 +710,130 @@ export async function updateFooterLinks(data: Partial<FooterLinks>): Promise<Foo
   return unwrap(res);
 }
 
+// --- Team members ---
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  region: string;
+  bio: string;
+  photoUrl: string;
+  photoAlt: string;
+  email: string;
+  linkedInUrl: string;
+  category: 'founder' | 'programme_leader' | 'staff' | 'volunteer';
+  order: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface TeamPageSection {
+  heroEyebrow: string;
+  heroTitle: string;
+  heroTitleHighlight: string;
+  heroSubtitle: string;
+  foundersEyebrow: string;
+  foundersTitle: string;
+  leadersEyebrow: string;
+  leadersTitle: string;
+  leadersSubtitle: string;
+  staffEyebrow: string;
+  staffTitle: string;
+  joinEyebrow: string;
+  joinTitle: string;
+  joinTitleHighlight: string;
+  joinSubtitle: string;
+  joinPrimaryLabel: string;
+  joinPrimaryHref: string;
+  joinSecondaryLabel: string;
+  joinSecondaryHref: string;
+}
+
+export async function getTeamMembers(): Promise<TeamMember[]> {
+  const res = await api.get<{ data: TeamMember[] }>('/api/team/members/admin');
+  return unwrap(res);
+}
+
+export async function getTeamSection(): Promise<TeamPageSection> {
+  const res = await api.get<{ data: TeamPageSection }>('/api/team/section');
+  return unwrap(res);
+}
+
+export async function createTeamMember(data: Omit<TeamMember, 'id' | 'createdAt' | 'updatedAt'>) {
+  const res = await api.post<{ data: TeamMember }>('/api/team/members', data);
+  return unwrap(res);
+}
+
+export async function updateTeamMember(id: string, data: Partial<TeamMember>) {
+  const res = await api.put<{ data: TeamMember }>(`/api/team/members/${id}`, data);
+  return unwrap(res);
+}
+
+export async function deleteTeamMember(id: string) {
+  await api.delete(`/api/team/members/${id}`);
+}
+
+export async function updateTeamSection(data: Partial<TeamPageSection>): Promise<TeamPageSection> {
+  const res = await api.put<{ data: TeamPageSection }>('/api/team/section', data);
+  return unwrap(res);
+}
+
+export async function reorderTeamMembers(order: string[]) {
+  const res = await api.patch<{ data: TeamMember[] }>('/api/team/members/reorder', { order });
+  return unwrap(res);
+}
+
+// --- Program detail (extended fields for /programs/[id] page) ---
+export interface ProgramActivity {
+  title: string;
+  items: string[];
+}
+
+export interface ProgramImpactNumber {
+  value: string;
+  label: string;
+}
+
+export interface ProgramTestimonial {
+  quote: string;
+  name: string;
+  role: string;
+}
+
+export interface ProgramDetail {
+  id: string;
+  programId: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  heroImageUrl: string;
+  chips: string[];
+  challengeEyebrow: string;
+  challengeTitle: string;
+  challengeParagraphs: string[];
+  activitiesEyebrow: string;
+  activitiesTitle: string;
+  activities: ProgramActivity[];
+  targetCommunities: string[];
+  impactNumbers: ProgramImpactNumber[];
+  testimonials: ProgramTestimonial[];
+  partners: string[];
+  galleryImages: string[];
+  sidebarQuickFacts: Array<{ label: string; value: string }>;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export async function getProgramDetail(programId: string): Promise<ProgramDetail> {
+  const res = await api.get<{ data: ProgramDetail }>(`/api/programs/${programId}/detail`);
+  return unwrap(res);
+}
+
+export async function updateProgramDetail(programId: string, data: Partial<ProgramDetail>): Promise<ProgramDetail> {
+  const res = await api.put<{ data: ProgramDetail }>(`/api/programs/${programId}/detail`, data);
+  return unwrap(res);
+}
+
 // --- Media ---
 export async function getMediaLimits() {
   const res = await api.get<{

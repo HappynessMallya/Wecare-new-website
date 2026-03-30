@@ -13,31 +13,6 @@ const FALLBACK_PARTNERS: Partner[] = [
   { id: '6', name: 'Parents', logoUrl: null, logoAlt: null, textOnly: true, order: 5 },
 ];
 
-function PartnerItem({ partner, keySuffix }: { partner: Partner; keySuffix: string }) {
-  if (partner.textOnly) {
-    return (
-      <div key={`${partner.id}-${keySuffix}`} className="pl pl-text-only">
-        <span className="pl-text-only-label">{partner.name}</span>
-      </div>
-    );
-  }
-  const src = partner.logoUrl || '';
-  const alt = partner.logoAlt || partner.name;
-  return (
-    <div key={`${partner.id}-${keySuffix}`} className="pl pl-logo">
-      <Image
-        src={src}
-        alt={alt}
-        width={120}
-        height={48}
-        className="pl-img object-contain"
-        unoptimized={src.startsWith('http')}
-      />
-      <span className="pl-name">{partner.name}</span>
-    </div>
-  );
-}
-
 export function HomePartners({ section, partners: partnersProp }: { section?: PartnersSection | null; partners?: Partner[] | null } = {}) {
   const partners = useMemo(() => partnersProp?.length ? partnersProp : FALLBACK_PARTNERS, [partnersProp]);
   const eyebrow = section?.eyebrow?.trim() || 'Our Partners & Collaborators';
@@ -45,26 +20,39 @@ export function HomePartners({ section, partners: partnersProp }: { section?: Pa
   const subtitle = section?.subtitle?.trim() || "Working alongside government, international organizations, and professional associations aligned with children's rights and early development";
 
   return (
-    <section id="partners">
-      <div className="container">
-        <div className="pw rv">
-          <p className="ey bl ct">{eyebrow}</p>
-          <h2>{title}</h2>
-          <p className="sub">{subtitle}</p>
-          <div className="partners-ticker-wrap" aria-hidden>
-            <div className="partners-ticker">
-              <div className="plg plg-logos plg-ticker-inner">
-                {partners.map((partner) => (
-                  <PartnerItem key={`${partner.id}-a`} partner={partner} keySuffix="a" />
-                ))}
+    <section id="partners" className="partners">
+      <div className="partners-header rv">
+        <p className="eyebrow center">{eyebrow}</p>
+        <h2 className="section-title">{title}</h2>
+        <p className="section-sub">{subtitle}</p>
+      </div>
+      <div className="ticker-wrap" aria-hidden>
+        <div className="ticker-fade-l" />
+        <div className="ticker-fade-r" />
+        <div className="ticker-track">
+          {[...partners, ...partners].map((partner, idx) => {
+            if (partner.logoUrl) {
+              return (
+                <div key={`${partner.id}-${idx}`} className="pl pl-logo partner-chip">
+                  <Image
+                    src={partner.logoUrl}
+                    alt={partner.logoAlt || partner.name}
+                    width={120}
+                    height={48}
+                    className="pl-img object-contain"
+                    unoptimized={partner.logoUrl.startsWith('http')}
+                  />
+                  <span className="pl-name">{partner.name}</span>
+                </div>
+              );
+            }
+            return (
+              <div key={`${partner.id}-${idx}`} className="pl pl-text-only partner-chip">
+                <span className="partner-dot" />
+                {partner.name}
               </div>
-              <div className="plg plg-logos plg-ticker-inner">
-                {partners.map((partner) => (
-                  <PartnerItem key={`${partner.id}-b`} partner={partner} keySuffix="b" />
-                ))}
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

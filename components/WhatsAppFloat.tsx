@@ -10,12 +10,12 @@ export function WhatsAppFloat({ whatsappUrl }: { whatsappUrl?: string | null } =
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="whatsapp-float"
-      aria-label="Contact us on WhatsApp"
-      title="Contact us on WhatsApp"
+      className="wa-float"
+      aria-label="Chat on WhatsApp"
+      title="Chat on WhatsApp"
     >
-      <MessageCircle className="whatsapp-float-ico" size={28} aria-hidden />
-      <span className="whatsapp-float-label">WhatsApp</span>
+      <MessageCircle className="wa-float-ico" size={24} aria-hidden />
+      <span className="wa-float-text">Chat</span>
     </a>
   );
 }

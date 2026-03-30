@@ -1,20 +1,19 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Sprout, BookOpen, Store, Target } from 'lucide-react';
 import type { HeroSlide, Settings, Program } from '@/lib/api';
 import { HERO_FALLBACK_SLIDES } from '@/lib/fallbacks';
 
-const AUTOPLAY_MS = 5500;
-
-const DEFAULT_HEADLINE = "Enriching Children Life";
+const DEFAULT_SUBTEXT =
+  'Providing quality early childhood development, care, and learning across Mbeya and Mara — for every child\'s best start in life.';
 
 const HERO_BUTTONS = [
-  { tagType: 't1', label: 'Early Childhood Development' },
-  { tagType: 't2', label: 'Quality Early Childhood Education' },
-  { tagType: 't3', label: 'Child Care in Public Spaces' },
-  { tagType: 't4', label: 'Early Life Skills Training' },
+  { tagType: 't1', label: 'Early Childhood Development', fallbackHref: '/programs/ecd', icon: Sprout, bg: 'rgba(230,57,154,0.25)' },
+  { tagType: 't2', label: 'Quality Education', fallbackHref: '/programs/quality-early-childhood-education', icon: BookOpen, bg: 'rgba(37,171,236,0.25)' },
+  { tagType: 't3', label: 'Child Care Spaces', fallbackHref: '/programs/child-care-in-public-spaces', icon: Store, bg: 'rgba(223,73,23,0.25)' },
+  { tagType: 't4', label: 'Life Skills', fallbackHref: '/programs/early-life-skills-training', icon: Target, bg: 'rgba(37,171,236,0.18)' },
 ] as const;
 
 export function Hero({
@@ -30,149 +29,85 @@ export function Hero({
     if (slidesProp?.length) return slidesProp;
     return HERO_FALLBACK_SLIDES;
   }, [slidesProp]);
-  const [index, setIndex] = useState(0);
-  /** Bump to reset autoplay interval after manual navigation */
-  const [autoplayEpoch, setAutoplayEpoch] = useState(0);
-
-  const normalizeIndex = useCallback(
-    (i: number) => {
-      let n = i;
-      if (n < 0) n = slides.length - 1;
-      if (n >= slides.length) n = 0;
-      return n;
-    },
-    [slides.length],
-  );
-
-  const goToSlide = useCallback(
-    (i: number) => {
-      setIndex(normalizeIndex(i));
-      setAutoplayEpoch((e) => e + 1);
-    },
-    [normalizeIndex],
-  );
-
-  const goPrev = useCallback(() => {
-    setIndex((prev) => normalizeIndex(prev - 1));
-    setAutoplayEpoch((e) => e + 1);
-  }, [normalizeIndex]);
-
-  const goNext = useCallback(() => {
-    setIndex((prev) => normalizeIndex(prev + 1));
-    setAutoplayEpoch((e) => e + 1);
-  }, [normalizeIndex]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentSlide = slides[currentIndex];
+  const subtext = currentSlide?.subtitle?.trim() || DEFAULT_SUBTEXT;
 
   useEffect(() => {
     if (slides.length <= 1) return;
-    const id = window.setInterval(() => {
-      setIndex((prev) => {
-        const next = prev + 1;
-        return next >= slides.length ? 0 : next;
-      });
-    }, AUTOPLAY_MS);
-    return () => window.clearInterval(id);
-  }, [slides.length, autoplayEpoch]);
+    const timer = window.setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [slides.length]);
 
-  const currentSlide = slides[index];
-  const headline = settings?.heroHeadline?.trim() || DEFAULT_HEADLINE;
-  const tagline = currentSlide?.subtitle?.trim() || '';
-  const showControls = slides.length > 1;
-
-  const renderHeadline = () => {
-    const raw = headline ?? '';
-    const lower = raw.toLowerCase();
-    const i = lower.indexOf('life');
-    if (i === -1) return raw;
-
-    const before = raw.slice(0, i);
-    const word = raw.slice(i, i + 4);
-    const after = raw.slice(i + 4);
-    return (
-      <>
-        {before}
-        <span className="accent">{word}</span>
-        {after}
-      </>
-    );
+  const goSlide = (index: number) => {
+    setCurrentIndex((index + slides.length) % slides.length);
   };
 
   return (
-    <section id="hero" aria-roledescription="carousel" aria-label="Featured programs">
-      <div className="hero-bg-slider">
-        {slides.map((slide, i) => (
-          <div
-            key={slide.id ?? i}
-            className={`hero-bg-slide ${i === index ? 'active' : ''}`}
-            aria-hidden={i !== index}
-          >
+    <section id="hero" aria-label="Featured programs">
+      <div className="hero-bg-single">
+        {slides.map((slide, idx) => (
+          <div key={slide.id ?? idx} className={`hero-bg-slide ${idx === currentIndex ? 'active' : ''}`}>
             <Image
               src={slide.imageUrl}
               alt={slide.alt}
               fill
               sizes="100vw"
-              priority={i === 0}
-              className="object-cover object-[center_40%] brightness-[0.85]"
+              priority={idx === 0}
+              className="object-cover object-[center_40%]"
               unoptimized={slide.imageUrl.startsWith('http')}
             />
           </div>
         ))}
       </div>
       <div className="hero-overlay" aria-hidden />
-      {showControls && (
-        <>
-          <div className="hero-slider-nav">
-            <button
-              type="button"
-              className="hero-slider-nav-btn"
-              onClick={goPrev}
-              aria-label="Previous slide"
-            >
-              <ChevronLeft size={28} strokeWidth={2} aria-hidden />
-            </button>
-            <button
-              type="button"
-              className="hero-slider-nav-btn"
-              onClick={goNext}
-              aria-label="Next slide"
-            >
-              <ChevronRight size={28} strokeWidth={2} aria-hidden />
-            </button>
+      <div className="hero-blobs" aria-hidden />
+      <div className="hero-content">
+        <div className="hero-left">
+          <h1 id="hero-headline" className="hero-title">
+            Enriching
+            <br />
+            <span className="accent">Children&apos;s</span>
+            <br />
+            <span className="accent-azure">Lives</span>
+          </h1>
+          <p className="hero-sub">{subtext}</p>
+          <div className="hero-arrows">
+            <button type="button" className="hero-arrow-btn" onClick={() => goSlide(currentIndex - 1)} aria-label="Previous slide">←</button>
+            <button type="button" className="hero-arrow-btn" onClick={() => goSlide(currentIndex + 1)} aria-label="Next slide">→</button>
           </div>
-          <div className="hero-slider-dots" role="navigation" aria-label="Hero slides">
-            {slides.map((slide, i) => (
+          <div className="hero-dots">
+            {slides.map((slide, idx) => (
               <button
-                key={slide.id ?? i}
+                key={slide.id ?? idx}
                 type="button"
-                className={`hero-slider-dot ${i === index ? 'active' : ''}`}
-                onClick={() => goToSlide(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={i === index ? 'true' : undefined}
+                className={`hero-dot ${idx === currentIndex ? 'active' : ''}`}
+                onClick={() => goSlide(idx)}
+                aria-label={`Go to hero slide ${idx + 1}`}
               />
             ))}
           </div>
-        </>
-      )}
-      <div className="hero-content">
-        <div className="hero-content-inner">
-          <h1 id="hero-headline">{renderHeadline()}</h1>
-          {tagline && <p className="htag">{tagline}</p>}
-          <div className="hctas">
-            {HERO_BUTTONS.map((b) => {
-              const program = (programs ?? []).find((p) => p.tagType === b.tagType);
-              const href = program ? `/programs/${program.id}` : '/programs/ecd';
-              return (
-                <a key={b.tagType} href={href} className="btn b-ghost hero-glass-btn">
-                  {b.label} <span className="arr">→</span>
-                </a>
-              );
-            })}
-          </div>
+        </div>
+        <div className="hero-programs-panel">
+          <div className="hero-programs-label">Explore our programs</div>
+          {HERO_BUTTONS.map((chip) => {
+            const program = (programs ?? []).find((p) => p.tagType === chip.tagType);
+            const href = program ? `/programs/${program.id}` : chip.fallbackHref;
+            const Icon = chip.icon;
+            return (
+              <a key={chip.tagType} href={href} className="hero-program-btn">
+                <span className="hero-prog-icon" style={{ background: chip.bg }} aria-hidden>
+                  <Icon size={16} strokeWidth={2.2} />
+                </span>
+                <span className="prog-title">{chip.label}</span>
+                <span className="prog-arrow">→</span>
+              </a>
+            );
+          })}
         </div>
       </div>
-      <a href="#main-content" className="hero-scroll-indicator" aria-label="Scroll to content">
-        <span className="hero-scroll-text">Scroll</span>
-        <span className="hero-scroll-arrow" aria-hidden>↓</span>
-      </a>
     </section>
   );
 }

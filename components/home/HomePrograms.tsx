@@ -17,9 +17,11 @@ export function HomePrograms({
 } = {}) {
   const programs = useMemo(() => programsProp?.length ? programsProp : null, [programsProp]);
   const eyebrow = section?.eyebrow?.trim() || 'Our Program Focus Areas';
-  const title = section?.title?.trim() || 'Four Programs.';
-  const titleHighlight = section?.titleHighlight?.trim() || 'One Mission.';
-  const intro = section?.introParagraph?.trim() || 'WeCare Foundation implements four evidence-based program areas — each designed to address a critical dimension of early childhood development, learning, and community wellbeing in Tanzania.';
+  const title = section?.title?.trim() || 'Programs';
+  const titleHighlight = section?.titleHighlight?.trim() || 'You Can Support';
+  const intro =
+    section?.introParagraph?.trim() ||
+    'Clear pathways from challenge to measurable outcomes across Tanzania.';
 
   if (programs?.length) {
     return (
@@ -30,40 +32,30 @@ export function HomePrograms({
             <h2>{title} <span>{titleHighlight}</span></h2>
             <p>{intro}</p>
           </div>
-          <div className="pgrid">
+          <div className="pgrid pgrid-preview">
             {programs.map((prog, i) => (
-              <div key={prog.id} className={`prog rv ${DELAY[i] ?? ''}`}>
-                <div className="pimg">
+              <article key={prog.id} className={`prog prog-preview rv ${DELAY[i] ?? ''}`}>
+                <div className="pimg pimg-preview">
                   <img src={prog.imageUrl} alt={prog.imageAlt || prog.title} loading="lazy" />
-                  <div className="pov" />
+                  <div className="pov pov-preview" />
                   {prog.tagLabel && <span className={`ptag ${TAG_CLASS[prog.tagType] ?? 't1'}`}>{prog.tagLabel}</span>}
                 </div>
-                <div className="pb">
+                <div className="pb pb-preview">
                   {prog.regionBadge && <span className="rg-badge">📍 {prog.regionBadge}</span>}
                   <h3>{prog.title}</h3>
-                  {prog.subtitle && <span className="psub">{prog.subtitle}</span>}
-                  <p dangerouslySetInnerHTML={{ __html: prog.body || '' }} />
-                  {prog.outcomes?.length ? (
-                    <ul className="pout">
-                      {prog.outcomes.filter(Boolean).map((o, j) => <li key={j}>{o}</li>)}
-                    </ul>
-                  ) : null}
+                  <p className="program-preview-line">
+                    {prog.subtitle || (prog.body || '').replace(/<[^>]*>/g, '').split('. ')[0]}
+                  </p>
                 </div>
-                <div className="pfoot">
-                  {prog.footerStat && (
-                    <div>
-                      <strong>{prog.footerStat}</strong>
-                      {prog.footerStatLabel && <small>{prog.footerStatLabel}</small>}
-                    </div>
-                  )}
+                <div className="pfoot pfoot-preview">
                   <a
                     href={linkToDetail ? `/programs/${prog.id}` : (prog.ctaHref || '#contact')}
                     className="plink"
                   >
-                    {prog.ctaLabel || 'Learn more'} →
+                    Learn More →
                   </a>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>

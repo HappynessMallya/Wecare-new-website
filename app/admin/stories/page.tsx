@@ -176,7 +176,7 @@ export default function AdminStoriesPage() {
                 </div>
               ))}
               {!(section.sdgTags ?? []).length && (
-                <p className="text-xs text-[var(--g600)]">No SDG tags added. Click "+ Add tag" to add one.</p>
+                <p className="text-xs text-[var(--g600)]">No SDG tags added. Click &quot;+ Add tag&quot; to add one.</p>
               )}
             </div>
           </div>

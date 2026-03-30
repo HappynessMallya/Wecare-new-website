@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
+import { Plus, Pencil, Trash2, GripVertical, FileText } from 'lucide-react';
 import {
   getProgramsAdmin,
   getProgramSection,
@@ -9,9 +9,11 @@ import {
   updateProgram,
   deleteProgram,
   updateProgramSection,
+  getProgramDetail,
+  updateProgramDetail,
   getApiErrorMessage,
 } from '@/lib/api';
-import type { Program, ProgramSection } from '@/lib/api';
+import type { Program, ProgramSection, ProgramDetail } from '@/lib/api';
 import { ImageUpload } from '@/components/admin/ImageUpload';
 import { revalidatePublicSite } from '@/lib/revalidate';
 
@@ -21,6 +23,7 @@ export default function AdminProgramsPage() {
   const [loading, setLoading] = useState(true);
   const [editingProgram, setEditingProgram] = useState<Program | null>(null);
   const [creating, setCreating] = useState(false);
+  const [editingDetail, setEditingDetail] = useState<{ programId: string; detail: Partial<ProgramDetail> } | null>(null);
   const [message, setMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
   useEffect(() => {
@@ -36,6 +39,30 @@ export default function AdminProgramsPage() {
   const closeForm = () => {
     setEditingProgram(null);
     setCreating(false);
+    setEditingDetail(null);
+  };
+
+  const handleOpenDetail = async (programId: string) => {
+    setMessage(null);
+    try {
+      const detail = await getProgramDetail(programId);
+      setEditingDetail({ programId, detail });
+    } catch {
+      setEditingDetail({ programId, detail: { programId } });
+    }
+  };
+
+  const handleSaveDetail = async (data: Partial<ProgramDetail>) => {
+    if (!editingDetail) return;
+    setMessage(null);
+    try {
+      await updateProgramDetail(editingDetail.programId, data);
+      await revalidatePublicSite();
+      setMessage({ type: 'ok', text: 'Program detail page content saved.' });
+      setEditingDetail(null);
+    } catch (err) {
+      setMessage({ type: 'err', text: getApiErrorMessage(err) });
+    }
   };
 
   const handleSaveProgram = async (payload: Omit<Program, 'id' | 'order' | 'createdAt' | 'updatedAt'>) => {
@@ -146,6 +173,15 @@ export default function AdminProgramsPage() {
         <ProgramForm initial={formTarget} onSave={handleSaveProgram} onCancel={closeForm} isEdit={!!editingProgram} />
       )}
 
+      {editingDetail && (
+        <ProgramDetailForm
+          programId={editingDetail.programId}
+          initial={editingDetail.detail}
+          onSave={handleSaveDetail}
+          onCancel={() => setEditingDetail(null)}
+        />
+      )}
+
       <div className="rounded-xl border border-[var(--blue)]/10 bg-white shadow-sm overflow-hidden">
         <ul className="divide-y divide-[var(--blue)]/10">
           {programs.map((p) => (
@@ -159,6 +195,7 @@ export default function AdminProgramsPage() {
                 <p className="text-sm text-[var(--g600)]">{p.subtitle}</p>
               </div>
               <div className="flex shrink-0 gap-2">
+                <button type="button" onClick={() => handleOpenDetail(p.id)} className="rounded p-2 text-[var(--g600)] hover:bg-[var(--blue-30)] hover:text-[var(--blue)]" aria-label="Edit detail page" title="Edit detail page"><FileText className="h-4 w-4" /></button>
                 <button type="button" onClick={() => setEditingProgram(p)} className="rounded p-2 text-[var(--g600)] hover:bg-[var(--rose-15)] hover:text-[var(--rose)]" aria-label="Edit"><Pencil className="h-4 w-4" /></button>
                 <button type="button" onClick={() => handleDeleteProgram(p.id)} className="rounded p-2 text-[var(--g600)] hover:bg-[var(--orange-30)] hover:text-[var(--orange)]" aria-label="Delete"><Trash2 className="h-4 w-4" /></button>
               </div>
@@ -283,6 +320,169 @@ function ProgramForm({
       <div className="mt-4 flex gap-3">
         <button type="button" onClick={() => onSave({ imageUrl, imageAlt, tagLabel, tagType, regionBadge, title, subtitle, body, outcomes: outcomesFiltered.length ? outcomesFiltered : [''], footerStat, footerStatLabel, ctaLabel, ctaHref, isActive })} className="rounded-lg bg-[var(--rose)] px-4 py-2 text-sm font-600 text-white hover:opacity-90">Save</button>
         <button type="button" onClick={onCancel} className="rounded-lg border border-[var(--g400)]/40 px-4 py-2 text-sm font-600 text-[var(--g800)] hover:bg-[var(--g100)]">Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+/* ── Program detail page form ── */
+const INPUT_CLS = 'w-full rounded-lg border border-[var(--g400)]/40 px-3 py-2 focus:border-[var(--rose)] focus:outline-none focus:ring-1 focus:ring-[var(--rose)]';
+const LABEL_CLS = 'mb-1 block text-sm font-600 text-[var(--g800)]';
+
+function ProgramDetailForm({
+  programId,
+  initial,
+  onSave,
+  onCancel,
+}: {
+  programId: string;
+  initial: Partial<ProgramDetail>;
+  onSave: (data: Partial<ProgramDetail>) => void;
+  onCancel: () => void;
+}) {
+  const [heroTitle, setHeroTitle] = useState(initial.heroTitle ?? '');
+  const [heroSubtitle, setHeroSubtitle] = useState(initial.heroSubtitle ?? '');
+  const [chips, setChips] = useState<string[]>(initial.chips?.length ? initial.chips : ['']);
+  const [challengeParagraphs, setChallengeParagraphs] = useState<string[]>(initial.challengeParagraphs?.length ? initial.challengeParagraphs : ['']);
+  const [activitiesTitle, setActivitiesTitle] = useState(initial.activitiesTitle ?? 'Program Activities');
+  const [targetCommunities, setTargetCommunities] = useState<string[]>(initial.targetCommunities?.length ? initial.targetCommunities : ['']);
+  const [impactNumbers, setImpactNumbers] = useState(initial.impactNumbers?.length ? initial.impactNumbers : [{ value: '', label: '' }]);
+  const [testimonials, setTestimonials] = useState(initial.testimonials?.length ? initial.testimonials : [{ quote: '', name: '', role: '' }]);
+  const [partners, setPartners] = useState<string[]>(initial.partners?.length ? initial.partners : ['']);
+
+  const addChip = () => setChips((c) => [...c, '']);
+  const addChallenge = () => setChallengeParagraphs((c) => [...c, '']);
+  const addCommunity = () => setTargetCommunities((c) => [...c, '']);
+  const addImpact = () => setImpactNumbers((n) => [...n, { value: '', label: '' }]);
+  const addTestimonial = () => setTestimonials((t) => [...t, { quote: '', name: '', role: '' }]);
+  const addPartner = () => setPartners((p) => [...p, '']);
+
+  return (
+    <div className="mb-6 rounded-xl border-2 border-[var(--blue)]/20 bg-white p-6 shadow-sm">
+      <h2 className="mb-1 text-lg font-700 text-[var(--blue)]">Program detail page content</h2>
+      <p className="mb-4 text-sm text-[var(--g600)]">
+        Content for the /programs/{programId} detail page (hero, challenge, activities, impact, testimonials).
+      </p>
+      <div className="space-y-5">
+        {/* Hero */}
+        <div className="rounded-lg border border-[var(--blue)]/10 p-4">
+          <h3 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Hero</h3>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className={LABEL_CLS}>Hero title</label>
+              <input type="text" value={heroTitle} onChange={(e) => setHeroTitle(e.target.value)} className={INPUT_CLS} />
+            </div>
+            <div className="sm:col-span-2">
+              <label className={LABEL_CLS}>Hero subtitle</label>
+              <textarea rows={2} value={heroSubtitle} onChange={(e) => setHeroSubtitle(e.target.value)} className={INPUT_CLS} />
+            </div>
+          </div>
+          <div className="mt-3">
+            <label className={LABEL_CLS}>Meta chips (e.g. &quot;Mbeya &amp; Mara&quot;, &quot;Ages 0-8&quot;)</label>
+            {chips.map((c, i) => (
+              <div key={i} className="mb-2 flex gap-2">
+                <input type="text" value={c} onChange={(e) => setChips((prev) => prev.map((x, idx) => idx === i ? e.target.value : x))} className={`flex-1 text-sm ${INPUT_CLS}`} />
+                <button type="button" onClick={() => setChips((prev) => prev.filter((_, idx) => idx !== i))} className="shrink-0 rounded border border-[var(--g400)]/40 px-2 text-[var(--g600)] hover:bg-[var(--orange-30)]">Remove</button>
+              </div>
+            ))}
+            <button type="button" onClick={addChip} className="text-sm font-600 text-[var(--rose)] hover:underline">+ Add chip</button>
+          </div>
+        </div>
+
+        {/* Challenge */}
+        <div className="rounded-lg border border-[var(--blue)]/10 p-4">
+          <h3 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Challenge section</h3>
+          <label className={LABEL_CLS}>Challenge paragraphs</label>
+          {challengeParagraphs.map((p, i) => (
+            <div key={i} className="mb-2 flex gap-2">
+              <textarea rows={2} value={p} onChange={(e) => setChallengeParagraphs((prev) => prev.map((x, idx) => idx === i ? e.target.value : x))} className={`flex-1 text-sm ${INPUT_CLS}`} />
+              <button type="button" onClick={() => setChallengeParagraphs((prev) => prev.filter((_, idx) => idx !== i))} className="shrink-0 rounded border border-[var(--g400)]/40 px-2 text-[var(--g600)] hover:bg-[var(--orange-30)]">Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={addChallenge} className="text-sm font-600 text-[var(--rose)] hover:underline">+ Add paragraph</button>
+        </div>
+
+        {/* Activities */}
+        <div className="rounded-lg border border-[var(--blue)]/10 p-4">
+          <h3 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Activities</h3>
+          <div className="mb-3">
+            <label className={LABEL_CLS}>Activities section title</label>
+            <input type="text" value={activitiesTitle} onChange={(e) => setActivitiesTitle(e.target.value)} className={INPUT_CLS} />
+          </div>
+          <label className={LABEL_CLS}>Target communities</label>
+          {targetCommunities.map((c, i) => (
+            <div key={i} className="mb-2 flex gap-2">
+              <input type="text" value={c} onChange={(e) => setTargetCommunities((prev) => prev.map((x, idx) => idx === i ? e.target.value : x))} className={`flex-1 text-sm ${INPUT_CLS}`} />
+              <button type="button" onClick={() => setTargetCommunities((prev) => prev.filter((_, idx) => idx !== i))} className="shrink-0 rounded border border-[var(--g400)]/40 px-2 text-[var(--g600)] hover:bg-[var(--orange-30)]">Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={addCommunity} className="text-sm font-600 text-[var(--rose)] hover:underline">+ Add community</button>
+        </div>
+
+        {/* Partners */}
+        <div className="rounded-lg border border-[var(--blue)]/10 p-4">
+          <h3 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Program partners</h3>
+          {partners.map((p, i) => (
+            <div key={i} className="mb-2 flex gap-2">
+              <input type="text" value={p} onChange={(e) => setPartners((prev) => prev.map((x, idx) => idx === i ? e.target.value : x))} className={`flex-1 text-sm ${INPUT_CLS}`} />
+              <button type="button" onClick={() => setPartners((prev) => prev.filter((_, idx) => idx !== i))} className="shrink-0 rounded border border-[var(--g400)]/40 px-2 text-[var(--g600)] hover:bg-[var(--orange-30)]">Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={addPartner} className="text-sm font-600 text-[var(--rose)] hover:underline">+ Add partner</button>
+        </div>
+
+        {/* Impact numbers */}
+        <div className="rounded-lg border border-[var(--blue)]/10 p-4">
+          <h3 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Impact numbers</h3>
+          {impactNumbers.map((n, i) => (
+            <div key={i} className="mb-2 flex gap-2">
+              <input type="text" value={n.value} onChange={(e) => setImpactNumbers((prev) => prev.map((x, idx) => idx === i ? { ...x, value: e.target.value } : x))} placeholder="Value (e.g. 5,000+)" className={`flex-1 text-sm ${INPUT_CLS}`} />
+              <input type="text" value={n.label} onChange={(e) => setImpactNumbers((prev) => prev.map((x, idx) => idx === i ? { ...x, label: e.target.value } : x))} placeholder="Label" className={`flex-1 text-sm ${INPUT_CLS}`} />
+              <button type="button" onClick={() => setImpactNumbers((prev) => prev.filter((_, idx) => idx !== i))} className="shrink-0 rounded border border-[var(--g400)]/40 px-2 text-[var(--g600)] hover:bg-[var(--orange-30)]">Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={addImpact} className="text-sm font-600 text-[var(--rose)] hover:underline">+ Add impact number</button>
+        </div>
+
+        {/* Testimonials */}
+        <div className="rounded-lg border border-[var(--blue)]/10 p-4">
+          <h3 className="mb-3 text-sm font-700 uppercase tracking-wider text-[var(--blue)]">Testimonials</h3>
+          {testimonials.map((t, i) => (
+            <div key={i} className="mb-3 rounded border border-[var(--g400)]/20 p-3">
+              <textarea rows={2} value={t.quote} onChange={(e) => setTestimonials((prev) => prev.map((x, idx) => idx === i ? { ...x, quote: e.target.value } : x))} placeholder="Quote" className={`mb-2 text-sm ${INPUT_CLS}`} />
+              <div className="grid gap-2 sm:grid-cols-2">
+                <input type="text" value={t.name} onChange={(e) => setTestimonials((prev) => prev.map((x, idx) => idx === i ? { ...x, name: e.target.value } : x))} placeholder="Name" className={`text-sm ${INPUT_CLS}`} />
+                <input type="text" value={t.role} onChange={(e) => setTestimonials((prev) => prev.map((x, idx) => idx === i ? { ...x, role: e.target.value } : x))} placeholder="Role / Location" className={`text-sm ${INPUT_CLS}`} />
+              </div>
+              <button type="button" onClick={() => setTestimonials((prev) => prev.filter((_, idx) => idx !== i))} className="mt-2 text-sm text-[var(--g600)] hover:text-[var(--orange)]">Remove testimonial</button>
+            </div>
+          ))}
+          <button type="button" onClick={addTestimonial} className="text-sm font-600 text-[var(--rose)] hover:underline">+ Add testimonial</button>
+        </div>
+      </div>
+
+      <div className="mt-5 flex gap-3">
+        <button
+          type="button"
+          onClick={() => onSave({
+            programId,
+            heroTitle: heroTitle.trim() || undefined,
+            heroSubtitle: heroSubtitle.trim() || undefined,
+            chips: chips.filter(Boolean),
+            challengeParagraphs: challengeParagraphs.filter(Boolean),
+            activitiesTitle: activitiesTitle.trim() || undefined,
+            targetCommunities: targetCommunities.filter(Boolean),
+            impactNumbers: impactNumbers.filter((n) => n.value.trim() || n.label.trim()),
+            testimonials: testimonials.filter((t) => t.quote.trim()),
+            partners: partners.filter(Boolean),
+          })}
+          className="rounded-lg bg-[var(--rose)] px-5 py-2.5 text-sm font-600 text-white hover:opacity-90"
+        >
+          Save detail page
+        </button>
+        <button type="button" onClick={onCancel} className="rounded-lg border border-[var(--g400)]/40 px-4 py-2.5 text-sm font-600 text-[var(--g800)] hover:bg-[var(--g100)]">
+          Cancel
+        </button>
       </div>
     </div>
   );

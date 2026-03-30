@@ -5,6 +5,7 @@ import { CookieBanner } from '@/components/CookieBanner';
 import { StructuredData } from '@/components/StructuredData';
 import { WhatsAppFloat } from '@/components/WhatsAppFloat';
 import { HomeGallery } from '@/components/home/HomeGallery';
+import { WeCareScripts } from '@/components/WeCareScripts';
 import {
   getSettingsPublic,
   getNavPublic,
@@ -41,6 +42,7 @@ export async function MainSiteShell({ children }: Readonly<{ children: React.Rea
       <Footer settings={settings} footer={footer} footerLinks={footerLinks} />
       <WhatsAppFloat whatsappUrl={settings?.whatsappUrl} />
       <CookieBanner />
+      <WeCareScripts />
     </>
   );
 }

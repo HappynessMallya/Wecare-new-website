@@ -1,10 +1,9 @@
 import { Hero } from '@/components/Hero';
 import { HomeAbout } from '@/components/home/HomeAbout';
+import { Leadership } from '@/components/Leadership';
 import { ImpactBar } from '@/components/ImpactBar';
 import { HomePartners } from '@/components/home/HomePartners';
-import { Leadership } from '@/components/Leadership';
 import { HomeContact } from '@/components/HomeContact';
-import { WeCareScripts } from '@/components/WeCareScripts';
 import {
   getSettingsPublic,
   getHeroSlidesPublic,
@@ -48,7 +47,6 @@ export default async function HomePage() {
       <ImpactBar items={impactItems} />
       <HomePartners section={partnersSection} partners={partners} />
       <HomeContact data={contactSection} settings={settings} />
-      <WeCareScripts />
     </main>
   );
 }

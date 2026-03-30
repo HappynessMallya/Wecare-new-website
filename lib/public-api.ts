@@ -24,6 +24,9 @@ import type {
   NavItem,
   FooterCopy,
   FooterLinks,
+  TeamMember,
+  TeamPageSection,
+  ProgramDetail,
 } from '@/lib/api';
 import { PROGRAMS_FALLBACK, PROGRAMS_SECTION_FALLBACK } from '@/lib/fallbacks';
 
@@ -147,4 +150,20 @@ export async function getFooterPublic(): Promise<FooterCopy | null> {
 
 export async function getFooterLinksPublic(): Promise<FooterLinks | null> {
   return publicGet<FooterLinks>('/api/footer/links', 'footer');
+}
+
+// --- Team ---
+export async function getTeamMembersPublic(): Promise<TeamMember[] | null> {
+  const data = await publicGet<TeamMember[]>('/api/team/members', 'team');
+  if (!Array.isArray(data)) return null;
+  return data.filter((m) => m.isActive !== false).sort((a, b) => a.order - b.order);
+}
+
+export async function getTeamSectionPublic(): Promise<TeamPageSection | null> {
+  return publicGet<TeamPageSection>('/api/team/section', 'team');
+}
+
+// --- Program detail ---
+export async function getProgramDetailPublic(programId: string): Promise<ProgramDetail | null> {
+  return publicGet<ProgramDetail>(`/api/programs/${programId}/detail`, 'programs');
 }

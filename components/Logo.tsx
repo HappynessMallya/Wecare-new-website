@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { normalizeInternalNavHref } from '@/lib/nav-hrefs';
 
-const LOGO_SIZE = { default: 52, nav: 62 } as const;
+const LOGO_SIZE = { default: 52, nav: 62, footer: 104 } as const;
 
 const DEFAULT_TAGLINE = 'Mbeya & Mara · Tanzania · Est. 2022';
 const DEFAULT_SITE_NAME = 'WeCare Foundation';
@@ -23,7 +23,7 @@ export function Logo({
   showTagline?: boolean;
   tagline?: string;
   dark?: boolean;
-  size?: 'default' | 'nav';
+  size?: 'default' | 'nav' | 'footer';
   logoUrl?: string | null;
   siteName?: string | null;
 }) {

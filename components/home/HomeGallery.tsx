@@ -17,6 +17,13 @@ export function HomeGallery({ items: itemsProp }: { items?: GalleryItem[] | null
   const duplicated = useMemo(() => [...items, ...items], [items]);
   return (
     <section id="gallery">
+      <div className="container gallery-head">
+        <p className="ey ct">Gallery</p>
+        <h2>Life at WeCare</h2>
+        {/* <a href="#contact" className="btn b-blue">
+          View All Photos <span className="arr">→</span>
+        </a> */}
+      </div>
       <div className="gallery-scroll-wrap">
         <div className="gstrip" aria-hidden>
           {duplicated.map((item, i) => (
@@ -30,7 +37,10 @@ export function HomeGallery({ items: itemsProp }: { items?: GalleryItem[] | null
                 unoptimized={item.imageUrl.startsWith('http')}
               />
               <div className="giov">
-                <span>{item.label}</span>
+                <div>
+                  <strong>{item.label}</strong>
+                  <span>Community impact story</span>
+                </div>
               </div>
             </div>
           ))}
