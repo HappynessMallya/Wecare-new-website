@@ -1,7 +1,18 @@
+import type { Metadata } from 'next';
 import { getLeadershipPublic, getTeamMembersPublic, getTeamSectionPublic } from '@/lib/public-api';
 import Image from 'next/image';
 import { WHATSAPP_URL } from '@/lib/constants';
 import type { TeamMember, TeamPageSection } from '@/lib/api';
+
+export const metadata: Metadata = {
+  title: 'Our Team',
+  description: "Meet the dedicated leaders, educators, and community builders behind WeCare Foundation — working to give Tanzania's youngest children the best start in life.",
+  alternates: { canonical: '/team' },
+  openGraph: {
+    title: 'Our Team | WeCare Foundation',
+    description: "Meet the people behind WeCare Foundation's mission in Tanzania.",
+  },
+};
 
 const SECTION_FALLBACK: TeamPageSection = {
   heroEyebrow: 'The People Behind the Mission',
@@ -57,7 +68,7 @@ export default async function TeamPage() {
         "Elizabeth founded WeCare Foundation in 2022 after witnessing firsthand the developmental gaps facing Tanzania's youngest children. With a deep commitment to community-led change, she has built WeCare from the ground up — creating programs that reach over 5,000 families across Mbeya and Mara.",
         "Her approach centres on parent empowerment, community trust, and innovative solutions tailored to Tanzania's unique context.",
       ];
-  const directorEmail = leadership?.email?.trim() || 'elizabeth@wecare.or.tz';
+  const directorEmail = leadership?.email?.trim() || 'info@wecare.or.tz';
 
   const leaders = byCategory(members, 'programme_leader');
   const staffAndVolunteers = [...byCategory(members, 'staff'), ...byCategory(members, 'volunteer')];

@@ -1054,6 +1054,30 @@ img { display: block; }
 .ceo-pattern { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(10,52,135,.06) 1.5px, transparent 1.5px); background-size: 30px 30px; pointer-events: none; }
 .ceo-inner { max-width: min(var(--container-max), 100%); margin: 0 auto; padding: 0 clamp(16px, 4vw, 60px); position: relative; z-index: 1; }
 .ceo-header { text-align: center; margin-bottom: 56px; }
+
+/* Enlarged CEO card — two-column like about section */
+.ceo-card-lg { display: grid; grid-template-columns: 340px 1fr; gap: 56px; max-width: 1000px; margin: 0 auto; align-items: center; }
+.ceo-photo-lg { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(10,52,135,.18); }
+.ceo-badge { position: absolute; bottom: 16px; left: 16px; background: var(--rose); color: #fff; border-radius: 999px; padding: 8px 18px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; box-shadow: 0 4px 16px rgba(230,57,154,.4); }
+.ceo-body-lg { }
+.ceo-role-lg { font-size: 11px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--rose); margin-bottom: 10px; }
+.ceo-name-lg { font-size: clamp(26px, 3vw, 36px); font-weight: 900; color: var(--blue); letter-spacing: -1px; line-height: 1.15; margin-bottom: 24px; }
+.ceo-name-lg span { color: var(--rose); }
+.ceo-quote-lg { font-family: Georgia, serif; font-size: clamp(17px, 1.6vw, 20px); font-style: italic; color: var(--g600); line-height: 1.75; border-left: 4px solid var(--rose); padding-left: 24px; margin-bottom: 28px; }
+.ceo-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.ceo-action-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 10px; font-size: 13px; font-weight: 700; transition: all .25s; }
+.ceo-action-btn.primary { background: var(--blue); color: #fff; }
+.ceo-action-btn.primary:hover { background: var(--blue-dark); }
+.ceo-action-btn.secondary { background: var(--light-gray, #f3f4f6); color: var(--g800); }
+.ceo-action-btn.secondary:hover { background: var(--rose); color: #fff; }
+
+@media (max-width: 768px) {
+  .ceo-card-lg { grid-template-columns: 1fr; gap: 32px; max-width: 480px; text-align: center; }
+  .ceo-photo-lg { aspect-ratio: 1; max-width: 280px; margin: 0 auto; border-radius: 50%; }
+  .ceo-badge { bottom: auto; top: auto; left: 50%; transform: translateX(-50%); bottom: -12px; }
+  .ceo-quote-lg { border-left: none; padding-left: 0; text-align: center; }
+  .ceo-actions { justify-content: center; }
+}
 .ceo-card { max-width: 860px; margin: 0 auto; background: #fff; border-radius: 28px; padding: 48px 52px; display: grid; grid-template-columns: 120px 1fr; gap: 44px; align-items: start; box-shadow: 0 20px 60px rgba(10,52,135,.14); border: 1px solid rgba(10,52,135,.07); }
 .ceo-photo-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .ceo-photo { position: relative; width: 110px; height: 110px; border-radius: 50%; overflow: hidden; box-shadow: 0 8px 28px rgba(230,57,154,.3); }
@@ -1070,8 +1094,8 @@ img { display: block; }
 
 .impact { padding: 112px 0; background: var(--blue); position: relative; overflow: hidden; }
 .impact-bg-art { position: absolute; inset: 0; pointer-events: none; }
-.impact-bg-art::before { content: ''; position: absolute; top: -200px; right: -200px; width: 700px; height: 700px; border-radius: 50%; background: rgba(230,57,154,.06); }
-.impact-bg-art::after { content: ''; position: absolute; bottom: -150px; left: -100px; width: 500px; height: 500px; border-radius: 50%; background: rgba(37,171,236,.07); }
+.impact-bg-art::before { content: ''; position: absolute; inset: 0; background: url('/kids-planting.jpg') center/cover no-repeat; }
+.impact-bg-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(6,21,74,.88) 0%, rgba(10,52,135,.7) 45%, rgba(10,52,135,.4) 100%); }
 .impact-inner { max-width: min(var(--container-max), 100%); margin: 0 auto; padding: 0 clamp(16px, 4vw, 60px); position: relative; z-index: 1; }
 .impact-header { text-align: center; margin-bottom: 64px; }
 .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -1163,9 +1187,12 @@ footer { background: var(--blue-dark, #06154A); padding: 0; }
 .team-section { padding: 88px 0; background: #fff; }
 .team-inner, .school-leaders-inner { max-width: min(var(--container-max), 100%); margin: 0 auto; padding: 0 clamp(16px, 4vw, 60px); }
 .team-section-header { margin-bottom: 40px; }
-.leader-card { display: grid; grid-template-columns: 320px 1fr; gap: 40px; background: #fff; border-radius: 22px; padding: 40px; border: 1px solid rgba(10,52,135,.08); box-shadow: 0 20px 60px rgba(10,52,135,.14); }
+.leader-card { display: grid; grid-template-columns: 1fr; gap: 24px; background: #fff; border-radius: 16px; padding: 20px; border: 1px solid rgba(10,52,135,.08); box-shadow: 0 20px 60px rgba(10,52,135,.14); }
+@media (min-width: 769px) { .leader-card { grid-template-columns: 320px 1fr; gap: 40px; border-radius: 22px; padding: 40px; } }
 .leader-img-wrap { position: relative; }
-.leader-img { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; }
+.leader-img { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; min-height: 320px; }
+.leader-img img { object-position: center 15%; }
+@media (min-width: 769px) { .leader-img { border-radius: 16px; min-height: auto; } }
 .leader-badge { position: absolute; bottom: -14px; left: 18px; background: var(--rose); color: #fff; border-radius: 999px; padding: 8px 14px; font-size: 12px; font-weight: 700; }
 .leader-role { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rose); margin-bottom: 8px; }
 .leader-name { font-size: clamp(22px,2.5vw,34px); font-weight: 900; color: var(--blue); margin-bottom: 16px; }
@@ -1176,8 +1203,9 @@ footer { background: var(--blue-dark, #06154A); padding: 0; }
 .leader-meta-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--off); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; color: var(--rose); }
 .leader-meta-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--g400); }
 .leader-meta-val { font-size: 14px; font-weight: 700; color: var(--g800); }
-.leader-links { display: flex; gap: 10px; flex-wrap: wrap; }
-.leader-link-btn { display: inline-flex; align-items: center; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; }
+.leader-links { display: flex; gap: 10px; flex-direction: column; }
+.leader-link-btn { display: flex; align-items: center; justify-content: center; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 700; min-height: 46px; }
+@media (min-width: 769px) { .leader-links { flex-direction: row; } .leader-link-btn { display: inline-flex; justify-content: flex-start; min-height: auto; padding: 10px 18px; font-size: 13px; } }
 .leader-link-btn.primary { background: var(--blue); color: #fff; }
 .leader-link-btn.secondary { background: var(--g100); color: var(--g800); }
 .school-leaders { background: var(--blue); padding: 88px 0; }
@@ -1239,7 +1267,7 @@ footer { background: var(--blue-dark, #06154A); padding: 0; }
 .team-card-img.img-6 { background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80&auto=format&fit=crop'); background-size: cover; background-position: center top; }
 
 /* LEADER IMAGE (position relative for Next.js Image fill) */
-.leader-img { position: relative; }
+/* duplicate .leader-img removed — defined above as mobile-first */
 
 /* TEAM CARDS (for team member grid) */
 .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -1424,7 +1452,7 @@ a.prog-nav-item-name:hover { color: var(--rose); }
 
 /* ── TABLET (max 1024px) ── */
 @media (max-width: 1024px) {
-  .leader-card { grid-template-columns: 1fr; }
+  /* leader-card is already 1fr by default (mobile-first) */
   .school-grid { grid-template-columns: 1fr; }
   .prog-layout { grid-template-columns: 1fr; }
   .prog-sidebar { position: static; }
@@ -1483,10 +1511,25 @@ a.prog-nav-item-name:hover { color: var(--rose); }
   /* Partners */
   .partner-chip { min-width: 150px; padding: 14px 22px; font-size: 12px; }
 
-  /* Team */
-  .leader-card { padding: 28px; gap: 28px; }
-  .leader-img { aspect-ratio: 1; }
-  .leader-name { font-size: clamp(20px, 5vw, 28px); }
+  /* Team — already mobile-first, just fine-tune for 768px */
+  .leader-name { font-size: clamp(22px, 5vw, 30px); }
+  .leader-bio { font-size: 14px; }
+
+  /* Team — school cards */
+  .school-card-header { padding: 20px 20px 0; gap: 12px; }
+  .school-card-avatar { width: 52px; height: 52px; }
+  .school-card-name { font-size: 17px; }
+  .school-card-body { padding: 16px 20px 24px; }
+  .school-card-links { flex-wrap: wrap; }
+  .school-link-btn { min-height: 42px; padding: 10px 18px; flex: 1; text-align: center; display: flex; align-items: center; justify-content: center; }
+
+  /* Team — grid cards */
+  .team-card-img { aspect-ratio: 16/10; }
+  .team-card-body { padding: 18px 18px 20px; }
+  .team-card-name { font-size: 16px; }
+  .team-card-bio { font-size: 13px; }
+  .team-card-links { flex-direction: column; gap: 6px; }
+  .team-card-link-btn { width: 100%; text-align: center; min-height: 42px; padding: 10px 16px; display: flex; align-items: center; justify-content: center; }
 
   /* Program page */
   .prog-stats-grid { grid-template-columns: 1fr; }
@@ -1518,9 +1561,28 @@ a.prog-nav-item-name:hover { color: var(--rose); }
   .team-grid { grid-template-columns: 1fr; }
   .school-grid { grid-template-columns: 1fr; }
   .team-hero-title { font-size: clamp(30px, 8vw, 42px); }
-  .team-hero-inner { padding: 64px 20px 56px; }
+  .team-hero-inner { padding: 64px 16px 48px; }
+  .team-hero-sub { font-size: 15px; }
+  .team-section-header { margin-bottom: 28px; }
+
+  .leader-name { font-size: 22px; }
+  .leader-bio { font-size: 13px; line-height: 1.7; margin-bottom: 16px; }
+  .leader-divider { margin: 16px 0; }
+  .leader-meta { gap: 8px; margin-bottom: 16px; }
+
+  .school-card { border-radius: 16px; }
+  .school-card-header { padding: 16px 16px 0; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .school-card-avatar { width: 48px; height: 48px; }
+  .school-card-name { font-size: 16px; }
+  .school-card-body { padding: 14px 16px 20px; }
+  .school-card-bio { font-size: 13px; margin-bottom: 14px; }
+
+  .team-card { border-radius: 14px; }
+  .team-card-img { aspect-ratio: 16/9; }
+  .team-card-body { padding: 16px 16px 18px; }
+
   .join-btns { flex-direction: column; align-items: center; }
-  .join-btn-primary, .join-btn-secondary { width: 100%; text-align: center; justify-content: center; display: flex; }
+  .join-btn-primary, .join-btn-secondary { width: 100%; text-align: center; justify-content: center; display: flex; min-height: 48px; }
 
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
@@ -1569,8 +1631,21 @@ a.prog-nav-item-name:hover { color: var(--rose); }
 
   .partner-chip { min-width: 120px; padding: 12px 16px; font-size: 11px; }
 
-  .leader-card { padding: 20px; gap: 20px; }
+  .leader-card { padding: 16px; gap: 16px; }
+  .leader-name { font-size: 20px; }
   .leader-meta-icon { width: 28px; height: 28px; font-size: 12px; }
+  .leader-meta-label { font-size: 9px; }
+  .leader-meta-val { font-size: 13px; }
+
+  .school-card-header { padding: 14px 14px 0; }
+  .school-card-body { padding: 12px 14px 16px; }
+  .school-link-btn { font-size: 11px; padding: 9px 14px; }
+
+  .team-card-body { padding: 14px 14px 16px; }
+  .team-card-name { font-size: 15px; }
+  .team-card-bio { font-size: 12px; }
+  .team-card-link-btn { font-size: 11px; padding: 9px 14px; }
+  .team-hero-eyebrow { font-size: 10px; padding: 6px 14px; }
 
   .gi { width: 200px; height: 180px; }
 

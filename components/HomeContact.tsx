@@ -22,7 +22,7 @@ export function HomeContact({ data, settings }: { data?: ContactSection | null; 
 
   const whatsappUrl = settings?.whatsappUrl || WHATSAPP_URL;
   const contactPhone = settings?.contactPhone || CONTACT_PHONE;
-  const contactEmail = settings?.contactEmail || 'elizabeth@wecare.or.tz';
+  const contactEmail = settings?.contactEmail || 'info@wecare.or.tz';
   const officeLocation = settings?.officeLocation || 'Mbeya, Tanzania';
   const regionsActive = settings?.regionsActive || 'Mbeya & Mara, Tanzania';
 

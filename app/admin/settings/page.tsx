@@ -13,7 +13,7 @@ const defaultSettings: Partial<Settings> = {
   logoUrl: '/logo.png',
   contactPhone: '+255 768 257 970',
   whatsappUrl: 'https://wa.me/255768257970',
-  contactEmail: 'Wecarefoundation025@gmail.com',
+  contactEmail: 'info@wecare.or.tz',
   officeLocation: 'Mbeya, Tanzania',
   regionsActive: 'Mbeya Region & Mara Region, Tanzania',
   socialInstagram: '',

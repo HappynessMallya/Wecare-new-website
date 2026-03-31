@@ -45,10 +45,10 @@ export function Contact() {
                 </dt>
                 <dd className="mt-1">
                   <a
-                    href="mailto:Wecarefoundation025@gmail.com"
+                    href="mailto:info@wecare.or.tz"
                     className="text-lg text-primary underline hover:text-cta"
                   >
-                    Wecarefoundation025@gmail.com
+                    info@wecare.or.tz
                   </a>
                 </dd>
               </div>

@@ -189,6 +189,17 @@ export function Navbar({
               );
             }
 
+            const isHashLink = item.href.startsWith('/#');
+            const onHomepage = pathname === '/';
+
+            if (isHashLink && !onHomepage) {
+              return (
+                <a key={item.label} href={item.href} className={`nav-link ${isActive ? 'active' : ''}`}>
+                  {item.label}
+                </a>
+              );
+            }
+
             return (
               <Link key={item.label} href={item.href} className={`nav-link ${isActive ? 'active' : ''}`}>
                 {item.label}
@@ -253,6 +264,22 @@ export function Navbar({
                     )}
                   </div>
                 </details>
+              );
+            }
+
+            const mobileIsHash = item.href.startsWith('/#');
+            const mobileOnHome = pathname === '/';
+
+            if (mobileIsHash && !mobileOnHome) {
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className={isActive ? 'active' : undefined}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                </a>
               );
             }
 

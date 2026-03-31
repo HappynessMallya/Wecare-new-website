@@ -23,7 +23,7 @@ const defaultLeadership: Partial<Leadership> = {
     'Under her leadership, WeCare has grown from a community initiative...',
     'Elizabeth leads WeCare\'s four core programs...',
   ],
-  email: 'Wecarefoundation025@gmail.com',
+  email: 'info@wecare.or.tz',
 };
 
 export default function AdminLeadershipPage() {

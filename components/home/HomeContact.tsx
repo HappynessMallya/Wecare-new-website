@@ -44,10 +44,10 @@ export function HomeContact() {
           <p className="text-[14px] text-neutral-700">
             Email:{' '}
             <a
-              href="mailto:Wecarefoundation025@gmail.com"
+              href="mailto:info@wecare.or.tz"
               className="font-semibold text-primary hover:text-rose"
             >
-              Wecarefoundation025@gmail.com
+              info@wecare.or.tz
             </a>
           </p>
         </div>
